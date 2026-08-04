@@ -2,13 +2,14 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Mail, Lock, Eye, EyeOff, Volleyball } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Logo } from "@/components/logo";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -21,27 +22,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-[#F1F5F9]">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background">
       {/* Login Card (Frame 141) */}
-      <Card className="w-full max-w-[498px] rounded-[16px] border-[#E6E6E6] bg-white gap-0 p-8 shadow-sm">
+      <Card className="w-full max-w-[498px] rounded-[16px] border-border bg-white gap-0 p-8">
         <CardHeader className="flex flex-col items-center gap-6 p-0 pb-6">
-          {/* Logo */}
-          <div className="flex items-center gap-1 select-none">
-            <Volleyball className="h-6 w-6 text-[#0F172B] stroke-[2.5]" />
-            <div className="flex text-2xl font-semibold tracking-tight">
-              <span className="text-[#0F172B]">nge</span>
-              <span className="text-[#285A48]">Ball</span>
-            </div>
-          </div>
+          {/* Reusable Logo */}
+          <Logo />
 
           {/* Welcome back (Frame 146) */}
           <div className="flex flex-col items-center gap-2 text-center">
-            <CardTitle className="text-2xl font-medium text-[#0F172B] tracking-tight">
+            <CardTitle className="text-2xl text-text-primary tracking-tight">
               Welcome back
             </CardTitle>
-            <CardDescription className="text-base text-[#6A7282]">
+            <CardDescription className="text-body text-text-secondary">
               Don&apos;t have account?{" "}
-              <Link href="/register" className="text-[#4C8CE4] hover:underline font-medium">
+              <Link href="/register" className="text-secondary hover:underline">
                 Sign up
               </Link>
             </CardDescription>
@@ -54,11 +49,11 @@ export default function LoginPage() {
             <div className="flex flex-col gap-3">
               {/* Email (Frame 151) */}
               <div className="flex flex-col gap-1">
-                <Label htmlFor="email" className="text-base font-normal text-[#0F172B]">
+                <Label htmlFor="email" className="text-body text-text-primary">
                   Email
                 </Label>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#6A7282]">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">
                     <Mail className="h-4 w-4" />
                   </div>
                   <Input
@@ -68,18 +63,18 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-10 pl-10 border-[#E6E6E6] rounded-[6px] text-base placeholder:text-[#6A7282] focus-visible:ring-1 focus-visible:ring-[#285A48] focus-visible:border-[#285A48]"
+                    className="h-10 pl-10 border-border rounded-[6px] text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                   />
                 </div>
               </div>
 
               {/* Password (Frame 152) */}
               <div className="flex flex-col gap-1">
-                <Label htmlFor="password" className="text-base font-normal text-[#0F172B]">
+                <Label htmlFor="password" className="text-body text-text-primary">
                   Password
                 </Label>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#6A7282]">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">
                     <Lock className="h-4 w-4" />
                   </div>
                   <Input
@@ -89,12 +84,12 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="h-10 px-10 border-[#E6E6E6] rounded-[6px] text-base placeholder:text-[#6A7282] focus-visible:ring-1 focus-visible:ring-[#285A48] focus-visible:border-[#285A48]"
+                    className="h-10 px-10 border-border rounded-[6px] text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#6A7282] hover:text-[#0F172B] focus:outline-none cursor-pointer"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-text-secondary hover:text-text-primary focus:outline-none cursor-pointer"
                   >
                     {showPassword ? (
                       <Eye className="h-5 w-5" />
@@ -109,7 +104,7 @@ export default function LoginPage() {
             {/* Login Button */}
             <Button
               type="submit"
-              className="h-10 w-full bg-[#285A48] hover:bg-[#285A48]/90 text-white rounded-[12px] font-semibold text-sm transition-colors cursor-pointer"
+              className="h-10 w-full bg-primary hover:bg-primary/90 text-white rounded-[12px] font-semibold text-sm transition-colors cursor-pointer"
             >
               Login
             </Button>
@@ -119,17 +114,17 @@ export default function LoginPage() {
         <CardFooter className="flex flex-col gap-5 p-0 pt-5 pb-8 border-none bg-transparent">
           {/* Divider (Frame 147) */}
           <div className="flex w-full items-center justify-center gap-2">
-            <Separator className="flex-1 bg-[#E6E6E6]" />
-            <span className="text-sm font-normal text-[#6A7282] shrink-0">
+            <Separator className="flex-1 bg-border" />
+            <span className="text-small font-normal text-text-secondary shrink-0">
               Or continue with
             </span>
-            <Separator className="flex-1 bg-[#E6E6E6]" />
+            <Separator className="flex-1 bg-border" />
           </div>
 
           {/* Google Sign In Button (Frame 148) */}
           <Button
             variant="outline"
-            className="h-14 w-[54px] p-0 border-[#E6E6E6] rounded-[6px] hover:bg-slate-50 transition-colors flex items-center justify-center cursor-pointer"
+            className="h-14 w-14 p-0 border-border rounded-[6px] bg-white hover:bg-background flex items-center justify-center cursor-pointer"
             onClick={() => console.log("Google Login clicked")}
           >
             {/* Google Icon SVG */}

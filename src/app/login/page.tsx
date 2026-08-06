@@ -5,7 +5,14 @@ import Link from "next/link";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -22,9 +29,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background py-8">
       {/* Login Card (Frame 141) */}
-      <Card className="w-full max-w-[498px] rounded-[16px] border-border bg-white gap-0 p-8">
+      <Card className="w-full max-w-118 rounded-[16px] border-border bg-white gap-0 p-8">
         <CardHeader className="flex flex-col items-center gap-6 p-0 pb-6">
           {/* Reusable Logo */}
           <Logo />
@@ -59,7 +66,7 @@ export default function LoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="eg, youremail@gmail.com"
+                    placeholder="eg. youremail@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -70,7 +77,10 @@ export default function LoginPage() {
 
               {/* Password (Frame 152) */}
               <div className="flex flex-col gap-1">
-                <Label htmlFor="password" className="text-body text-text-primary">
+                <Label
+                  htmlFor="password"
+                  className="text-body text-text-primary"
+                >
                   Password
                 </Label>
                 <div className="relative">

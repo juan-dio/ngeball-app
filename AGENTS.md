@@ -150,8 +150,10 @@ src/
 ├── app/                    # Next.js App Router pages and layouts
 │   ├── globals.css         # Global styles, CSS variables, typography utilities
 │   ├── layout.tsx          # Root layout
-│   └── login/
-│       └── page.tsx        # Login page (reference implementation)
+│   ├── login/
+│   │   └── page.tsx        # Login page (reference implementation)
+│   └── register/
+│       └── page.tsx        # Register page (sign up form)
 ├── components/
 │   ├── ui/                 # shadcn/ui components (DO NOT MODIFY)
 │   │   ├── button.tsx
@@ -188,7 +190,7 @@ When a design requires an icon inside an input field, use this pattern:
   </div>
   <Input
     className="h-10 pl-10 border-border rounded-[6px] text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
-    placeholder="eg, youremail@gmail.com"
+    placeholder="eg. youremail@gmail.com"
   />
   {/* Right icon (optional) */}
   <button type="button" className="absolute inset-y-0 right-0 flex items-center pr-3 text-text-secondary hover:text-text-primary cursor-pointer">
@@ -197,13 +199,16 @@ When a design requires an icon inside an input field, use this pattern:
 </div>
 ```
 
+> **Placeholder convention:** Use `eg.` (with a period) for example markers in placeholders — never `eg,`. E.g. `eg. John`, `eg. youremail@gmail.com`.
+
 ---
 
 ## 9. Implemented Pages (Reference)
 
-| Route     | File                            | Status    | Description                   |
-|-----------|---------------------------------|-----------|-------------------------------|
-| `/login`  | `src/app/login/page.tsx`        | ✅ Done   | Login with email/password + Google SSO |
+| Route       | File                              | Status    | Description                              |
+|-------------|-----------------------------------|-----------|------------------------------------------|
+| `/login`    | `src/app/login/page.tsx`          | ✅ Done   | Login with email/password + Google SSO   |
+| `/register` | `src/app/register/page.tsx`       | ✅ Done   | Sign up (names, email, password) + validation |
 
 ---
 

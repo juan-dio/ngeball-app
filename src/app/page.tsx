@@ -1,65 +1,295 @@
 import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowRight,
+  CircleCheck,
+  Clock,
+  CreditCard,
+  MapPin,
+  Trophy,
+  Zap,
+} from "lucide-react";
+
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import { Logo } from "@/components/logo";
+import { Button } from "@/components/ui/button";
+import { FutsalIcon } from "@/components/icons/futsal-icon";
+import { BasketballIcon } from "@/components/icons/basketball-icon";
+import { TennisIcon } from "@/components/icons/tennis-icon";
+import { PadelIcon } from "@/components/icons/padel-icon";
+
+const STEPS = [
+  { label: "Select court", icon: MapPin },
+  { label: "Select time", icon: Clock },
+  { label: "Pay", icon: CreditCard },
+  { label: "Success", icon: CircleCheck },
+];
+
+const SPORTS = [
+  { label: "Futsal", icon: FutsalIcon },
+  { label: "Basketball", icon: BasketballIcon },
+  { label: "Tennis", icon: TennisIcon },
+  { label: "Padel", icon: PadelIcon },
+];
+
+const COURT_TYPES = [
+  {
+    title: "Futsal Sintetis",
+    image: "/images/synthetic-grass1.png",
+    description:
+      "Premium synthetic grass surface, perfect for competitive futsal matches and daily training.",
+  },
+  {
+    title: "Futsal Interlock",
+    image: "/images/interlock1.jpg",
+    description:
+      "Durable interlock flooring that provides excellent grip and consistent ball bounce.",
+  },
+  {
+    title: "Futsal Vinyl",
+    image: "/images/vynil1.jpg",
+    description:
+      "High-quality vinyl court designed for comfort, safety, and a professional playing feel.",
+  },
+  {
+    title: "Basket Indoor",
+    image: "/images/indoor-basket1.jpg",
+    description:
+      "Regulation-size indoor basketball court with smooth hardwood surface and pro lighting.",
+  },
+  {
+    title: "Tenis Indoor",
+    image: "/images/indoor-tennis1.jpg",
+    description:
+      "Indoor tennis court with cushioned surface, ideal for playing all year round.",
+  },
+  {
+    title: "Padel",
+    image: "/images/padel1.jpg",
+    description:
+      "Modern padel court with artificial grass turf and tempered glass walls.",
+  },
+];
+
+function Hero() {
+  return (
+    <section className="relative flex min-h-[620px] items-center justify-center overflow-hidden">
+      <Image
+        src="/images/hero.jpg"
+        alt="Sports court"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-black/70" />
+
+      <div className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-col items-center gap-12 px-6 py-24 text-center">
+        <h1 className="max-w-[950px] text-[56px] font-semibold leading-tight text-white">
+          The best sports court rental in town.
+        </h1>
+
+        <div className="flex items-center gap-12">
+          {STEPS.map((step) => (
+            <div key={step.label} className="flex items-center gap-2.5">
+              <step.icon className="h-5 w-5 text-white" />
+              <span className="text-[20px] font-semibold text-white">
+                {step.label}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-4">
+          <Button
+            nativeButton={false}
+            render={<Link href="/login" />}
+            variant="outline"
+            className="h-12 rounded-[12px] border border-white bg-white font-semibold text-primary hover:bg-white/90 hover:text-primary"
+          >
+            Login
+          </Button>
+          <Button
+            nativeButton={false}
+            render={<Link href="/register" />}
+            className="h-12 rounded-[12px] bg-primary font-semibold text-white hover:bg-primary/90"
+          >
+            Sign Up
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Sports() {
+  return (
+    <section id="sports" className="bg-white py-20">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-14 px-6">
+        <h2 className="text-h1 text-primary">Choose Your Sport!</h2>
+
+        <div className="flex w-full items-start justify-between">
+          {SPORTS.map((sport) => (
+            <div key={sport.label} className="flex flex-col items-center gap-6">
+              <sport.icon />
+              <span className="text-[32px] font-semibold text-text-primary">
+                {sport.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FieldTypeCard({
+  title,
+  image,
+  description,
+  alignRight,
+}: {
+  title: string;
+  image: string;
+  description: string;
+  alignRight: boolean;
+}) {
+  return (
+    <div
+      className={`flex h-[216px] w-[760px] overflow-hidden rounded-[16px] border border-border bg-white ${alignRight ? "self-end" : "self-start"}`}
+    >
+      <div className="relative h-[216px] w-[320px] shrink-0">
+        <Image src={image} alt={title} fill sizes="320px" className="object-cover" />
+      </div>
+      <div className="flex flex-1 flex-col justify-center gap-2 p-6">
+        <h3 className="text-h2 text-text-primary">{title}</h3>
+        <p className="text-body text-text-secondary">{description}</p>
+        <Link
+          href="#"
+          className="mt-1 inline-flex items-center gap-1.5 text-body text-blue underline underline-offset-4"
+        >
+          View by this type
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function CourtSelection() {
+  return (
+    <section id="courts" className="py-20">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-14 px-6">
+        <h2 className="text-h1 text-primary">Court Selection</h2>
+
+        <div className="flex w-full flex-col gap-10">
+          {COURT_TYPES.map((court, index) => (
+            <FieldTypeCard
+              key={court.title}
+              title={court.title}
+              image={court.image}
+              description={court.description}
+              alignRight={index % 2 === 1}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Benefit() {
+  return (
+    <section className="bg-white py-20">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-12 px-6">
+        <div className="flex items-center justify-between">
+          <Logo
+            iconClassName="h-12 w-12"
+            textClassName="text-5xl"
+          />
+          <h2 className="text-h1 text-primary">Speciality</h2>
+        </div>
+
+        <div className="grid grid-cols-2 gap-6">
+          <div className="relative h-[300px] overflow-hidden rounded-[24px]">
+            <Image
+              src="/images/basketball.jpg"
+              alt="Multiple Sport Options"
+              fill
+              sizes="(max-width: 1200px) 50vw, 560px"
+              className="object-cover"
+            />
+            <div className="absolute right-6 top-6 flex h-14 w-14 items-center justify-center rounded-full bg-orange">
+              <Trophy className="h-7 w-7 text-white" />
+            </div>
+            <h3 className="absolute bottom-6 left-6 text-[32px] font-semibold text-white">
+              Multiple Sport Options
+            </h3>
+          </div>
+
+          <div className="flex h-[300px] flex-col items-center justify-center gap-4 rounded-[24px] bg-[#FFDF20]">
+            <Zap className="h-16 w-16 text-[#BB4D00]" />
+            <h3 className="text-[40px] font-semibold text-[#BB4D00]">
+              Easy Booking
+            </h3>
+          </div>
+
+          <div className="flex h-[300px] flex-col items-center justify-center gap-4 rounded-[24px] bg-secondary">
+            <CreditCard className="h-16 w-16 text-white" />
+            <h3 className="text-[32px] font-semibold text-white">
+              Simple Payment
+            </h3>
+          </div>
+
+          <div className="relative h-[300px] overflow-hidden rounded-[24px]">
+            <Image
+              src="/images/street-football.jpg"
+              alt="Community Support"
+              fill
+              sizes="(max-width: 1200px) 50vw, 560px"
+              className="object-cover"
+            />
+            <h3 className="absolute bottom-6 left-6 text-[32px] font-semibold text-white">
+              Community Support
+            </h3>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Cta() {
+  return (
+    <section id="booking" className="bg-primary py-20">
+      <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-8 px-6">
+        <h2 className="text-[48px] font-semibold text-white">
+          Ready to play your game?
+        </h2>
+        <Button
+          nativeButton={false}
+          render={<Link href="/register" />}
+          variant="outline"
+          className="h-12 rounded-[12px] border border-white bg-white font-semibold text-primary hover:bg-white/90 hover:text-primary"
+        >
+          Book Now
+        </Button>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="flex min-h-screen flex-col bg-background pt-[72px]">
+      <Navbar />
+      <Hero />
+      <Sports />
+      <CourtSelection />
+      <Benefit />
+      <Cta />
+      <Footer />
+    </main>
   );
 }

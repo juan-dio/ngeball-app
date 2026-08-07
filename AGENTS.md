@@ -25,7 +25,9 @@ This project uses **Bun** exclusively.
 
 - Install packages: `bun add <package>`
 - Install shadcn components: `bunx --bun shadcn@latest add <component>`
-- Run scripts: `bun run dev`, `bun run build`
+- Run scripts: `bun run dev`, `bun run build`, `bun run start`
+- Lint: `bun run lint` (ESLint flat config in `eslint.config.mjs`)
+- There is **no test suite**. Verify changes with lint + `bun run build`; typecheck manually with `bunx tsc --noEmit`.
 - **Do NOT use** `npm`, `yarn`, or `pnpm`.
 
 ---
@@ -120,6 +122,9 @@ Before creating a new component, always check `src/components/` for existing one
 
 ### Currently Available Components
 
+- `<Navbar />` — `src/components/navbar.tsx`, `<Footer />` — `src/components/footer.tsx`
+- Sport icons in `src/components/icons/` — `FutsalIcon`, `BasketballIcon`, `TennisIcon`, `PadelIcon`
+
 #### `<Logo />` — `src/components/logo.tsx`
 The application logo. Renders the Volleyball icon from `lucide-react` alongside the branded "ngeBall" text.
 
@@ -148,12 +153,11 @@ import { Logo } from "@/components/logo";
 ```
 src/
 ├── app/                    # Next.js App Router pages and layouts
-│   ├── globals.css         # Global styles, CSS variables, typography utilities
-│   ├── layout.tsx          # Root layout
-│   ├── login/
-│   │   └── page.tsx        # Login page (reference implementation)
-│   └── register/
-│       └── page.tsx        # Register page (sign up form)
+│   ├── globals.css         # Tailwind v4 + design tokens + typography utilities
+│   ├── layout.tsx          # Root layout (Inter via --font-sans)
+│   ├── page.tsx            # Landing page (navbar, hero, sports, courts, benefits, CTA)
+│   ├── login/page.tsx      # Login page (reference implementation)
+│   └── register/page.tsx   # Register page (sign up form)
 ├── components/
 │   ├── ui/                 # shadcn/ui components (DO NOT MODIFY)
 │   │   ├── button.tsx
@@ -161,6 +165,9 @@ src/
 │   │   ├── input.tsx
 │   │   ├── label.tsx
 │   │   └── separator.tsx
+│   ├── icons/              # Sport icons (futsal, basketball, tennis, padel)
+│   ├── navbar.tsx
+│   ├── footer.tsx
 │   └── logo.tsx            # Reusable Logo component
 └── lib/
     └── utils.ts            # Utility functions (cn helper from shadcn)
@@ -207,6 +214,7 @@ When a design requires an icon inside an input field, use this pattern:
 
 | Route       | File                              | Status    | Description                              |
 |-------------|-----------------------------------|-----------|------------------------------------------|
+| `/`         | `src/app/page.tsx`                | ✅ Done   | Landing page (hero, sports, courts, benefits, CTA) |
 | `/login`    | `src/app/login/page.tsx`          | ✅ Done   | Login with email/password + Google SSO   |
 | `/register` | `src/app/register/page.tsx`       | ✅ Done   | Sign up (names, email, password) + validation |
 
@@ -219,4 +227,6 @@ When a design requires an icon inside an input field, use this pattern:
 - **Client components:** Add `"use client"` directive only when the component uses React state, effects, or browser APIs.
 - **Imports:** Use the `@/` path alias for all internal imports (e.g., `@/components/logo`, `@/lib/utils`).
 - **No inline styles:** Never use the `style` prop. Always use Tailwind classes.
+- **React Compiler** is enabled (`reactCompiler: true` in `next.config.ts`). Don't add manual `useMemo`/`useCallback` optimizations.
+- **Dark mode:** Tokens are redefined under `.dark` in `globals.css` (`@custom-variant dark`); use semantic classes and they adapt automatically.
 <!-- END:project-conventions -->

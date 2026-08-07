@@ -13,23 +13,25 @@ const NAV_LINKS = [
 
 export function Navbar() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 h-[72px] border-b border-border bg-white">
-      <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between px-6">
-        <Link href="/" className="shrink-0">
-          <Logo />
-        </Link>
+    <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-border bg-white">
+      <div className="mx-auto flex h-full w-full max-w-300 items-center justify-between px-6">
+        <div className="flex items-center gap-20">
+          <Link href="/" className="shrink-0">
+            <Logo />
+          </Link>
 
-        <nav className="flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="text-body text-text-primary transition-colors hover:text-primary"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+          <nav className="flex items-center gap-8">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-body text-text-primary transition-colors hover:text-primary"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
 
         <div className="flex items-center gap-4">
           <Link
@@ -42,9 +44,9 @@ export function Navbar() {
           <Button
             nativeButton={false}
             render={<Link href="/register" />}
-            className="h-10 rounded-[12px] bg-primary font-semibold text-white hover:bg-primary/90"
+            className="h-auto px-4 py-3 rounded-[12px] bg-primary text-sm font-semibold text-white hover:bg-primary/90"
           >
-            Register
+            Book Now
           </Button>
         </div>
       </div>

@@ -74,7 +74,7 @@ const COURT_TYPES = [
 
 function Hero() {
   return (
-    <section className="relative flex min-h-[620px] items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center overflow-hidden">
       <Image
         src="/images/hero.jpg"
         alt="Sports court"
@@ -85,18 +85,25 @@ function Hero() {
       />
       <div className="absolute inset-0 bg-black/70" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-col items-center gap-12 px-6 py-24 text-center">
-        <h1 className="max-w-[950px] text-[56px] font-semibold leading-tight text-white">
-          The best sports court rental in town.
+      <div className="relative z-10 mx-auto flex w-full max-w-300 flex-col items-center gap-8 px-6 py-24 text-center">
+        <h1 className="max-w-190 text-[56px] font-semibold leading-tight text-white">
+          The best
+          <br />
+          sports court rental in town.
         </h1>
 
-        <div className="flex items-center gap-12">
-          {STEPS.map((step) => (
-            <div key={step.label} className="flex items-center gap-2.5">
-              <step.icon className="h-5 w-5 text-white" />
-              <span className="text-[20px] font-semibold text-white">
-                {step.label}
-              </span>
+        <div className="flex items-center gap-6">
+          {STEPS.map((step, index) => (
+            <div key={step.label} className="flex items-center gap-6">
+              <div className="flex flex-col items-center gap-1">
+                <step.icon className="h-18 w-auto text-white" />
+                <span className="text-[20px] font-semibold text-white">
+                  {step.label}
+                </span>
+              </div>
+              {index < STEPS.length - 1 && (
+                <ArrowRight className="h-16 w-auto text-white" />
+              )}
             </div>
           ))}
         </div>
@@ -104,18 +111,18 @@ function Hero() {
         <div className="flex items-center gap-4">
           <Button
             nativeButton={false}
-            render={<Link href="/login" />}
+            render={<Link href="/register" />}
             variant="outline"
-            className="h-12 rounded-[12px] border border-white bg-white font-semibold text-primary hover:bg-white/90 hover:text-primary"
+            className="h-14 px-8 rounded-[12px] border border-white bg-white font-semibold text-primary hover:bg-white/90 hover:text-primary"
           >
-            Login
+            Sign Up
           </Button>
           <Button
             nativeButton={false}
-            render={<Link href="/register" />}
-            className="h-12 rounded-[12px] bg-primary font-semibold text-white hover:bg-primary/90"
+            render={<Link href="#courts" />}
+            className="h-14 px-8 rounded-[12px] bg-primary font-semibold text-white hover:bg-primary/90"
           >
-            Sign Up
+            Browse Courts
           </Button>
         </div>
       </div>
@@ -126,7 +133,7 @@ function Hero() {
 function Sports() {
   return (
     <section id="sports" className="bg-white py-20">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-14 px-6">
+      <div className="mx-auto flex w-full max-w-300 flex-col items-center gap-14 px-6">
         <h2 className="text-h1 text-primary">Choose Your Sport!</h2>
 
         <div className="flex w-full items-start justify-between">
@@ -160,7 +167,13 @@ function FieldTypeCard({
       className={`flex h-[216px] w-[760px] overflow-hidden rounded-[16px] border border-border bg-white ${alignRight ? "self-end" : "self-start"}`}
     >
       <div className="relative h-[216px] w-[320px] shrink-0">
-        <Image src={image} alt={title} fill sizes="320px" className="object-cover" />
+        <Image
+          src={image}
+          alt={title}
+          fill
+          sizes="320px"
+          className="object-cover"
+        />
       </div>
       <div className="flex flex-1 flex-col justify-center gap-2 p-6">
         <h3 className="text-h2 text-text-primary">{title}</h3>
@@ -180,7 +193,7 @@ function FieldTypeCard({
 function CourtSelection() {
   return (
     <section id="courts" className="py-20">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-14 px-6">
+      <div className="mx-auto flex w-full max-w-300 flex-col items-center gap-14 px-6">
         <h2 className="text-h1 text-primary">Court Selection</h2>
 
         <div className="flex w-full flex-col gap-10">
@@ -202,12 +215,9 @@ function CourtSelection() {
 function Benefit() {
   return (
     <section className="bg-white py-20">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-12 px-6">
+      <div className="mx-auto flex w-full max-w-300 flex-col gap-12 px-6">
         <div className="flex items-center justify-between">
-          <Logo
-            iconClassName="h-12 w-12"
-            textClassName="text-5xl"
-          />
+          <Logo iconClassName="h-12 w-12" textClassName="text-5xl" />
           <h2 className="text-h1 text-primary">Speciality</h2>
         </div>
 
@@ -263,7 +273,7 @@ function Benefit() {
 function Cta() {
   return (
     <section id="booking" className="bg-primary py-20">
-      <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-8 px-6">
+      <div className="mx-auto flex w-full max-w-300 items-center justify-between gap-8 px-6">
         <h2 className="text-[48px] font-semibold text-white">
           Ready to play your game?
         </h2>
@@ -282,7 +292,7 @@ function Cta() {
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-background pt-[72px]">
+    <main className="flex min-h-screen flex-col bg-background pt-16">
       <Navbar />
       <Hero />
       <Sports />

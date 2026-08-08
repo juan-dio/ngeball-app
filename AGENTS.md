@@ -36,7 +36,13 @@ This project uses **Bun** exclusively.
 
 All colors are defined as CSS custom properties in `src/app/globals.css` and mapped to Tailwind utility classes via `@theme inline`. 
 
-**NEVER use hardcoded hex colors** (e.g., `bg-[#285A48]`, `text-[#0F172B]`). Always use the semantic class names below.
+### Color Selection Priority
+
+When choosing a color class, follow this order:
+
+1. **Custom semantic utility** — use the design tokens below (e.g., `bg-primary`, `text-text-primary`).
+2. **Default Tailwind utility** — if no token fits, use Tailwind's built-in color utilities (e.g., `bg-white`, `text-black`).
+3. **Arbitrary value** — only as a last resort when neither custom nor default utilities fit (e.g., `bg-[#285A48]`, `text-[#0F172B]`).
 
 ### Available Color Tokens
 
@@ -70,7 +76,13 @@ All colors are defined as CSS custom properties in `src/app/globals.css` and map
 
 Custom typography utility classes are defined in `src/app/globals.css` using Tailwind v4's `@utility` directive. The font is **Inter** (applied globally).
 
-**NEVER use ad-hoc font size classes** (e.g., `text-2xl`, `text-base`, `font-semibold`) for UI text that maps to a Figma text style. Use the semantic classes below instead.
+### Font Size Selection Priority
+
+When choosing a font size class, follow this order:
+
+1. **Custom semantic utility** — use the typography tokens below (e.g., `text-h1`, `text-body`).
+2. **Default Tailwind utility** — if no semantic size matches, use Tailwind's built-in size utilities (e.g., `text-lg`, `text-xl`, `text-2xl`).
+3. **Arbitrary value** — only as a last resort when neither semantic nor default utilities fit (e.g., `text-[56px]`).
 
 | Class        | Font Size | Font Weight | Line Height | Usage                                  |
 |--------------|-----------|-------------|-------------|----------------------------------------|
@@ -123,7 +135,9 @@ Before creating a new component, always check `src/components/` for existing one
 ### Currently Available Components
 
 - `<Navbar />` — `src/components/navbar.tsx`, `<Footer />` — `src/components/footer.tsx`
-- Sport icons in `src/components/icons/` — `FutsalIcon`, `BasketballIcon`, `TennisIcon`, `PadelIcon`
+- Icons in `src/components/icons/` — `FutsalIcon`, `BasketballIcon`, `TennisIcon`, `PadelIcon`, `FieldIcon`, `DatetimeIcon`, `PayIcon`
+
+> **Icon color:** All custom icon components use `currentColor` for fill/stroke, so colors are overridable at the call site with Tailwind utilities (`text-*`, `fill-*`, `stroke-*`).
 
 #### `<Logo />` — `src/components/logo.tsx`
 The application logo. Renders the Volleyball icon from `lucide-react` alongside the branded "ngeBall" text.
@@ -165,7 +179,7 @@ src/
 │   │   ├── input.tsx
 │   │   ├── label.tsx
 │   │   └── separator.tsx
-│   ├── icons/              # Sport icons (futsal, basketball, tennis, padel)
+│   ├── icons/              # Icon components (sport, field, datetime, pay)
 │   ├── navbar.tsx
 │   ├── footer.tsx
 │   └── logo.tsx            # Reusable Logo component
@@ -182,6 +196,8 @@ This project uses **`lucide-react`** for all icons. Do not add other icon librar
 ```tsx
 import { Mail, Lock, Eye, EyeOff, Volleyball, Search } from "lucide-react";
 ```
+
+Custom icon components in `src/components/icons/` use `currentColor` for fill/stroke so their color is controlled by Tailwind text/fill/stroke utilities at the call site.
 
 ---
 

@@ -22,10 +22,10 @@ const STEPS = [
 ];
 
 const SPORTS = [
-  { label: "Futsal", icon: FutsalIcon },
-  { label: "Basketball", icon: BasketballIcon },
-  { label: "Tennis", icon: TennisIcon },
-  { label: "Padel", icon: PadelIcon },
+  { label: "Futsal", icon: FutsalIcon, color: "text-green" },
+  { label: "Basketball", icon: BasketballIcon, color: "text-orange" },
+  { label: "Tennis", icon: TennisIcon, color: "text-red" },
+  { label: "Padel", icon: PadelIcon, color: "text-blue" },
 ];
 
 const COURT_TYPES = [
@@ -137,7 +137,7 @@ function Sports() {
               key={sport.label}
               className="flex w-full flex-col items-center gap-4"
             >
-              <sport.icon className="h-20 w-auto" />
+              <sport.icon className={`h-20 w-auto ${sport.color}`} />
               <span className="text-h2 font-semibold text-text-primary">
                 {sport.label}
               </span>

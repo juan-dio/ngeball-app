@@ -14,18 +14,18 @@ const FOOTER_LINKS = [
 export function Footer() {
   return (
     <footer className="bg-dark text-white">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-12 px-6 py-16">
-        <div className="flex flex-wrap items-start justify-between gap-10">
-          <div className="flex flex-col gap-4">
+      <div className="mx-auto flex w-full max-w-300 flex-col px-6">
+        <div className="flex flex-wrap items-start justify-between pt-24 pb-18">
+          <div className="flex flex-col flex-1 gap-2">
             <Logo variant="light" />
-            <p className="max-w-[280px] text-body text-white/80">
+            <p className="text-body text-white/80">
               Best sports court rental in town
             </p>
           </div>
 
-          <div className="flex gap-24">
+          <div className="flex flex-1 gap-36">
             <div className="flex flex-col gap-4">
-              <h3 className="text-h3 font-semibold text-white">Links</h3>
+              <h3 className="text-h3 text-white">Links</h3>
               <ul className="flex flex-col gap-3">
                 {FOOTER_LINKS.map((link) => (
                   <li key={link.label}>
@@ -41,7 +41,7 @@ export function Footer() {
             </div>
 
             <div className="flex flex-col gap-4">
-              <h3 className="text-h3 font-semibold text-white">Contacts</h3>
+              <h3 className="text-h3 text-white">Contacts</h3>
               <ul className="flex flex-col gap-3">
                 <li className="flex items-center gap-2 text-body text-white/80">
                   <Mail className="h-4 w-4 shrink-0" />
@@ -58,8 +58,8 @@ export function Footer() {
 
         <div className="h-px w-full bg-white/25" />
 
-        <p className="text-center text-small text-white/80">
-          © 2026 ngeBall. All right reserved.
+        <p className="text-small text-white/80 pt-8 pb-14">
+          &copy; 2026 ngeBall. All right reserved.
         </p>
       </div>
     </footer>

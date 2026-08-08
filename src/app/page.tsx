@@ -225,7 +225,14 @@ function Benefit() {
 
         <div className="flex flex-col gap-4">
           <div className="flex w-full gap-4">
-            <div className="flex flex-col gap-4 px-10 pt-24 pb-12 w-full relative overflow-hidden rounded-[24px] bg-[url('/images/basketball.jpg')] bg-cover bg-center">
+            <div className="flex flex-col gap-4 px-10 pt-24 pb-12 w-full relative overflow-hidden rounded-[24px]">
+              <Image
+                src="/images/basketball.jpg"
+                alt="Multiple Sport Options"
+                fill
+                sizes="(max-width: 1200px) 50vw, 560px"
+                className="object-cover"
+              />
               <div className="absolute inset-0 bg-black/30 backdrop-brightness-80"></div>
               <div className="w-fit p-6 rounded-2xl bg-orange relative z-10">
                 <BasketballIcon className="h-10 w-10 text-white" />
@@ -250,7 +257,14 @@ function Benefit() {
                 Simple Payment
               </h3>
             </div>
-            <div className="relative w-full flex justify-end items-center p-10 overflow-hidden rounded-[24px] bg-[url('/images/street-football.jpg')] bg-cover bg-center">
+            <div className="relative w-full flex justify-end items-center p-10 overflow-hidden rounded-[24px]">
+              <Image
+                src="/images/street-football.jpg"
+                alt="Community Support"
+                fill
+                sizes="(max-width: 1200px) 50vw, 560px"
+                className="object-cover"
+              />
               <div className="absolute inset-0 bg-black/30 backdrop-brightness-80"></div>
               <h3 className="relative z-10 text-3xl font-medium text-white">
                 Community Support

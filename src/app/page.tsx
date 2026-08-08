@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CircleCheck, CreditCard, Trophy, Zap } from "lucide-react";
+import { ArrowRight, CircleCheck, CreditCard, Zap } from "lucide-react";
 
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -216,55 +216,46 @@ function CourtSelection() {
 
 function Benefit() {
   return (
-    <section className="bg-white py-20">
-      <div className="mx-auto flex w-full max-w-300 flex-col gap-12 px-6">
-        <div className="flex items-center justify-between">
-          <Logo iconClassName="h-12 w-12" textClassName="text-5xl" />
+    <section className="bg-white pt-20 pb-24">
+      <div className="mx-auto flex w-full max-w-300 flex-col gap-10 px-6">
+        <div className="flex items-center justify-center gap-2.5">
+          <Logo iconClassName="h-10 w-10" textClassName="text-h1" />
           <h2 className="text-h1 text-primary">Speciality</h2>
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
-          <div className="relative h-[300px] overflow-hidden rounded-[24px]">
-            <Image
-              src="/images/basketball.jpg"
-              alt="Multiple Sport Options"
-              fill
-              sizes="(max-width: 1200px) 50vw, 560px"
-              className="object-cover"
-            />
-            <div className="absolute right-6 top-6 flex h-14 w-14 items-center justify-center rounded-full bg-orange">
-              <Trophy className="h-7 w-7 text-white" />
+        <div className="flex flex-col gap-4">
+          <div className="flex w-full gap-4">
+            <div className="flex flex-col gap-4 px-10 pt-24 pb-12 w-full relative overflow-hidden rounded-[24px] bg-[url('/images/basketball.jpg')] bg-cover bg-center">
+              <div className="absolute inset-0 bg-black/30 backdrop-brightness-80"></div>
+              <div className="w-fit p-6 rounded-2xl bg-orange relative z-10">
+                <BasketballIcon className="h-10 w-10 text-white" />
+              </div>
+              <h3 className="text-3xl font-medium text-white relative z-10">
+                Multiple Sport Options
+              </h3>
             </div>
-            <h3 className="absolute bottom-6 left-6 text-[32px] font-semibold text-white">
-              Multiple Sport Options
-            </h3>
+
+            <div className="flex flex-col items-center justify-center gap-4 rounded-[24px] bg-[#FFDF20] p-12">
+              <Zap className="h-26 w-auto text-[#BB4D00]" />
+              <h3 className="text-3xl font-semibold text-[#BB4D00] truncate">
+                Easy Booking
+              </h3>
+            </div>
           </div>
 
-          <div className="flex h-[300px] flex-col items-center justify-center gap-4 rounded-[24px] bg-[#FFDF20]">
-            <Zap className="h-16 w-16 text-[#BB4D00]" />
-            <h3 className="text-[40px] font-semibold text-[#BB4D00]">
-              Easy Booking
-            </h3>
-          </div>
-
-          <div className="flex h-[300px] flex-col items-center justify-center gap-4 rounded-[24px] bg-secondary">
-            <CreditCard className="h-16 w-16 text-white" />
-            <h3 className="text-[32px] font-semibold text-white">
-              Simple Payment
-            </h3>
-          </div>
-
-          <div className="relative h-[300px] overflow-hidden rounded-[24px]">
-            <Image
-              src="/images/street-football.jpg"
-              alt="Community Support"
-              fill
-              sizes="(max-width: 1200px) 50vw, 560px"
-              className="object-cover"
-            />
-            <h3 className="absolute bottom-6 left-6 text-[32px] font-semibold text-white">
-              Community Support
-            </h3>
+          <div className="flex w-full gap-4">
+            <div className="flex flex-col justify-between items-start gap-10 rounded-[24px] bg-secondary p-12">
+              <CreditCard className="h-20 w-auto text-white" />
+              <h3 className="text-3xl font-semibold text-white truncate">
+                Simple Payment
+              </h3>
+            </div>
+            <div className="relative w-full flex justify-end items-center p-10 overflow-hidden rounded-[24px] bg-[url('/images/street-football.jpg')] bg-cover bg-center">
+              <div className="absolute inset-0 bg-black/30 backdrop-brightness-80"></div>
+              <h3 className="relative z-10 text-3xl font-medium text-white">
+                Community Support
+              </h3>
+            </div>
           </div>
         </div>
       </div>
@@ -276,14 +267,14 @@ function Cta() {
   return (
     <section id="booking" className="bg-primary py-20">
       <div className="mx-auto flex w-full max-w-300 items-center justify-between gap-8 px-6">
-        <h2 className="text-[48px] font-semibold text-white">
+        <h2 className="text-5xl font-medium text-white">
           Ready to play your game?
         </h2>
         <Button
           nativeButton={false}
           render={<Link href="/register" />}
           variant="outline"
-          className="h-12 rounded-[12px] border border-white bg-white font-semibold text-primary hover:bg-white/90 hover:text-primary"
+          className="h-14 px-8 rounded-[12px] border border-white bg-white font-semibold text-primary hover:bg-white/90 hover:text-primary"
         >
           Book Now
         </Button>

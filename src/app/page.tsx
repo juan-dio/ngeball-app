@@ -1,14 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  CircleCheck,
-  Clock,
-  CreditCard,
-  MapPin,
-  Trophy,
-  Zap,
-} from "lucide-react";
+import { ArrowRight, CircleCheck, CreditCard, Trophy, Zap } from "lucide-react";
 
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -18,11 +10,14 @@ import { FutsalIcon } from "@/components/icons/futsal-icon";
 import { BasketballIcon } from "@/components/icons/basketball-icon";
 import { TennisIcon } from "@/components/icons/tennis-icon";
 import { PadelIcon } from "@/components/icons/padel-icon";
+import { FieldIcon } from "@/components/icons/field-icon";
+import { DatetimeIcon } from "@/components/icons/datetime-icon";
+import { PayIcon } from "@/components/icons/pay-icon";
 
 const STEPS = [
-  { label: "Select court", icon: MapPin },
-  { label: "Select time", icon: Clock },
-  { label: "Pay", icon: CreditCard },
+  { label: "Select court", icon: FieldIcon },
+  { label: "Select time", icon: DatetimeIcon },
+  { label: "Pay", icon: PayIcon },
   { label: "Success", icon: CircleCheck },
 ];
 
@@ -92,10 +87,10 @@ function Hero() {
           sports court rental in town.
         </h1>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center">
           {STEPS.map((step, index) => (
-            <div key={step.label} className="flex items-center gap-6">
-              <div className="flex flex-col items-center gap-1">
+            <div key={step.label} className="flex items-center">
+              <div className="flex w-32 flex-col items-center gap-1">
                 <step.icon className="h-18 w-auto text-white" />
                 <span className="text-[20px] font-semibold text-white">
                   {step.label}

@@ -30,40 +30,40 @@ const SPORTS = [
 
 const COURT_TYPES = [
   {
-    title: "Futsal Sintetis",
+    title: "Synthetic Grass Futsal Court",
     image: "/images/synthetic-grass1.png",
     description:
-      "Premium synthetic grass surface, perfect for competitive futsal matches and daily training.",
+      "This court features high-quality artificial turf with rubber infill, providing a soft cushioned surface that reduces impact on joints and minimizes skin abrasions during hard falls.",
   },
   {
-    title: "Futsal Interlock",
+    title: "Interlock Futsal Court",
     image: "/images/interlock1.jpg",
     description:
-      "Durable interlock flooring that provides excellent grip and consistent ball bounce.",
+      "Constructed from modular polypropylene tiles, this surface offers durable shock absorption and resistance, while its highly perforated design ensures a non-slip grip and consistent ball bounce.",
   },
   {
-    title: "Futsal Vinyl",
+    title: "Vynil Futsal Court",
     image: "/images/vynil1.jpg",
     description:
-      "High-quality vinyl court designed for comfort, safety, and a professional playing feel.",
+      "A professional-grade surface made of high-density PVC layers, this durable material offers superior shock absorption and maximum traction for very quick directional changes during fast play.",
   },
   {
-    title: "Basket Indoor",
+    title: "Indoor Basketball Court",
     image: "/images/indoor-basket1.jpg",
     description:
-      "Regulation-size indoor basketball court with smooth hardwood surface and pro lighting.",
+      "An enclosed facility featuring a polished hardwood or high-performance synthetic floor, this controlled environment eliminates weather variables for a consistent ball bounce and stable playing temperature.",
   },
   {
-    title: "Tenis Indoor",
+    title: "Indoor Tennis Court",
     image: "/images/indoor-tennis1.jpg",
     description:
-      "Indoor tennis court with cushioned surface, ideal for playing all year round.",
+      "A controlled environment with a hard-court or carpet surface designed to eliminate wind and sun interference, providing reliable, predictable ball trajectories and a consistently stable pace.",
   },
   {
-    title: "Padel",
+    title: "Padel Court",
     image: "/images/padel1.jpg",
     description:
-      "Modern padel court with artificial grass turf and tempered glass walls.",
+      "A specialized court enclosed by glass and mesh walls, one-third the size of a tennis court, where rebounds off the walls reward strategy over raw power.",
   },
 ];
 
@@ -127,15 +127,18 @@ function Hero() {
 
 function Sports() {
   return (
-    <section id="sports" className="bg-white py-20">
-      <div className="mx-auto flex w-full max-w-300 flex-col items-center gap-14 px-6">
+    <section id="sports" className="bg-white pt-20 pb-24">
+      <div className="mx-auto flex w-full max-w-300 flex-col items-center gap-12 px-24">
         <h2 className="text-h1 text-primary">Choose Your Sport!</h2>
 
-        <div className="flex w-full items-start justify-between">
+        <div className="flex w-full items-start">
           {SPORTS.map((sport) => (
-            <div key={sport.label} className="flex flex-col items-center gap-6">
-              <sport.icon />
-              <span className="text-[32px] font-semibold text-text-primary">
+            <div
+              key={sport.label}
+              className="flex w-full flex-col items-center gap-4"
+            >
+              <sport.icon className="h-20 w-auto" />
+              <span className="text-h2 font-semibold text-text-primary">
                 {sport.label}
               </span>
             </div>
@@ -159,9 +162,9 @@ function FieldTypeCard({
 }) {
   return (
     <div
-      className={`flex h-[216px] w-[760px] overflow-hidden rounded-[16px] border border-border bg-white ${alignRight ? "self-end" : "self-start"}`}
+      className={`flex h-54 w-190 overflow-hidden rounded-[16px] border border-border bg-white ${alignRight ? "self-end flex-row-reverse" : "self-start flex-row"}`}
     >
-      <div className="relative h-[216px] w-[320px] shrink-0">
+      <div className="relative h-full w-80 shrink-0">
         <Image
           src={image}
           alt={title}
@@ -170,12 +173,16 @@ function FieldTypeCard({
           className="object-cover"
         />
       </div>
-      <div className="flex flex-1 flex-col justify-center gap-2 p-6">
-        <h3 className="text-h2 text-text-primary">{title}</h3>
-        <p className="text-body text-text-secondary">{description}</p>
+      <div className="h-full flex flex-1 flex-col justify-between p-6">
+        <div className="flex flex-col gap-2">
+          <h3 className="text-h2 text-text-primary">{title}</h3>
+          <p className="text-body text-text-secondary leading-tight">
+            {description}
+          </p>
+        </div>
         <Link
           href="#"
-          className="mt-1 inline-flex items-center gap-1.5 text-body text-blue underline underline-offset-4"
+          className="mt-1 inline-flex items-center gap-1 text-body text-blue underline underline-offset-4"
         >
           View by this type
           <ArrowRight className="h-4 w-4" />
@@ -188,10 +195,10 @@ function FieldTypeCard({
 function CourtSelection() {
   return (
     <section id="courts" className="py-20">
-      <div className="mx-auto flex w-full max-w-300 flex-col items-center gap-14 px-6">
+      <div className="mx-auto flex w-full max-w-300 flex-col items-center gap-10 px-26">
         <h2 className="text-h1 text-primary">Court Selection</h2>
 
-        <div className="flex w-full flex-col gap-10">
+        <div className="flex w-full flex-col gap-4">
           {COURT_TYPES.map((court, index) => (
             <FieldTypeCard
               key={court.title}

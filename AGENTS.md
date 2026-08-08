@@ -74,7 +74,7 @@ Custom typography utility classes are defined in `src/app/globals.css` using Tai
 
 | Class        | Font Size | Font Weight | Line Height | Usage                                  |
 |--------------|-----------|-------------|-------------|----------------------------------------|
-| `text-h1`    | 48px      | 600 (SemiBold) | auto     | Hero headings, landing page titles     |
+| `text-h1`    | 36px      | 600 (SemiBold) | auto     | Hero headings, landing page titles     |
 | `text-h2`    | 24px      | 500 (Medium)   | auto     | Card titles, section headings          |
 | `text-h3`    | 20px      | 500 (Medium)   | auto     | Sub-section headings                   |
 | `text-body`  | 16px      | 400 (Regular)  | auto     | Body text, form labels, descriptions   |

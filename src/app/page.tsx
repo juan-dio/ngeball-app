@@ -108,7 +108,7 @@ function Hero() {
             nativeButton={false}
             render={<Link href="/register" />}
             variant="outline"
-            className="h-14 px-8 rounded-[12px] border border-white bg-white font-semibold text-primary hover:bg-white/90 hover:text-primary"
+            className="h-14 px-8 rounded-[12px] border border-border bg-white font-semibold text-primary hover:bg-light hover:text-primary"
           >
             Sign Up
           </Button>
@@ -288,7 +288,7 @@ function Cta() {
           nativeButton={false}
           render={<Link href="/register" />}
           variant="outline"
-          className="h-14 px-8 rounded-[12px] border border-white bg-white font-semibold text-primary hover:bg-white/90 hover:text-primary"
+          className="h-14 px-8 rounded-[12px] border border-white bg-white font-semibold text-primary hover:bg-light hover:text-primary"
         >
           Book Now
         </Button>

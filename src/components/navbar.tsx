@@ -1,17 +1,33 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
-import { User } from "lucide-react";
 
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
+import { AccountDropdown } from "@/components/account-dropdown";
 
-const NAV_LINKS = [
+type NavLink = {
+  label: string;
+  href: string;
+};
+
+const NAV_LINKS: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Sports", href: "#sports" },
   { label: "Courts", href: "#courts" },
+];
+
+const NAV_LINKS_AUTH: NavLink[] = [
+  ...NAV_LINKS,
   { label: "Booking", href: "#booking" },
 ];
 
-export function Navbar() {
+function Navbar({
+  navLinks,
+  right,
+}: {
+  navLinks: NavLink[];
+  right: ReactNode;
+}) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-border bg-white">
       <div className="mx-auto flex h-full w-full max-w-300 items-center justify-between px-6">
@@ -21,7 +37,7 @@ export function Navbar() {
           </Link>
 
           <nav className="flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
@@ -33,23 +49,68 @@ export function Navbar() {
           </nav>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Link
-            href="/login"
-            aria-label="Account"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white text-text-primary transition-colors hover:bg-light"
-          >
-            <User className="h-5 w-5" />
-          </Link>
-          <Button
-            nativeButton={false}
-            render={<Link href="/register" />}
-            className="h-auto px-4 py-3 rounded-[12px] bg-primary text-sm font-semibold text-white hover:bg-primary/90"
-          >
-            Book Now
-          </Button>
-        </div>
+        <div className="flex items-center gap-4">{right}</div>
       </div>
     </header>
+  );
+}
+
+function BookNowButton() {
+  return (
+    <Button
+      nativeButton={false}
+      render={<Link href="#" />}
+      className="h-auto px-4 py-3 rounded-[12px] bg-primary text-sm font-semibold text-white hover:bg-primary/90"
+    >
+      Book Now
+    </Button>
+  );
+}
+
+export function LandingPageNavbarAuth() {
+  return (
+    <Navbar
+      navLinks={NAV_LINKS_AUTH}
+      right={
+        <>
+          <AccountDropdown />
+          <BookNowButton />
+        </>
+      }
+    />
+  );
+}
+
+export function AppNavbar() {
+  return (
+    <Navbar
+      navLinks={NAV_LINKS_AUTH}
+      right={
+        <>
+          <span className="text-body text-primary">Hello, User</span>
+          <AccountDropdown />
+        </>
+      }
+    />
+  );
+}
+
+export function LandingPageNavbarUnauth() {
+  return (
+    <Navbar
+      navLinks={NAV_LINKS}
+      right={
+        <>
+          <Button
+            nativeButton={false}
+            render={<Link href="/login" />}
+            className="h-auto px-4 py-3 rounded-[12px] border border-border bg-white text-sm font-semibold text-primary hover:bg-white/90 hover:text-primary"
+          >
+            Log In
+          </Button>
+          <BookNowButton />
+        </>
+      }
+    />
   );
 }

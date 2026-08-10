@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CircleCheck, CreditCard, Zap } from "lucide-react";
 
-import { Navbar } from "@/components/navbar";
+import { AppNavbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -300,7 +300,7 @@ function Cta() {
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col bg-background pt-16">
-      <Navbar />
+      <AppNavbar />
       <Hero />
       <Sports />
       <CourtSelection />

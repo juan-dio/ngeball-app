@@ -190,18 +190,18 @@ function FieldTypeCard({
 }) {
   return (
     <div
-      className={`flex h-54 w-190 overflow-hidden rounded-[16px] border border-border bg-white ${alignRight ? "self-end flex-row-reverse" : "self-start flex-row"}`}
+      className={`flex w-full flex-col overflow-hidden rounded-[16px] border border-border bg-white lg:h-54 lg:w-190 lg:flex-row ${alignRight ? "lg:self-end lg:flex-row-reverse" : "lg:self-start"}`}
     >
-      <div className="relative h-full w-80 shrink-0">
+      <div className="relative h-56 w-full shrink-0 lg:h-full lg:w-80">
         <Image
           src={image}
           alt={title}
           fill
-          sizes="320px"
+          sizes="(max-width: 768px) 90vw, (max-width: 1024px) 80vw, 320px"
           className="object-cover"
         />
       </div>
-      <div className="h-full flex flex-1 flex-col justify-between p-6">
+      <div className="flex flex-1 flex-col justify-between gap-2 p-6 lg:h-full">
         <div className="flex flex-col gap-2">
           <h3 className="text-h2 text-text-primary">{title}</h3>
           <p className="text-body text-text-secondary leading-tight">
@@ -223,7 +223,7 @@ function FieldTypeCard({
 function CourtSelection() {
   return (
     <section id="courts" className="py-20">
-      <div className="mx-auto flex w-full max-w-300 flex-col items-center gap-10 px-26">
+      <div className="mx-auto flex w-full max-w-300 flex-col items-center gap-10 px-6 md:px-26">
         <h2 className="text-h1 text-primary">Court Selection</h2>
 
         <div className="flex w-full flex-col gap-4">

@@ -159,16 +159,13 @@ function Hero() {
 function Sports() {
   return (
     <section id="sports" className="bg-white pt-20 pb-24">
-      <div className="mx-auto flex w-full max-w-300 flex-col items-center gap-12 px-24">
+      <div className="mx-auto flex w-full max-w-300 flex-col items-center gap-12 px-6 md:px-24">
         <h2 className="text-h1 text-primary">Choose Your Sport!</h2>
 
-        <div className="flex w-full items-start">
+        <div className="grid w-auto grid-cols-2 place-items-center gap-8 p-2 md:grid-cols-4 md:gap-20 md:p-4">
           {SPORTS.map((sport) => (
-            <div
-              key={sport.label}
-              className="flex w-full flex-col items-center gap-4"
-            >
-              <sport.icon className={`h-20 w-auto ${sport.color}`} />
+            <div key={sport.label} className="flex flex-col items-center gap-4">
+              <sport.icon className={`h-16 w-auto md:h-20 ${sport.color}`} />
               <span className="text-h2 font-semibold text-text-primary">
                 {sport.label}
               </span>

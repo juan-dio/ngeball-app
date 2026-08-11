@@ -109,7 +109,7 @@ function Hero() {
           <br className="hidden sm:block" /> sports court rental in town.
         </h1>
 
-        <div className="grid grid-cols-[8rem_3rem_8rem] grid-rows-[8rem_3rem_8rem] place-items-center md:hidden max-[335px]:grid-cols-[7rem_2.5rem_7rem] max-[335px]:grid-rows-[7rem_2.5rem_7rem] max-[335px]:[&>svg]:h-10 max-[335px]:[&>svg]:w-10">
+        <div className="grid grid-cols-[8rem_3rem_8rem] grid-rows-[8rem_3rem_8rem] place-items-center md:hidden max-[351px]:grid-cols-[7rem_2.5rem_7rem] max-[351px]:grid-rows-[7rem_2.5rem_7rem] max-[351px]:[&>svg]:h-10 max-[351px]:[&>svg]:w-10">
           <StepCell icon={STEPS[0].icon} label={STEPS[0].label} />
           <ArrowRight className="h-12 w-12 text-white" />
           <StepCell icon={STEPS[1].icon} label={STEPS[1].label} />
@@ -124,11 +124,8 @@ function Hero() {
         <div className="hidden items-center md:flex">
           {STEPS.map((step, index) => (
             <div key={step.label} className="flex items-center">
-              <div className="flex w-32 flex-col items-center gap-1">
-                <step.icon className="h-18 w-auto text-white" />
-                <span className="text-[20px] font-semibold text-white">
-                  {step.label}
-                </span>
+              <div className="w-32">
+                <StepCell icon={step.icon} label={step.label} />
               </div>
               {index < STEPS.length - 1 && (
                 <ArrowRight className="h-16 w-auto text-white" />

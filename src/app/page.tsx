@@ -1,6 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CircleCheck, CreditCard, Zap } from "lucide-react";
+import type { ComponentType } from "react";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  CircleCheck,
+  CreditCard,
+  Zap,
+} from "lucide-react";
 
 import { AppNavbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -67,6 +75,21 @@ const COURT_TYPES = [
   },
 ];
 
+function StepCell({
+  icon: Icon,
+  label,
+}: {
+  icon: ComponentType<{ className?: string }>;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <Icon className="h-18 w-auto text-white" />
+      <span className="text-[20px] font-semibold text-white">{label}</span>
+    </div>
+  );
+}
+
 function Hero() {
   return (
     <section className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center overflow-hidden">
@@ -80,14 +103,25 @@ function Hero() {
       />
       <div className="absolute inset-0 bg-black/70" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-300 flex-col items-center gap-8 px-6 py-24 text-center">
-        <h1 className="max-w-190 text-[56px] font-semibold leading-tight text-white">
+      <div className="relative z-10 mx-auto flex w-full max-w-300 flex-col items-center gap-6 px-6 py-16 text-center md:gap-8 md:py-24">
+        <h1 className="max-w-190 text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-[56px]">
           The best
-          <br />
-          sports court rental in town.
+          <br className="hidden sm:block" /> sports court rental in town.
         </h1>
 
-        <div className="flex items-center">
+        <div className="grid grid-cols-[8rem_3rem_8rem] grid-rows-[8rem_3rem_8rem] place-items-center md:hidden max-[335px]:grid-cols-[7rem_2.5rem_7rem] max-[335px]:grid-rows-[7rem_2.5rem_7rem] max-[335px]:[&>svg]:h-10 max-[335px]:[&>svg]:w-10">
+          <StepCell icon={STEPS[0].icon} label={STEPS[0].label} />
+          <ArrowRight className="h-12 w-12 text-white" />
+          <StepCell icon={STEPS[1].icon} label={STEPS[1].label} />
+          <span />
+          <span />
+          <ArrowDown className="h-12 w-12 text-white" />
+          <StepCell icon={STEPS[3].icon} label={STEPS[3].label} />
+          <ArrowLeft className="h-12 w-12 text-white" />
+          <StepCell icon={STEPS[2].icon} label={STEPS[2].label} />
+        </div>
+
+        <div className="hidden items-center md:flex">
           {STEPS.map((step, index) => (
             <div key={step.label} className="flex items-center">
               <div className="flex w-32 flex-col items-center gap-1">
@@ -103,19 +137,19 @@ function Hero() {
           ))}
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex w-full flex-col items-center gap-4 md:w-auto md:flex-row">
           <Button
             nativeButton={false}
             render={<Link href="/register" />}
             variant="outline"
-            className="h-14 px-8 rounded-[12px] border border-border bg-white font-semibold text-primary hover:bg-light hover:text-primary"
+            className="h-14 w-full px-8 rounded-[12px] border border-border bg-white font-semibold text-primary hover:bg-light hover:text-primary md:w-auto"
           >
             Sign Up
           </Button>
           <Button
             nativeButton={false}
             render={<Link href="#courts" />}
-            className="h-14 px-8 rounded-[12px] bg-primary font-semibold text-white hover:bg-primary/90"
+            className="h-14 w-full px-8 rounded-[12px] bg-primary font-semibold text-white hover:bg-primary/90 md:w-auto"
           >
             Browse Courts
           </Button>

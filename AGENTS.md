@@ -29,6 +29,7 @@ This project uses **Bun** exclusively.
 - Lint: `bun run lint` (ESLint flat config in `eslint.config.mjs`)
 - There is **no test suite**. Verify changes with lint + `bun run build`; typecheck manually with `bunx tsc --noEmit`.
 - **Do NOT use** `npm`, `yarn`, or `pnpm`.
+- **Git workflow:** development happens on page-specific feature branches (`landing-page`, `login-page`, `register-page`) that are merged into `main` via PRs.
 
 ---
 
@@ -107,6 +108,11 @@ When choosing a font size class, follow this order:
 2. All style overrides must be done via `className` props **at the call site**, not inside the component file.
 3. When you need a new shadcn component, install it with: `bunx --bun shadcn@latest add <component-name>`
 
+> **Note:** This is the **shadcn v4 preset** — components are built on **Base UI** (`@base-ui/react`), **not Radix**. `Button` supports polymorphism via the `render` + `nativeButton` props instead of Radix's `asChild`:
+> ```tsx
+> <Button nativeButton={false} render={<Link href="/login" />}>Log In</Button>
+> ```
+
 ### Already Installed Components
 The following shadcn components are already available in `src/components/ui/`:
 - `button`
@@ -135,6 +141,8 @@ Before creating a new component, always check `src/components/` for existing one
 ### Currently Available Components
 
 - `<Navbar />` — `src/components/navbar.tsx`, `<Footer />` — `src/components/footer.tsx`
+- `<AccountDropdown />` — `src/components/account-dropdown.tsx` — profile/logout dropdown; must be rendered inside a `<Navbar>` (needs `MenuContext`)
+- `useMenu()` / `MenuContext` — `src/components/menu-context.ts` — shared single-open menu state (`"drawer" | "account" | null`); `useMenu()` throws outside a `<Navbar>`
 - Icons in `src/components/icons/` — `FutsalIcon`, `BasketballIcon`, `TennisIcon`, `PadelIcon`, `FieldIcon`, `DatetimeIcon`, `PayIcon`
 
 > **Icon color:** All custom icon components use `currentColor` for fill/stroke, so colors are overridable at the call site with Tailwind utilities (`text-*`, `fill-*`, `stroke-*`).
@@ -180,7 +188,9 @@ src/
 │   │   ├── label.tsx
 │   │   └── separator.tsx
 │   ├── icons/              # Icon components (sport, field, datetime, pay)
-│   ├── navbar.tsx
+│   ├── navbar.tsx          # Navbar variants + mobile drawer; owns MenuContext provider
+│   ├── account-dropdown.tsx# Profile/logout dropdown (consumes useMenu)
+│   ├── menu-context.ts     # MenuContext + useMenu (shared single-open menu state)
 │   ├── footer.tsx
 │   └── logo.tsx            # Reusable Logo component
 └── lib/
@@ -244,5 +254,6 @@ When a design requires an icon inside an input field, use this pattern:
 - **Imports:** Use the `@/` path alias for all internal imports (e.g., `@/components/logo`, `@/lib/utils`).
 - **No inline styles:** Never use the `style` prop. Always use Tailwind classes.
 - **React Compiler** is enabled (`reactCompiler: true` in `next.config.ts`). Don't add manual `useMemo`/`useCallback` optimizations.
+- **React 19:** `inert={!open}` boolean props disable closed menu panels (navbar drawer, account dropdown); hidden panels stay mounted for animation, `inert` + `pointer-events-none` blocks interaction.
 - **Dark mode:** Tokens are redefined under `.dark` in `globals.css` (`@custom-variant dark`); use semantic classes and they adapt automatically.
 <!-- END:project-conventions -->

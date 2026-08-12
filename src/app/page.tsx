@@ -192,7 +192,7 @@ function FieldTypeCard({
     <div
       className={`flex w-full flex-col overflow-hidden rounded-[16px] border border-border bg-white lg:min-h-54 lg:w-190 lg:flex-row ${alignRight ? "lg:self-end lg:flex-row-reverse" : "lg:self-start"}`}
     >
-      <div className="relative h-56 w-full shrink-0 lg:h-full lg:w-80">
+      <div className="relative h-56 w-full shrink-0 lg:h-auto lg:w-80">
         <Image
           src={image}
           alt={title}

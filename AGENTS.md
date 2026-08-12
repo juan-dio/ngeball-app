@@ -25,8 +25,11 @@ This project uses **Bun** exclusively.
 
 - Install packages: `bun add <package>`
 - Install shadcn components: `bunx --bun shadcn@latest add <component>`
-- Run scripts: `bun run dev`, `bun run build`
+- Run scripts: `bun run dev`, `bun run build`, `bun run start`
+- Lint: `bun run lint` (ESLint flat config in `eslint.config.mjs`)
+- There is **no test suite**. Verify changes with lint + `bun run build`; typecheck manually with `bunx tsc --noEmit`.
 - **Do NOT use** `npm`, `yarn`, or `pnpm`.
+- **Git workflow:** development happens on page-specific feature branches (`landing-page`, `login-page`, `register-page`) that are merged into `main` via PRs.
 
 ---
 
@@ -34,7 +37,13 @@ This project uses **Bun** exclusively.
 
 All colors are defined as CSS custom properties in `src/app/globals.css` and mapped to Tailwind utility classes via `@theme inline`. 
 
-**NEVER use hardcoded hex colors** (e.g., `bg-[#285A48]`, `text-[#0F172B]`). Always use the semantic class names below.
+### Color Selection Priority
+
+When choosing a color class, follow this order:
+
+1. **Custom semantic utility** — use the design tokens below (e.g., `bg-primary`, `text-text-primary`).
+2. **Default Tailwind utility** — if no token fits, use Tailwind's built-in color utilities (e.g., `bg-white`, `text-black`).
+3. **Arbitrary value** — only as a last resort when neither custom nor default utilities fit (e.g., `bg-[#285A48]`, `text-[#0F172B]`).
 
 ### Available Color Tokens
 
@@ -58,7 +67,9 @@ All colors are defined as CSS custom properties in `src/app/globals.css` and map
 | `text-red` / `bg-red`     | `--red`             | `#c10007`   | Alternative danger/error               |
 | `text-orange` / `bg-orange` | `--orange`        | `#ca3500`   | Warning/alert variant                  |
 | `bg-light` / `text-light` | `--light`           | `#f9f9f9`   | Light backgrounds, hover on white      |
-| `text-black` / `bg-black` | `--black`           | `#000000`   | Pure black (use sparingly)             |
+| `bg-black` / `text-black` | `--black`           | `#000000`   | Pure black (use sparingly)             |
+| `bg-yellow` / `text-yellow` | `--yellow`       | `#ffdf20`   | "Easy Booking" accent card background  |
+| `bg-burnt-orange` / `text-burnt-orange` | `--burnt-orange` | `#bb4d00` | Icons/text on yellow accent card |
 
 > **Note:** `bg-primary`, `text-primary`, `bg-secondary`, `text-secondary`, `bg-accent`, `text-accent`, `bg-muted`, `text-muted`, `border-border` are also wired into shadcn/ui's internal variable system. Using them ensures shadcn components render consistently with the design system.
 
@@ -68,11 +79,17 @@ All colors are defined as CSS custom properties in `src/app/globals.css` and map
 
 Custom typography utility classes are defined in `src/app/globals.css` using Tailwind v4's `@utility` directive. The font is **Inter** (applied globally).
 
-**NEVER use ad-hoc font size classes** (e.g., `text-2xl`, `text-base`, `font-semibold`) for UI text that maps to a Figma text style. Use the semantic classes below instead.
+### Font Size Selection Priority
+
+When choosing a font size class, follow this order:
+
+1. **Custom semantic utility** — use the typography tokens below (e.g., `text-h1`, `text-body`).
+2. **Default Tailwind utility** — if no semantic size matches, use Tailwind's built-in size utilities (e.g., `text-lg`, `text-xl`, `text-2xl`).
+3. **Arbitrary value** — only as a last resort when neither semantic nor default utilities fit (e.g., `text-[56px]`).
 
 | Class        | Font Size | Font Weight | Line Height | Usage                                  |
 |--------------|-----------|-------------|-------------|----------------------------------------|
-| `text-h1`    | 48px      | 600 (SemiBold) | auto     | Hero headings, landing page titles     |
+| `text-h1`    | 36px      | 600 (SemiBold) | auto     | Hero headings, landing page titles     |
 | `text-h2`    | 24px      | 500 (Medium)   | auto     | Card titles, section headings          |
 | `text-h3`    | 20px      | 500 (Medium)   | auto     | Sub-section headings                   |
 | `text-body`  | 16px      | 400 (Regular)  | auto     | Body text, form labels, descriptions   |
@@ -92,6 +109,11 @@ Custom typography utility classes are defined in `src/app/globals.css` using Tai
 1. **Never modify** files inside `src/components/ui/`. These are managed by shadcn and may be regenerated.
 2. All style overrides must be done via `className` props **at the call site**, not inside the component file.
 3. When you need a new shadcn component, install it with: `bunx --bun shadcn@latest add <component-name>`
+
+> **Note:** This is the **shadcn v4 preset** — components are built on **Base UI** (`@base-ui/react`), **not Radix**. `Button` supports polymorphism via the `render` + `nativeButton` props instead of Radix's `asChild`:
+> ```tsx
+> <Button nativeButton={false} render={<Link href="/login" />}>Log In</Button>
+> ```
 
 ### Already Installed Components
 The following shadcn components are already available in `src/components/ui/`:
@@ -119,6 +141,15 @@ Override shadcn component styles at the call site using `className`:
 Before creating a new component, always check `src/components/` for existing ones. If a component already exists, import and use it — do not recreate it.
 
 ### Currently Available Components
+
+- `<Navbar />` — `src/components/navbar.tsx`, `<Footer />` — `src/components/footer.tsx`
+  - Navbar has no default export — use one of the variants: `LandingPageNavbarUnauth` (login + book buttons), `LandingPageNavbarAuth` (book button + account dropdown), `AppNavbar` (app shell)
+  - Accepts a `drawer` prop for mobile-drawer content; pass buttons with `w-full` so they stretch full-width in the drawer
+- `<AccountDropdown />` — `src/components/account-dropdown.tsx` — profile/logout dropdown; must be rendered inside a `<Navbar>` (needs `MenuContext`)
+- `useMenu()` / `MenuContext` — `src/components/menu-context.ts` — shared single-open menu state (`"drawer" | "account" | null`); `useMenu()` throws outside a `<Navbar>`
+- Icons in `src/components/icons/` — `FutsalIcon`, `BasketballIcon`, `TennisIcon`, `PadelIcon`, `FieldIcon`, `DatetimeIcon`, `PayIcon`
+
+> **Icon color:** All custom icon components use `currentColor` for fill/stroke, so colors are overridable at the call site with Tailwind utilities (`text-*`, `fill-*`, `stroke-*`).
 
 #### `<Logo />` — `src/components/logo.tsx`
 The application logo. Renders the Volleyball icon from `lucide-react` alongside the branded "ngeBall" text.
@@ -148,12 +179,11 @@ import { Logo } from "@/components/logo";
 ```
 src/
 ├── app/                    # Next.js App Router pages and layouts
-│   ├── globals.css         # Global styles, CSS variables, typography utilities
-│   ├── layout.tsx          # Root layout
-│   ├── login/
-│   │   └── page.tsx        # Login page (reference implementation)
-│   └── register/
-│       └── page.tsx        # Register page (sign up form)
+│   ├── globals.css         # Tailwind v4 + design tokens + typography utilities
+│   ├── layout.tsx          # Root layout (Inter via --font-sans)
+│   ├── page.tsx            # Landing page (navbar, hero, sports, courts, benefits, CTA)
+│   ├── login/page.tsx      # Login page (reference implementation)
+│   └── register/page.tsx   # Register page (sign up form)
 ├── components/
 │   ├── ui/                 # shadcn/ui components (DO NOT MODIFY)
 │   │   ├── button.tsx
@@ -161,6 +191,11 @@ src/
 │   │   ├── input.tsx
 │   │   ├── label.tsx
 │   │   └── separator.tsx
+│   ├── icons/              # Icon components (sport, field, datetime, pay)
+│   ├── navbar.tsx          # Navbar variants + mobile drawer; owns MenuContext provider
+│   ├── account-dropdown.tsx# Profile/logout dropdown (consumes useMenu)
+│   ├── menu-context.ts     # MenuContext + useMenu (shared single-open menu state)
+│   ├── footer.tsx
 │   └── logo.tsx            # Reusable Logo component
 └── lib/
     └── utils.ts            # Utility functions (cn helper from shadcn)
@@ -175,6 +210,8 @@ This project uses **`lucide-react`** for all icons. Do not add other icon librar
 ```tsx
 import { Mail, Lock, Eye, EyeOff, Volleyball, Search } from "lucide-react";
 ```
+
+Custom icon components in `src/components/icons/` use `currentColor` for fill/stroke so their color is controlled by Tailwind text/fill/stroke utilities at the call site.
 
 ---
 
@@ -207,8 +244,11 @@ When a design requires an icon inside an input field, use this pattern:
 
 | Route       | File                              | Status    | Description                              |
 |-------------|-----------------------------------|-----------|------------------------------------------|
+| `/`         | `src/app/page.tsx`                | ✅ Done   | Landing page (hero, sports, courts, benefits, CTA) |
 | `/login`    | `src/app/login/page.tsx`          | ✅ Done   | Login with email/password + Google SSO   |
 | `/register` | `src/app/register/page.tsx`       | ✅ Done   | Sign up (names, email, password) + validation |
+
+> **Responsive:** All landing page sections and the footer are fully responsive (see Section 11).
 
 ---
 
@@ -219,4 +259,34 @@ When a design requires an icon inside an input field, use this pattern:
 - **Client components:** Add `"use client"` directive only when the component uses React state, effects, or browser APIs.
 - **Imports:** Use the `@/` path alias for all internal imports (e.g., `@/components/logo`, `@/lib/utils`).
 - **No inline styles:** Never use the `style` prop. Always use Tailwind classes.
+- **React Compiler** is enabled (`reactCompiler: true` in `next.config.ts`). Don't add manual `useMemo`/`useCallback` optimizations.
+- **React 19:** `inert={!open}` boolean props disable closed menu panels (navbar drawer, account dropdown); hidden panels stay mounted for animation, `inert` + `pointer-events-none` blocks interaction.
+- **Dark mode:** Tokens are redefined under `.dark` in `globals.css` (`@custom-variant dark`); use semantic classes and they adapt automatically.
+
+---
+
+## 11. Responsive Design
+
+All responsiveness is done with Tailwind breakpoints in JSX — there are **no** `@media` queries in `globals.css` (it only defines tokens + `@utility` typography).
+
+### Conventions
+
+- **Mobile-first:** base classes target mobile; `md:` / `lg:` overrides adjust for desktop.
+- **Breakpoints in use:** `sm:` (640px), `md:` (768px), `lg:` (1024px), plus arbitrary `max-[351px]:` for very small viewports.
+- **Desktop/mobile swap:** use `hidden md:flex` (desktop element) + `md:hidden` (mobile element). Examples: navbar links vs hamburger drawer, hero steps (3x3 grid mobile, horizontal flex desktop).
+- **Full-width CTAs on mobile:** `w-full md:w-auto` (hero buttons, mobile drawer buttons).
+- **Grid collapse:** `grid-cols-2 md:grid-cols-4` (sports section).
+- **Page container:** `mx-auto flex w-full max-w-300 px-6` (or `flex-col` for stacked layouts).
+- **`next/image`:** always set `sizes` with breakpoints, e.g. `sizes="(max-width: 768px) 90vw, (max-width: 1024px) 80vw, 320px"`.
+- **Navbar mobile drawer:** `md:hidden` + `inert={openMenu !== "drawer"}` + animated `max-h` / `translate-y` (see Section 10 React 19 note).
+
+### Tailwind v4 Spacing Gotcha
+
+Numeric utilities use the v4 spacing scale (`0.25rem` base). Non-obvious values used in this codebase:
+`max-w-300` = 75rem, `max-w-118` = 29.5rem, `max-w-190` = 47.5rem, `md:pb-18` = 4.5rem, `md:px-26` = 6.5rem. These are valid — do not replace them with arbitrary values.
+
+### Test Viewports
+
+When making layout changes, check at minimum: 320px (small mobile), 375px (mobile), 768px (tablet), 1440px (desktop). The hero step grid specifically needs a check in the 336–351px range where `max-[351px]:` overrides kick in.
+
 <!-- END:project-conventions -->

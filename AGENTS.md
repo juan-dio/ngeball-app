@@ -141,6 +141,8 @@ Before creating a new component, always check `src/components/` for existing one
 ### Currently Available Components
 
 - `<Navbar />` — `src/components/navbar.tsx`, `<Footer />` — `src/components/footer.tsx`
+  - Navbar has no default export — use one of the variants: `LandingPageNavbarUnauth` (login + book buttons), `LandingPageNavbarAuth` (book button + account dropdown), `AppNavbar` (app shell)
+  - Accepts a `drawer` prop for mobile-drawer content; pass buttons with `w-full` so they stretch full-width in the drawer
 - `<AccountDropdown />` — `src/components/account-dropdown.tsx` — profile/logout dropdown; must be rendered inside a `<Navbar>` (needs `MenuContext`)
 - `useMenu()` / `MenuContext` — `src/components/menu-context.ts` — shared single-open menu state (`"drawer" | "account" | null`); `useMenu()` throws outside a `<Navbar>`
 - Icons in `src/components/icons/` — `FutsalIcon`, `BasketballIcon`, `TennisIcon`, `PadelIcon`, `FieldIcon`, `DatetimeIcon`, `PayIcon`
@@ -244,6 +246,8 @@ When a design requires an icon inside an input field, use this pattern:
 | `/login`    | `src/app/login/page.tsx`          | ✅ Done   | Login with email/password + Google SSO   |
 | `/register` | `src/app/register/page.tsx`       | ✅ Done   | Sign up (names, email, password) + validation |
 
+> **Responsive:** All landing page sections and the footer are fully responsive (see Section 11).
+
 ---
 
 ## 10. Coding Standards
@@ -256,4 +260,31 @@ When a design requires an icon inside an input field, use this pattern:
 - **React Compiler** is enabled (`reactCompiler: true` in `next.config.ts`). Don't add manual `useMemo`/`useCallback` optimizations.
 - **React 19:** `inert={!open}` boolean props disable closed menu panels (navbar drawer, account dropdown); hidden panels stay mounted for animation, `inert` + `pointer-events-none` blocks interaction.
 - **Dark mode:** Tokens are redefined under `.dark` in `globals.css` (`@custom-variant dark`); use semantic classes and they adapt automatically.
+
+---
+
+## 11. Responsive Design
+
+All responsiveness is done with Tailwind breakpoints in JSX — there are **no** `@media` queries in `globals.css` (it only defines tokens + `@utility` typography).
+
+### Conventions
+
+- **Mobile-first:** base classes target mobile; `md:` / `lg:` overrides adjust for desktop.
+- **Breakpoints in use:** `sm:` (640px), `md:` (768px), `lg:` (1024px), plus arbitrary `max-[351px]:` for very small viewports.
+- **Desktop/mobile swap:** use `hidden md:flex` (desktop element) + `md:hidden` (mobile element). Examples: navbar links vs hamburger drawer, hero steps (3x3 grid mobile, horizontal flex desktop).
+- **Full-width CTAs on mobile:** `w-full md:w-auto` (hero buttons, mobile drawer buttons).
+- **Grid collapse:** `grid-cols-2 md:grid-cols-4` (sports section).
+- **Page container:** `mx-auto flex w-full max-w-300 px-6` (or `flex-col` for stacked layouts).
+- **`next/image`:** always set `sizes` with breakpoints, e.g. `sizes="(max-width: 768px) 90vw, (max-width: 1024px) 80vw, 320px"`.
+- **Navbar mobile drawer:** `md:hidden` + `inert={openMenu !== "drawer"}` + animated `max-h` / `translate-y` (see Section 10 React 19 note).
+
+### Tailwind v4 Spacing Gotcha
+
+Numeric utilities use the v4 spacing scale (`0.25rem` base). Non-obvious values used in this codebase:
+`max-w-300` = 75rem, `max-w-118` = 29.5rem, `max-w-190` = 47.5rem, `md:pb-18` = 4.5rem, `md:px-26` = 6.5rem. These are valid — do not replace them with arbitrary values.
+
+### Test Viewports
+
+When making layout changes, check at minimum: 320px (small mobile), 375px (mobile), 768px (tablet), 1440px (desktop). The hero step grid specifically needs a check in the 336–351px range where `max-[351px]:` overrides kick in.
+
 <!-- END:project-conventions -->

@@ -252,49 +252,49 @@ function Benefit() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex w-full gap-4">
-            <div className="flex flex-col gap-4 px-10 pt-24 pb-12 w-full relative overflow-hidden rounded-[24px]">
+          <div className="flex w-full flex-col gap-4 md:flex-row">
+            <div className="flex flex-col gap-4 px-6 pt-24 pb-12 w-full relative overflow-hidden rounded-[24px] min-h-72 md:w-2/3 md:px-10">
               <Image
                 src="/images/basketball.jpg"
                 alt="Multiple Sport Options"
                 fill
-                sizes="(max-width: 1200px) 50vw, 560px"
+                sizes="(min-width: 768px) 66vw, 100vw"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-black/30 backdrop-brightness-80"></div>
-              <div className="w-fit p-6 rounded-2xl bg-orange relative z-10">
+              <div className="w-fit p-4 rounded-2xl bg-orange relative z-10">
                 <BasketballIcon className="h-10 w-10 text-white" />
               </div>
-              <h3 className="text-3xl font-medium text-white relative z-10">
+              <h3 className="text-2xl font-medium text-white md:text-3xl relative z-10">
                 Multiple Sport Options
               </h3>
             </div>
 
-            <div className="flex flex-col items-center justify-center gap-4 rounded-[24px] bg-[#FFDF20] p-12">
-              <Zap className="h-26 w-auto text-[#BB4D00]" />
-              <h3 className="text-3xl font-semibold text-[#BB4D00] truncate">
+            <div className="flex flex-col items-center justify-center gap-4 rounded-[24px] bg-[#FFDF20] p-8 md:min-h-72 md:w-1/3 md:p-12">
+              <Zap className="h-16 w-auto text-[#BB4D00] md:h-26" />
+              <h3 className="text-2xl font-semibold text-[#BB4D00] md:text-3xl">
                 Easy Booking
               </h3>
             </div>
           </div>
 
-          <div className="flex w-full gap-4">
-            <div className="flex flex-col justify-between items-start gap-10 rounded-[24px] bg-secondary p-12">
-              <CreditCard className="h-20 w-auto text-white" />
-              <h3 className="text-3xl font-semibold text-white truncate">
+          <div className="flex w-full flex-col gap-4 md:flex-row">
+            <div className="flex flex-col justify-between items-start gap-8 rounded-[24px] bg-secondary p-8 md:min-h-56 md:w-1/3 md:p-10">
+              <CreditCard className="h-16 w-auto text-white md:h-20" />
+              <h3 className="text-2xl font-semibold text-white md:text-3xl">
                 Simple Payment
               </h3>
             </div>
-            <div className="relative w-full flex justify-end items-center p-10 overflow-hidden rounded-[24px]">
+            <div className="relative w-full flex justify-end items-center p-8 overflow-hidden rounded-[24px] min-h-56 md:w-2/3 md:p-10">
               <Image
                 src="/images/street-football.jpg"
                 alt="Community Support"
                 fill
-                sizes="(max-width: 1200px) 50vw, 560px"
-                className="object-cover"
+                sizes="(min-width: 768px) 66vw, 100vw"
+                className="object-cover object-bottom"
               />
               <div className="absolute inset-0 bg-black/30 backdrop-brightness-80"></div>
-              <h3 className="relative z-10 text-3xl font-medium text-white">
+              <h3 className="relative z-10 text-2xl font-medium text-white md:text-3xl">
                 Community Support
               </h3>
             </div>
@@ -308,15 +308,15 @@ function Benefit() {
 function Cta() {
   return (
     <section id="booking" className="bg-primary py-20">
-      <div className="mx-auto flex w-full max-w-300 items-center justify-between gap-8 px-6">
-        <h2 className="text-5xl font-medium text-white">
+      <div className="mx-auto flex w-full max-w-300 flex-col items-center justify-center gap-8 px-6 md:flex-row md:justify-between">
+        <h2 className="text-center text-3xl font-medium text-white md:text-left md:text-5xl">
           Ready to play your game?
         </h2>
         <Button
           nativeButton={false}
           render={<Link href="/register" />}
           variant="outline"
-          className="h-14 px-8 rounded-[12px] border border-white bg-white font-semibold text-primary hover:bg-light hover:text-primary"
+          className="h-14 w-full px-8 rounded-[12px] border border-white bg-white text-lg font-semibold text-primary hover:bg-light hover:text-primary md:w-auto"
         >
           Book Now
         </Button>

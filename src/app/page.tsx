@@ -190,7 +190,7 @@ function FieldTypeCard({
 }) {
   return (
     <div
-      className={`flex w-full flex-col overflow-hidden rounded-[16px] border border-border bg-white lg:h-54 lg:w-190 lg:flex-row ${alignRight ? "lg:self-end lg:flex-row-reverse" : "lg:self-start"}`}
+      className={`flex w-full flex-col overflow-hidden rounded-[16px] border border-border bg-white lg:min-h-54 lg:w-190 lg:flex-row ${alignRight ? "lg:self-end lg:flex-row-reverse" : "lg:self-start"}`}
     >
       <div className="relative h-56 w-full shrink-0 lg:h-full lg:w-80">
         <Image
@@ -270,9 +270,9 @@ function Benefit() {
               </h3>
             </div>
 
-            <div className="flex flex-col items-center justify-center gap-4 rounded-[24px] bg-[#FFDF20] p-8 md:min-h-72 md:w-1/3 md:p-12">
-              <Zap className="h-16 w-auto text-[#BB4D00] md:h-26" />
-              <h3 className="text-2xl font-semibold text-[#BB4D00] md:text-3xl">
+            <div className="flex flex-col items-center justify-center gap-4 rounded-[24px] bg-yellow p-8 md:min-h-72 md:w-1/3 md:p-12">
+              <Zap className="h-16 w-auto text-burnt-orange md:h-26" />
+              <h3 className="text-2xl font-semibold text-burnt-orange md:text-3xl">
                 Easy Booking
               </h3>
             </div>

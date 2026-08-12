@@ -126,7 +126,7 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
           id="mobile-drawer"
           inert={openMenu !== "drawer"}
           className={cn(
-            "overflow-hidden bg-white transition-all duration-300 ease-in-out md:hidden",
+            "overflow-y-auto bg-white transition-all duration-300 ease-in-out md:hidden",
             openMenu === "drawer"
               ? "max-h-[calc(100vh-4rem)] translate-y-0"
               : "max-h-0 -translate-y-2",

@@ -59,7 +59,7 @@ export function Footer() {
         <div className="h-px w-full bg-white/25" />
 
         <p className="text-small text-white/80 pt-8 pb-14">
-          &copy; 2026 ngeBall. All right reserved.
+          &copy; 2026 ngeBall. All rights reserved.
         </p>
       </div>
     </footer>

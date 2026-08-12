@@ -67,7 +67,9 @@ When choosing a color class, follow this order:
 | `text-red` / `bg-red`     | `--red`             | `#c10007`   | Alternative danger/error               |
 | `text-orange` / `bg-orange` | `--orange`        | `#ca3500`   | Warning/alert variant                  |
 | `bg-light` / `text-light` | `--light`           | `#f9f9f9`   | Light backgrounds, hover on white      |
-| `text-black` / `bg-black` | `--black`           | `#000000`   | Pure black (use sparingly)             |
+| `bg-black` / `text-black` | `--black`           | `#000000`   | Pure black (use sparingly)             |
+| `bg-yellow` / `text-yellow` | `--yellow`       | `#ffdf20`   | "Easy Booking" accent card background  |
+| `bg-burnt-orange` / `text-burnt-orange` | `--burnt-orange` | `#bb4d00` | Icons/text on yellow accent card |
 
 > **Note:** `bg-primary`, `text-primary`, `bg-secondary`, `text-secondary`, `bg-accent`, `text-accent`, `bg-muted`, `text-muted`, `border-border` are also wired into shadcn/ui's internal variable system. Using them ensures shadcn components render consistently with the design system.
 

@@ -15,15 +15,15 @@ export function Footer() {
   return (
     <footer className="bg-dark text-white">
       <div className="mx-auto flex w-full max-w-300 flex-col px-6">
-        <div className="flex flex-wrap items-start justify-between pt-24 pb-18">
-          <div className="flex flex-col flex-1 gap-2">
+        <div className="flex flex-col gap-10 pt-16 pb-12 md:flex-row md:items-start md:pt-24 md:pb-18">
+          <div className="flex flex-col gap-2 md:flex-1">
             <Logo variant="light" />
             <p className="text-body text-white/80">
               Best sports court rental in town
             </p>
           </div>
 
-          <div className="flex flex-1 gap-36">
+          <div className="flex flex-col gap-8 md:flex-1 md:flex-row md:gap-36">
             <div className="flex flex-col gap-4">
               <h3 className="text-h3 text-white">Links</h3>
               <ul className="flex flex-col gap-3">

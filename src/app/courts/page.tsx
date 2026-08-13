@@ -1,0 +1,231 @@
+import { ChevronDown, Search } from "lucide-react";
+
+import { AppNavbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { FutsalIcon } from "@/components/icons/futsal-icon";
+import { BasketballIcon } from "@/components/icons/basketball-icon";
+import { TennisIcon } from "@/components/icons/tennis-icon";
+import { PadelIcon } from "@/components/icons/padel-icon";
+import {
+  CourtCard,
+  type Court,
+  type SportKey,
+  type SportMeta,
+} from "@/components/court-card";
+
+const SPORT_META: Record<SportKey, SportMeta> = {
+  Futsal: { icon: FutsalIcon, color: "text-green", badgeBg: "bg-green/10" },
+  Basketball: {
+    icon: BasketballIcon,
+    color: "text-orange",
+    badgeBg: "bg-orange/10",
+  },
+  Tennis: { icon: TennisIcon, color: "text-red", badgeBg: "bg-red/10" },
+  Padel: { icon: PadelIcon, color: "text-blue", badgeBg: "bg-blue/10" },
+};
+
+const COURTS: Court[] = [
+  {
+    name: "Futsal Court A",
+    image: "/images/futsal1.jpg",
+    type: "Synthetic Grass Futsal Court",
+    price: "200.000,00",
+    sport: "Futsal",
+  },
+  {
+    name: "Futsal Court B",
+    image: "/images/futsal3.jpg",
+    type: "Interlock Futsal Court",
+    price: "250.000,00",
+    sport: "Futsal",
+  },
+  {
+    name: "Basketball Court B",
+    image: "/images/basket1.jpg",
+    type: "Indoor Basketball Court",
+    price: "220.000,00",
+    sport: "Basketball",
+  },
+  {
+    name: "Padel Court B",
+    image: "/images/padel1.jpg",
+    type: "Padel Court",
+    price: "300.000,00",
+    sport: "Padel",
+  },
+  {
+    name: "Futsal Court C",
+    image: "/images/futsal2.jpg",
+    type: "Interlock Futsal Court",
+    price: "270.000,00",
+    sport: "Futsal",
+  },
+  {
+    name: "Tennis Court A",
+    image: "/images/indoor-tennis1.jpg",
+    type: "Indoor Tennis Court",
+    price: "300.000,00",
+    sport: "Tennis",
+  },
+  {
+    name: "Basketball Court A",
+    image: "/images/indoor-basket1.jpg",
+    type: "Indoor Basketball Court",
+    price: "300.000,00",
+    sport: "Basketball",
+  },
+  {
+    name: "Padel Court A",
+    image: "/images/padel2.jpg",
+    type: "Padel Court",
+    price: "330.000,00",
+    sport: "Padel",
+  },
+  {
+    name: "Basketball Court C",
+    image: "/images/basket2.jpg",
+    type: "Indoor Basketball Court",
+    price: "320.000,00",
+    sport: "Basketball",
+  },
+  {
+    name: "Tennis Court B",
+    image: "/images/tennis1.jpg",
+    type: "Indoor Tennis Court",
+    price: "400.000,00",
+    sport: "Tennis",
+  },
+];
+
+function ToolbarDropdown({
+  label,
+  items,
+  widthClass,
+}: {
+  label: string;
+  items: string[];
+  widthClass: string;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={`flex h-10 max-w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left ${widthClass}`}
+      >
+        <span className="text-small font-normal text-text-primary">
+          {label}
+        </span>
+        <ChevronDown className="size-5 shrink-0 text-text-secondary" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
+        {items.map((item) => (
+          <DropdownMenuItem
+            key={item}
+            className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
+          >
+            {item}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function PaginationNav() {
+  return (
+    <Pagination className="pt-10">
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#" isActive className="rounded-[6px] bg-white">
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext href="#" />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+}
+
+export default function CourtsPage() {
+  return (
+    <main className="flex min-h-screen flex-col bg-background pt-16">
+      <AppNavbar />
+
+      <div className="mx-auto flex w-full max-w-300 flex-col gap-8 px-6 pt-12 pb-22">
+        <div className="flex flex-col items-stretch gap-2 lg:flex-row lg:items-center lg:justify-center lg:gap-2">
+          <div className="relative w-full lg:w-[320px]">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">
+              <Search className="h-4 w-4" />
+            </div>
+            <Input
+              className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+              placeholder="Search court"
+            />
+          </div>
+          <div className="flex w-full items-stretch gap-2 lg:w-auto lg:max-w-103">
+            <ToolbarDropdown
+              label="Sports"
+              items={["All Sports", "Futsal", "Basketball", "Tennis", "Padel"]}
+              widthClass="w-2/5 lg:w-[144px]"
+            />
+            <ToolbarDropdown
+              label="Type"
+              items={[
+                "All Types",
+                "Synthetic Grass",
+                "Interlock",
+                "Vynil",
+                "Indoor",
+              ]}
+              widthClass="w-3/5 lg:w-[254px]"
+            />
+          </div>
+        </div>
+
+        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fill,360px)] md:justify-center">
+          {COURTS.map((court, index) => (
+            <CourtCard
+              key={court.name}
+              court={court}
+              sport={SPORT_META[court.sport]}
+              priority={index === 0}
+            />
+          ))}
+        </div>
+
+        <PaginationNav />
+      </div>
+
+      <Footer />
+    </main>
+  );
+}

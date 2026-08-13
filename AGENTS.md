@@ -31,6 +31,10 @@ This project uses **Bun** exclusively.
 - **Do NOT use** `npm`, `yarn`, or `pnpm`.
 - **Git workflow:** development happens on page-specific feature branches (`landing-page`, `login-page`, `register-page`) that are merged into `main` via PRs.
 
+## 1.5 Git Configuration
+
+- `user.name` and `user.email` are pre-configured in the global git config — do not override them per-commit. Use the existing values; adding `--user-name` or `--user-email` to git commands is unnecessary and discouraged.
+
 ---
 
 ## 2. Color System
@@ -109,6 +113,7 @@ When choosing a font size class, follow this order:
 1. **Never modify** files inside `src/components/ui/`. These are managed by shadcn and may be regenerated.
 2. All style overrides must be done via `className` props **at the call site**, not inside the component file.
 3. When you need a new shadcn component, install it with: `bunx --bun shadcn@latest add <component-name>`
+4. **Prefer shadcn components for common UI patterns** — before creating a custom component/element, check if shadcn provides a functionally similar component (e.g., `dropdown-menu`, `pagination`, `dialog`, `tabs`, `tooltip`, `select`, `accordion`). If it does, add it via `shadcn add` and customize appearance via `className` at the call site rather than building from scratch. This ensures accessibility, keyboard navigation, and consistent behavior out of the box.
 
 > **Note:** This is the **shadcn v4 preset** — components are built on **Base UI** (`@base-ui/react`), **not Radix**. `Button` supports polymorphism via the `render` + `nativeButton` props instead of Radix's `asChild`:
 > ```tsx

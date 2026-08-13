@@ -61,7 +61,7 @@ All image paths verified to exist in `public/images/`.
 ### `CourtCard` — `src/components/court-card.tsx`
 
 - Named export `CourtCard`, props `{ court: Court; sport: SportMeta }`.
-- Base: shadcn `<Card>` from `@/components/ui/card`. Override at call site: `border border-border rounded-[16px] bg-white py-0 gap-0` (kills default ring/padding/gap, keeps `overflow-hidden`).
+- Base: shadcn `<Card>` from `@/components/ui/card`. Override at call site: `w-full md:w-90` (full-width mobile, fixed 360px from `md:` up), `border border-border rounded-[16px] bg-white py-0 gap-0` (kills default ring/padding/gap, keeps `overflow-hidden`).
 - Image: relative `h-60` wrapper + `next/image fill object-cover`, `sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 360px"`.
 - Body: `p-4 flex flex-col gap-3 flex-1`:
   - Title row: name `text-h2 text-text-primary` + sport badge (36px circle `size-9`, `badgeBg`, icon `h-5 w-5` + `color`).
@@ -83,7 +83,7 @@ All image paths verified to exist in `public/images/`.
 - **Toolbar** (static): `flex flex-wrap gap-2`:
   - Search: relative wrapper, `Input`/`input` `h-10 w-[320px] max-w-full pl-10`, `bg-white border border-border rounded-[6px]`, `Search` icon absolute-left (`text-text-secondary`), placeholder `Search court`.
   - Two dropdowns: `h-10`, `bg-white border border-border rounded-[6px]`, label `text-body text-text-primary`, `ChevronDown` right. Widths `w-[144px]` and `w-[254px]`, both `max-w-full`.
-- **Grid**: `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4`, mapping `COURTS`.
+- **Grid**: `grid w-full grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fill,360px)] md:justify-center`, mapping `COURTS`. Auto-fill fixed 360px tracks keep cards unstretched and never overflow — columns naturally reflow (1→2→3) instead of colliding.
 - **Pagination** (static): `flex flex-wrap items-center gap-2`, items `Previous | 1 | 2 | 3 | … | Next`; active "2" boxed `bg-white border border-border rounded-[6px]`, others plain text.
 
 ## Out of Scope

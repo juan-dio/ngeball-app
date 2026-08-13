@@ -31,6 +31,10 @@ This project uses **Bun** exclusively.
 - **Do NOT use** `npm`, `yarn`, or `pnpm`.
 - **Git workflow:** development happens on page-specific feature branches (`landing-page`, `login-page`, `register-page`) that are merged into `main` via PRs.
 
+## 1.5 Git Configuration
+
+- `user.name` and `user.email` are pre-configured in the global git config — do not override them per-commit. Use the existing values; adding `--user-name` or `--user-email` to git commands is unnecessary and discouraged.
+
 ---
 
 ## 2. Color System

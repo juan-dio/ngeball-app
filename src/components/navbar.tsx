@@ -35,7 +35,7 @@ const NAV_LINKS_AUTH: NavLink[] = [
 
 function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
   const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
-  const containerRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const open = openMenu !== null;
 
   useEffect(() => {
@@ -76,10 +76,8 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
 
   return (
     <MenuContext.Provider value={menuContext}>
-      <header
-        ref={containerRef}
-        className="fixed inset-x-0 top-0 z-50 h-16 border-b border-border bg-white"
-      >
+      <div ref={containerRef}>
+        <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-border bg-white">
         <div className="mx-auto flex h-full w-full max-w-300 items-center justify-between px-6">
           <div className="flex items-center gap-20">
             <Link href="/" className="shrink-0">
@@ -121,40 +119,42 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
           </div>
         </div>
 
+        </header>
+
         <div
-          id="mobile-drawer"
-          inert={openMenu !== "drawer"}
-          className={cn(
-            "overflow-y-auto bg-white transition-all duration-300 ease-in-out md:hidden",
-            openMenu === "drawer"
-              ? "max-h-[calc(100vh-4rem)] translate-y-0"
-              : "max-h-0 -translate-y-2",
-          )}
+          className="fixed inset-x-0 top-16 z-40 h-[calc(100vh-4rem)] overflow-hidden md:hidden"
+          aria-hidden={openMenu !== "drawer"}
         >
-          <div className="border-y border-border">
-            <nav className="flex flex-col gap-1 px-6 py-5">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setOpenMenu(null)}
-                  className="rounded-md px-2 py-2 text-body text-text-primary transition-colors hover:bg-light"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-            {drawer && (
-              <div
-                className="flex flex-col gap-3 px-6 pb-6"
-                onClick={() => setOpenMenu(null)}
-              >
-                {drawer}
-              </div>
+          <div
+            id="mobile-drawer"
+            inert={openMenu !== "drawer"}
+            className={cn(
+              "bg-white transition-transform duration-300 ease-in-out",
+              openMenu === "drawer" ? "translate-y-0" : "-translate-y-full",
             )}
+          >
+            <div className="border-b border-border">
+              <nav className="flex flex-col gap-1 px-6 py-5">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setOpenMenu(null)}
+                    className="rounded-md px-2 py-2 text-body text-text-primary transition-colors hover:bg-light"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+              {drawer && (
+                <div className="flex flex-col gap-3 px-6 pb-6" onClick={() => setOpenMenu(null)}>
+                  {drawer}
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </header>
+      </div>
     </MenuContext.Provider>
   );
 }

@@ -25,13 +25,12 @@ type NavbarProps = {
 
 const NAV_LINKS: NavLink[] = [
   { label: "Home", href: "/" },
-  { label: "Sports", href: "#sports" },
-  { label: "Courts", href: "#courts" },
+  { label: "Courts", href: "/courts" },
 ];
 
 const NAV_LINKS_AUTH: NavLink[] = [
   ...NAV_LINKS,
-  { label: "Booking", href: "#booking" },
+  { label: "Booking", href: "/booking" },
 ];
 
 function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {

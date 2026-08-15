@@ -260,6 +260,7 @@ When a design requires an icon inside an input field, use this pattern:
 ## 10. Coding Standards
 
 - **Language:** TypeScript. All new files must use `.tsx` (for JSX) or `.ts` (for utilities).
+- **Naming conventions:** Use kebab-case for file and folder names, while strictly using PascalCase for the React component functions inside those files.
 - **Component pattern:** Use named exports (`export function MyComponent`) — not default exports for reusable components.
 - **Client components:** Add `"use client"` directive only when the component uses React state, effects, or browser APIs.
 - **Imports:** Use the `@/` path alias for all internal imports (e.g., `@/components/logo`, `@/lib/utils`).

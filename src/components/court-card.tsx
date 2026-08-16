@@ -1,9 +1,9 @@
 import Image from "next/image";
-import type { ComponentType } from "react";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { SportIcon, type SportKey } from "@/components/icons/sport-icon";
 
 export type Court = {
   name: string;
@@ -13,23 +13,12 @@ export type Court = {
   sport: SportKey;
 };
 
-export type SportKey = "Futsal" | "Basketball" | "Tennis" | "Padel";
-
-export type SportMeta = {
-  icon: ComponentType<{ className?: string }>;
-  color: string;
-  badgeBg: string;
-};
-
 type CourtCardProps = {
   court: Court;
-  sport: SportMeta;
   priority?: boolean;
 };
 
-export function CourtCard({ court, sport, priority }: CourtCardProps) {
-  const Icon = sport.icon;
-
+export function CourtCard({ court, priority }: CourtCardProps) {
   return (
     <Card className="w-full gap-0 overflow-hidden rounded-[16px] border border-border bg-white py-0 md:w-90">
       <div className="relative h-60 w-full">
@@ -46,11 +35,7 @@ export function CourtCard({ court, sport, priority }: CourtCardProps) {
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="flex items-center justify-between gap-2">
           <h3 className="text-h2 text-text-primary">{court.name}</h3>
-          <span
-            className={`flex size-9 shrink-0 items-center justify-center rounded-full ${sport.badgeBg}`}
-          >
-            <Icon className={`h-5 w-5 ${sport.color}`} />
-          </span>
+          <SportIcon sport={court.sport} />
         </div>
 
         <p className="text-body text-text-secondary">{court.type}</p>

@@ -18,27 +18,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { FutsalIcon } from "@/components/icons/futsal-icon";
-import { BasketballIcon } from "@/components/icons/basketball-icon";
-import { TennisIcon } from "@/components/icons/tennis-icon";
-import { PadelIcon } from "@/components/icons/padel-icon";
-import {
-  CourtCard,
-  type Court,
-  type SportKey,
-  type SportMeta,
-} from "@/components/court-card";
-
-const SPORT_META: Record<SportKey, SportMeta> = {
-  Futsal: { icon: FutsalIcon, color: "text-green", badgeBg: "bg-green/10" },
-  Basketball: {
-    icon: BasketballIcon,
-    color: "text-orange",
-    badgeBg: "bg-orange/10",
-  },
-  Tennis: { icon: TennisIcon, color: "text-red", badgeBg: "bg-red/10" },
-  Padel: { icon: PadelIcon, color: "text-blue", badgeBg: "bg-blue/10" },
-};
+import { CourtCard, type Court } from "@/components/court-card";
 
 const COURTS: Court[] = [
   {
@@ -181,8 +161,8 @@ export default function CourtsPage() {
       <AppNavbar />
 
       <div className="mx-auto flex w-full max-w-300 flex-col gap-8 px-6 pt-12 pb-22">
-        <div className="flex flex-col items-stretch gap-2 lg:flex-row lg:items-center lg:justify-center lg:gap-2">
-          <div className="relative w-full lg:w-[320px]">
+        <div className="flex flex-col items-stretch gap-2 md:flex-row md:items-center md:justify-center md:gap-2">
+          <div className="relative w-full md:w-[320px]">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">
               <Search className="h-4 w-4" />
             </div>
@@ -191,11 +171,11 @@ export default function CourtsPage() {
               placeholder="Search court"
             />
           </div>
-          <div className="flex w-full items-stretch gap-2 lg:w-auto lg:max-w-103">
+          <div className="flex w-full items-stretch gap-2 md:w-auto md:max-w-103">
             <ToolbarDropdown
               label="Sports"
               items={["All Sports", "Futsal", "Basketball", "Tennis", "Padel"]}
-              widthClass="w-2/5 lg:w-[144px]"
+              widthClass="w-2/5 md:w-[144px]"
             />
             <ToolbarDropdown
               label="Type"
@@ -206,19 +186,14 @@ export default function CourtsPage() {
                 "Vynil",
                 "Indoor",
               ]}
-              widthClass="w-3/5 lg:w-[254px]"
+              widthClass="w-3/5 md:w-[254px]"
             />
           </div>
         </div>
 
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fill,360px)] md:justify-center">
           {COURTS.map((court, index) => (
-            <CourtCard
-              key={court.name}
-              court={court}
-              sport={SPORT_META[court.sport]}
-              priority={index === 0}
-            />
+            <CourtCard key={court.name} court={court} priority={index === 0} />
           ))}
         </div>
 

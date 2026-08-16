@@ -12,6 +12,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import {
   Calendar as CalendarIcon,
@@ -74,6 +75,23 @@ export default function CourtDetails() {
     React.useState<string>("10:00 - 11:00");
   const [isOverlayOpen, setIsOverlayOpen] = React.useState<boolean>(false);
   const [overlayImageIndex, setOverlayImageIndex] = React.useState<number>(0);
+  const [overlayCarouselApi, setOverlayCarouselApi] = React.useState<CarouselApi | null>(null);
+  const [overlayCurrentIndex, setOverlayCurrentIndex] = React.useState<number>(0);
+
+  // Sync overlay carousel index with carousel API
+  React.useEffect(() => {
+    if (!overlayCarouselApi) return;
+    const onSelect = () => {
+      const idx = overlayCarouselApi.selectedScrollSnap();
+      setOverlayCurrentIndex(idx);
+    };
+    overlayCarouselApi.on("select", onSelect);
+    // Set initial index
+    setOverlayCurrentIndex(overlayCarouselApi.selectedScrollSnap());
+    return () => {
+      overlayCarouselApi.off("select", onSelect);
+    };
+  }, [overlayCarouselApi]);
 
   // Month navigation boundaries: current month of today up to today + 1 month
   const minMonth = React.useMemo(() => {
@@ -429,62 +447,59 @@ export default function CourtDetails() {
           >
             <X className="size-6" />
           </button>
-          <Carousel
-            opts={{ startIndex: overlayImageIndex }}
-            className="flex w-full max-w-[972px] items-center justify-center gap-4"
-          >
+          <div className="flex w-full max-w-[972px] items-center justify-center gap-4">
             {/* Left Nav Button */}
             <button
               type="button"
               aria-label="Previous image"
-              className="flex size-8 -translate-y-1/2 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
+              disabled={overlayCurrentIndex === 0}
+              className="flex size-12 -translate-y-1/2 shrink-0 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => {
-                setOverlayImageIndex((prev) => {
-                  if (prev === 0) return CAROUSEL_IMAGES.length - 1;
-                  return prev - 1;
-                });
+                overlayCarouselApi?.scrollPrev();
               }}
             >
               <ChevronLeft className="size-5" />
             </button>
             {/* Carousel */}
-            <CarouselContent
-              className="overflow-hidden min-w-0 flex-1"
+            <Carousel
+              opts={{ startIndex: overlayImageIndex }}
+              setApi={setOverlayCarouselApi}
+              className="min-w-0 flex-1"
             >
-              {CAROUSEL_IMAGES.map((src, index) => (
-                <CarouselItem
-                  key={src}
-                  className="basis-full"
-                >
-                  <div
-                    className="relative h-[min(546px,65vh)] w-full overflow-hidden rounded-[16px] border border-border bg-white"
+              <CarouselContent>
+                {CAROUSEL_IMAGES.map((src, index) => (
+                  <CarouselItem
+                    key={src}
+                    className="basis-full"
                   >
-                    <Image
-                      src={src}
-                      alt={`Court image ${index + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1199px) 90vw, 812px"
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
+                    <div
+                      className="relative h-[min(546px,65vh)] w-full overflow-hidden rounded-[16px] border border-border bg-white"
+                    >
+                      <Image
+                        src={src}
+                        alt={`Court image ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1199px) 90vw, 812px"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
             {/* Right Nav Button */}
             <button
               type="button"
               aria-label="Next image"
-              className="flex size-8 -translate-y-1/2 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
+              disabled={overlayCurrentIndex >= CAROUSEL_IMAGES.length - 1}
+              className="flex size-12 -translate-y-1/2 shrink-0 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => {
-                setOverlayImageIndex((prev) => {
-                  if (prev >= CAROUSEL_IMAGES.length - 1) return 0;
-                  return prev + 1;
-                });
+                overlayCarouselApi?.scrollNext();
               }}
             >
               <ChevronRight className="size-5" />
             </button>
-          </Carousel>
+          </div>
         </div>
       )}
 

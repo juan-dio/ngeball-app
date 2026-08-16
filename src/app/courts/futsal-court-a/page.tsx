@@ -88,8 +88,6 @@ export default function CourtDetails() {
       setOverlayCurrentIndex(idx);
     };
     overlayCarouselApi.on("select", onSelect);
-    // Set initial index
-    setOverlayCurrentIndex(overlayCarouselApi.selectedScrollSnap());
     return () => {
       overlayCarouselApi.off("select", onSelect);
     };
@@ -231,6 +229,7 @@ export default function CourtDetails() {
                     className="cursor-pointer"
                     onClick={() => {
                       setOverlayImageIndex(index);
+                      setOverlayCurrentIndex(index);
                       setIsOverlayOpen(true);
                     }}
                   >

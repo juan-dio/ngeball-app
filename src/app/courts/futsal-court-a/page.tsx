@@ -75,8 +75,10 @@ export default function CourtDetails() {
     React.useState<string>("10:00 - 11:00");
   const [isOverlayOpen, setIsOverlayOpen] = React.useState<boolean>(false);
   const [overlayImageIndex, setOverlayImageIndex] = React.useState<number>(0);
-  const [overlayCarouselApi, setOverlayCarouselApi] = React.useState<CarouselApi | null>(null);
-  const [overlayCurrentIndex, setOverlayCurrentIndex] = React.useState<number>(0);
+  const [overlayCarouselApi, setOverlayCarouselApi] =
+    React.useState<CarouselApi | null>(null);
+  const [overlayCurrentIndex, setOverlayCurrentIndex] =
+    React.useState<number>(0);
 
   // Sync overlay carousel index with carousel API
   React.useEffect(() => {
@@ -245,8 +247,8 @@ export default function CourtDetails() {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="absolute left-3 size-7 rounded-full border-none bg-[#6A7282]/80 text-white hover:bg-[#6A7282] hover:text-white" />
-              <CarouselNext className="absolute right-3 size-7 rounded-full border-none bg-[#6A7282]/80 text-white hover:bg-[#6A7282] hover:text-white" />
+              <CarouselPrevious className="absolute left-3 size-7 rounded-full border border-white bg-[#6A7282]/80 text-white cursor-pointer hover:bg-[#6A7282] hover:text-white" />
+              <CarouselNext className="absolute right-3 size-7 rounded-full border border-white bg-[#6A7282]/80 text-white cursor-pointer hover:bg-[#6A7282] hover:text-white" />
             </Carousel>
           </div>
 
@@ -438,27 +440,30 @@ export default function CourtDetails() {
 
       {/* Full Screen Image Overlay */}
       {isOverlayOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          onClick={(e: React.MouseEvent) => e.stopPropagation()}
+        >
           <button
             type="button"
             onClick={() => setIsOverlayOpen(false)}
-            className="absolute top-6 right-6 rounded-full bg-white/20 p-2 text-white transition hover:bg-white/40"
+            className="absolute top-6 right-6 flex size-10 shrink-0 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition"
             aria-label="Close modal"
           >
             <X className="size-6" />
           </button>
-          <div className="flex w-full max-w-[972px] items-center justify-center gap-4">
+          <div className="flex w-full max-w-240 items-center justify-center gap-4">
             {/* Left Nav Button */}
             <button
               type="button"
               aria-label="Previous image"
               disabled={overlayCurrentIndex === 0}
-              className="flex size-12 -translate-y-1/2 shrink-0 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex size-12 shrink-0 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => {
                 overlayCarouselApi?.scrollPrev();
               }}
             >
-              <ChevronLeft className="size-5" />
+              <ChevronLeft className="size-8" />
             </button>
             {/* Carousel */}
             <Carousel
@@ -468,13 +473,8 @@ export default function CourtDetails() {
             >
               <CarouselContent>
                 {CAROUSEL_IMAGES.map((src, index) => (
-                  <CarouselItem
-                    key={src}
-                    className="basis-full"
-                  >
-                    <div
-                      className="relative h-[min(546px,65vh)] w-full overflow-hidden rounded-[16px] border border-border bg-white"
-                    >
+                  <CarouselItem key={src} className="basis-full">
+                    <div className="relative aspect-3/2 w-full overflow-hidden rounded-[16px] border border-border bg-white">
                       <Image
                         src={src}
                         alt={`Court image ${index + 1}`}
@@ -492,12 +492,12 @@ export default function CourtDetails() {
               type="button"
               aria-label="Next image"
               disabled={overlayCurrentIndex >= CAROUSEL_IMAGES.length - 1}
-              className="flex size-12 -translate-y-1/2 shrink-0 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex size-12 shrink-0 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => {
                 overlayCarouselApi?.scrollNext();
               }}
             >
-              <ChevronRight className="size-5" />
+              <ChevronRight className="size-8" />
             </button>
           </div>
         </div>

@@ -446,7 +446,7 @@ export default function CourtDetails() {
           <button
             type="button"
             onClick={() => setIsOverlayOpen(false)}
-            className="absolute top-6 right-6 flex size-10 shrink-0 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition"
+            className="absolute top-6 right-6 flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-white bg-[#6A7282]/80 text-white hover:bg-[#6A7282] cursor-pointer transition"
             aria-label="Close modal"
           >
             <X className="size-6" />
@@ -457,7 +457,7 @@ export default function CourtDetails() {
               type="button"
               aria-label="Previous image"
               disabled={overlayCurrentIndex === 0}
-              className="flex size-12 shrink-0 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-white bg-[#6A7282]/80 text-white hover:bg-[#6A7282] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => {
                 overlayCarouselApi?.scrollPrev();
               }}
@@ -491,7 +491,7 @@ export default function CourtDetails() {
               type="button"
               aria-label="Next image"
               disabled={overlayCurrentIndex >= CAROUSEL_IMAGES.length - 1}
-              className="flex size-12 shrink-0 items-center justify-center rounded-full border-[1.71429px] border-white bg-[#6A7282] text-white shadow-[inset_0_0_428.571px_rgba(0,0,0,0.4)] hover:bg-[#5A626C] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-white bg-[#6A7282]/80 text-white hover:bg-[#6A7282] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => {
                 overlayCarouselApi?.scrollNext();
               }}

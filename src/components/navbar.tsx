@@ -122,22 +122,14 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
         </header>
 
         <div
-          className={cn(
-            "fixed inset-x-0 top-16 z-40 h-[calc(100vh-4rem)] overflow-hidden md:hidden",
-            openMenu !== "drawer" && "pointer-events-none"
-          )}
+          className="fixed inset-x-0 top-16 z-40 h-[calc(100vh-4rem)] overflow-hidden pointer-events-none md:hidden"
           aria-hidden={openMenu !== "drawer"}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setOpenMenu(null);
-            }
-          }}
         >
           <div
             id="mobile-drawer"
             inert={openMenu !== "drawer"}
             className={cn(
-              "bg-white transition-transform duration-300 ease-in-out",
+              "bg-white transition-transform duration-300 ease-in-out pointer-events-auto",
               openMenu === "drawer" ? "translate-y-0" : "-translate-y-full",
             )}
           >

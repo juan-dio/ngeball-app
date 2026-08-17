@@ -79,6 +79,8 @@ export default function CourtDetails() {
     React.useState<CarouselApi | null>(null);
   const [overlayCurrentIndex, setOverlayCurrentIndex] =
     React.useState<number>(0);
+  const overlayFocusRef = React.useRef<HTMLElement | null>(null);
+  const overlayRootRef = React.useRef<HTMLDivElement>(null);
 
   // Sync overlay carousel index with carousel API
   React.useEffect(() => {
@@ -196,6 +198,46 @@ export default function CourtDetails() {
     }
     return () => {
       document.body.style.overflow = "";
+    };
+  }, [isOverlayOpen]);
+
+  // Focus management for overlay modal
+  React.useEffect(() => {
+    if (!isOverlayOpen) {
+      overlayFocusRef.current?.focus();
+      overlayFocusRef.current = null;
+      return;
+    }
+    overlayFocusRef.current = document.activeElement as HTMLElement;
+    const focusableElements = overlayRootRef.current?.querySelectorAll(
+      "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])",
+    );
+    const firstFocusable = focusableElements?.[0] as HTMLElement | null;
+    const lastFocusable = focusableElements?.[
+      focusableElements.length - 1
+    ] as HTMLElement | null;
+
+    if (firstFocusable) firstFocusable.focus();
+
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.key === "Tab") {
+        if (event.shiftKey) {
+          if (document.activeElement === firstFocusable) {
+            event.preventDefault();
+            lastFocusable?.focus();
+          }
+        } else {
+          if (document.activeElement === lastFocusable) {
+            event.preventDefault();
+            firstFocusable?.focus();
+          }
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeydown);
+    return () => {
+      document.removeEventListener("keydown", handleKeydown);
     };
   }, [isOverlayOpen]);
 
@@ -440,6 +482,7 @@ export default function CourtDetails() {
       {/* Full Screen Image Overlay */}
       {isOverlayOpen && (
         <div
+          ref={overlayRootRef}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
         >

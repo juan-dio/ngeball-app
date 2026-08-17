@@ -122,7 +122,10 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
         </header>
 
         <div
-          className="fixed inset-x-0 top-16 z-40 h-[calc(100vh-4rem)] overflow-hidden md:hidden"
+          className={cn(
+            "fixed inset-x-0 top-16 z-40 h-[calc(100vh-4rem)] overflow-hidden md:hidden",
+            openMenu !== "drawer" && "pointer-events-none"
+          )}
           aria-hidden={openMenu !== "drawer"}
         >
           <div

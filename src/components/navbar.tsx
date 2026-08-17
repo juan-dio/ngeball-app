@@ -127,6 +127,11 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
             openMenu !== "drawer" && "pointer-events-none"
           )}
           aria-hidden={openMenu !== "drawer"}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setOpenMenu(null);
+            }
+          }}
         >
           <div
             id="mobile-drawer"

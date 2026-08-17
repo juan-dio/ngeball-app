@@ -5,7 +5,7 @@ import Image from "next/image";
 import { AppNavbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { SportIcon } from "@/components/icons/sport-icon";
+import { SportIconWithText } from "@/components/icons/sport-icon";
 import {
   Carousel,
   CarouselContent,
@@ -300,7 +300,7 @@ export default function CourtDetails() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3">
                 <h1 className="text-h1 text-text-primary">Futsal Court A</h1>
-                <SportIcon sport="Futsal" />
+                <SportIconWithText sport="Futsal" />
               </div>
               <p className="text-body text-text-secondary">
                 Synthetic Grass Futsal Court

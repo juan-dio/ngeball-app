@@ -268,8 +268,10 @@ export default function CourtDetails() {
                 {CAROUSEL_IMAGES.map((src, index) => (
                   <CarouselItem
                     key={src}
-                    className="cursor-pointer"
+                    className="lg:cursor-pointer"
                     onClick={() => {
+                      if (!window.matchMedia("(min-width: 1024px)").matches)
+                        return;
                       setOverlayImageIndex(index);
                       setOverlayCurrentIndex(index);
                       setIsOverlayOpen(true);

@@ -29,14 +29,14 @@ const CAROUSEL_IMAGES = [
 ];
 
 const TIME_SLOTS = [
+  "08:00 - 09:00",
+  "09:00 - 10:00",
   "10:00 - 11:00",
   "11:00 - 12:00",
   "13:00 - 14:00",
   "14:00 - 15:00",
   "15:00 - 16:00",
   "16:00 - 17:00",
-  "17:00 - 18:00",
-  "18:00 - 19:00",
   "19:00 - 20:00",
   "20:00 - 21:00",
   "21:00 - 22:00",
@@ -296,35 +296,48 @@ export default function CourtDetails() {
           </div>
 
           {/* Court Info */}
-          <div className="flex flex-1 flex-col justify-between gap-4">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3">
-                <h1 className="text-h1 text-text-primary">Futsal Court A</h1>
+          <div className="flex flex-col gap-6 py-4">
+            <div className="flex flex-col gap-2">
+              <h1 className="text-h1 font-medium text-text-primary leading-tight">
+                Futsal Court A
+              </h1>
+              <div className="flex items-center gap-4">
                 <SportIconWithText sport="Futsal" />
-              </div>
-              <p className="text-body text-text-secondary">
-                Synthetic Grass Futsal Court
-              </p>
-              <p className="text-h2 text-primary">Rp 300.000,00 /hour</p>
-              <div className="flex flex-col gap-2 pt-2">
-                <h3 className="text-h3 text-text-secondary">Description</h3>
-                <p className="text-body text-text-secondary">
-                  Standard synthetic grass futsal field equipped with complete
-                  facilities. High-grip turf surface suitable for regular
-                  practice and competitive tournament matches.
+                <p className="text-h3 font-normal text-text-secondary">
+                  Synthetic Grass Futsal Court
                 </p>
               </div>
+            </div>
+            <p className="text-h2 text-text-secondary leading-tight">
+              <span>Rp </span>
+              <span className="text-primary">300.000,00</span>
+              <span className="text-h3"> /hour</span>
+            </p>
+            <div className="flex flex-col gap-1.5">
+              <h3 className="text-h3 text-text-secondary leading-tight">
+                Description
+              </h3>
+              <p className="text-body text-text-secondary leading-tight">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur.
+              </p>
             </div>
           </div>
         </div>
 
         {/* Bottom Row: Calendar + Schedule/Duration + Summary Card */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div className="grid grid-cols-1 justify-center gap-6 lg:grid-cols-[max-content_max-content_1fr]">
           {/* Left: Interactive Calendar */}
-          <div className="rounded-[16px] border border-border bg-white p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-h2 text-text-primary">{monthYearDisplay}</h2>
-              <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-3">
+            <h2 className="text-h2 text-text-primary leading-tight">
+              Select Date
+            </h2>
+            <div className="rounded-[16px] border border-border bg-white p-6">
+              <div className="mb-6 flex items-center justify-between">
                 <button
                   type="button"
                   onClick={handlePrevMonth}
@@ -334,6 +347,9 @@ export default function CourtDetails() {
                 >
                   <ChevronLeft className="size-4" />
                 </button>
+                <h3 className="text-body font-medium text-text-primary">
+                  {monthYearDisplay}
+                </h3>
                 <button
                   type="button"
                   onClick={handleNextMonth}
@@ -344,55 +360,54 @@ export default function CourtDetails() {
                   <ChevronRight className="size-4" />
                 </button>
               </div>
-            </div>
 
-            {/* Days header */}
-            <div className="mb-2 grid grid-cols-7 text-center">
-              {DAYS_OF_WEEK.map((d) => (
-                <span
-                  key={d}
-                  className="py-1 text-small font-medium text-text-secondary"
-                >
-                  {d}
-                </span>
-              ))}
-            </div>
-
-            {/* Dates Grid */}
-            <div className="grid grid-cols-7 gap-y-2 text-center">
-              {calendarDays.map((item, idx) => {
-                const isSelected =
-                  !item.isDisabled && isSameDay(item.date, selectedDate);
-
-                return (
+              {/* Days header */}
+              <div className="grid grid-cols-7 text-center">
+                {DAYS_OF_WEEK.map((d) => (
                   <div
-                    key={idx}
-                    className="flex items-center justify-center p-1"
+                    key={d}
+                    className="size-10 flex items-center justify-center text-body font-medium text-text-secondary"
                   >
-                    <button
-                      type="button"
-                      disabled={item.isDisabled}
-                      onClick={() => setSelectedDate(item.date)}
-                      className={`flex size-9 items-center justify-center rounded-full text-small transition ${
-                        item.isDisabled
-                          ? "cursor-not-allowed text-muted opacity-50"
-                          : isSelected
-                            ? "border-2 border-primary bg-text-primary font-semibold text-white"
-                            : "text-text-primary hover:bg-light"
-                      }`}
-                    >
-                      {item.date.getDate()}
-                    </button>
+                    {d}
                   </div>
-                );
-              })}
+                ))}
+              </div>
+
+              {/* Dates Grid */}
+              <div className="grid grid-cols-7 text-center">
+                {calendarDays.map((item, idx) => {
+                  const isSelected =
+                    !item.isDisabled && isSameDay(item.date, selectedDate);
+
+                  return (
+                    <div key={idx} className="flex items-center justify-center">
+                      <button
+                        type="button"
+                        disabled={item.isDisabled}
+                        onClick={() => setSelectedDate(item.date)}
+                        className={`flex size-10 items-center justify-center rounded-full text-body transition ${
+                          item.isDisabled
+                            ? "cursor-not-allowed text-muted opacity-50"
+                            : isSelected
+                              ? "bg-text-primary text-white"
+                              : "text-text-primary hover:bg-light"
+                        }`}
+                      >
+                        {item.date.getDate()}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
           {/* Middle: Duration and Schedule */}
-          <div className="flex flex-col gap-6 rounded-[16px] border border-border bg-white p-6">
+          <div className="flex flex-col gap-4">
             <div>
-              <h2 className="mb-3 text-h2 text-text-primary">Duration</h2>
+              <h2 className="mb-3 text-h2 text-text-primary leading-tight">
+                Duration
+              </h2>
               <div className="flex flex-wrap gap-3">
                 {DURATIONS.map((duration) => {
                   const isActive = selectedDuration === duration;
@@ -415,7 +430,9 @@ export default function CourtDetails() {
             </div>
 
             <div>
-              <h2 className="mb-3 text-h2 text-text-primary">Schedule</h2>
+              <h2 className="mb-3 text-h2 text-text-primary leading-tight">
+                Schedule
+              </h2>
               <div className="grid grid-cols-3 gap-2">
                 {TIME_SLOTS.map((slot) => {
                   const isActive = selectedTimeSlot === slot;
@@ -424,7 +441,7 @@ export default function CourtDetails() {
                       key={slot}
                       type="button"
                       onClick={() => setSelectedTimeSlot(slot)}
-                      className={`rounded-[8px] border px-2 py-2 text-center text-small font-medium transition ${
+                      className={`rounded-full border px-4 py-2 text-small font-medium transition ${
                         isActive
                           ? "border-primary bg-primary/15 text-primary"
                           : "border-border bg-white text-text-primary hover:bg-light"
@@ -439,43 +456,43 @@ export default function CourtDetails() {
           </div>
 
           {/* Right: Summary Card */}
-          <div className="flex flex-col justify-between rounded-[16px] border border-border bg-white p-6">
-            <div className="flex flex-col gap-4">
-              <h2 className="text-h2 text-text-primary">Summary</h2>
-              <h3 className="text-h3 font-medium text-text-primary">
-                Futsal Court A
-              </h3>
+          <div className="flex flex-col rounded-[16px] border border-border bg-white p-6 gap-6 h-fit">
+            <h2 className="text-h2 text-text-primary text-center leading-tight">
+              Summary
+            </h2>
 
-              <div className="flex flex-col gap-3 border-y border-border py-4">
-                <div className="flex items-center gap-3 text-text-secondary">
+            <div className="flex flex-col gap-3">
+              <h3 className="text-h3 text-text-primary">Futsal Court A</h3>
+
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-1 text-text-secondary">
                   <CalendarIcon className="size-5 text-text-secondary" />
-                  <span className="text-body text-text-primary">
-                    {formattedDateDisplay}
-                  </span>
+                  <span className="text-body">{formattedDateDisplay}</span>
                 </div>
-                <div className="flex items-center gap-3 text-text-secondary">
+                <div className="flex items-center gap-1 text-text-secondary">
                   <Clock className="size-5 text-text-secondary" />
-                  <span className="text-body text-text-primary">
+                  <span className="text-body">
                     {selectedDuration} Minutes | {selectedTimeSlot}
                   </span>
                 </div>
               </div>
-
-              <div className="flex flex-col gap-1">
-                <span className="text-small text-text-secondary">
-                  Total Price
-                </span>
-                <span className="text-h2 font-semibold text-primary">
-                  Rp {totalPrice.toLocaleString("id-ID")},00
-                </span>
-                <span className="text-small text-text-secondary">
-                  Tax included
-                </span>
-              </div>
             </div>
 
-            <Button className="mt-6 h-auto w-full rounded-[12px] bg-primary py-3 text-body font-medium text-white hover:bg-primary/90">
-              Book
+            <div className="flex flex-col">
+              <span className="text-small text-text-secondary">
+                Total Price
+              </span>
+              <span className="text-h2 text-primary leading-tight">
+                <span className="text-text-secondary">Rp </span>
+                {totalPrice.toLocaleString("id-ID")},00
+              </span>
+              <span className="text-small text-text-secondary">
+                Tax included
+              </span>
+            </div>
+
+            <Button className="h-auto w-full rounded-[12px] bg-primary py-3 text-body font-medium text-white hover:bg-primary/90">
+              Proceed to Payment
             </Button>
           </div>
         </div>

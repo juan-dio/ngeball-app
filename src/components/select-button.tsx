@@ -23,12 +23,12 @@ export function SelectButton({
       disabled={isDisabled}
       onClick={onClick}
       className={cn(
-        "rounded-full border px-4 py-2 text-small font-medium transition w-full",
+        "rounded-full border px-4 py-2 text-sm font-medium transition w-full cursor-pointer",
         isActive
           ? "border-primary bg-primary/15 text-primary"
-          : "border-border bg-white text-text-primary hover:bg-light",
-        isDisabled && "border-muted text-muted cursor-not-allowed opacity-50 hover:bg-white",
-        className
+          : "border-border bg-white text-text-primary hover:bg-white/90",
+        isDisabled && "border-muted text-muted cursor-not-allowed bg-light",
+        className,
       )}
     >
       {text}

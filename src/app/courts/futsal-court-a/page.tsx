@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AppNavbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
+import { SelectButton } from "@/components/select-button";
 import { SportIconWithText } from "@/components/icons/sport-icon";
 import {
   Carousel,
@@ -21,6 +22,7 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const CAROUSEL_IMAGES = [
   "/images/futsal1.jpg",
@@ -385,13 +387,14 @@ export default function CourtDetails() {
                         type="button"
                         disabled={item.isDisabled}
                         onClick={() => setSelectedDate(item.date)}
-                        className={`flex size-10 items-center justify-center rounded-full text-body transition ${
+                        className={cn(
+                          "flex size-10 items-center justify-center rounded-full text-body transition cursor-pointer",
                           item.isDisabled
                             ? "cursor-not-allowed text-muted opacity-50"
                             : isSelected
                               ? "bg-text-primary text-white"
-                              : "text-text-primary hover:bg-light"
-                        }`}
+                              : "text-text-primary hover:bg-light",
+                        )}
                       >
                         {item.date.getDate()}
                       </button>
@@ -403,27 +406,22 @@ export default function CourtDetails() {
           </div>
 
           {/* Middle: Duration and Schedule */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6">
             <div>
               <h2 className="mb-3 text-h2 text-text-primary leading-tight">
                 Duration
               </h2>
-              <div className="flex flex-wrap gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 {DURATIONS.map((duration) => {
-                  const isActive = selectedDuration === duration;
                   return (
-                    <button
+                    <SelectButton
                       key={duration}
-                      type="button"
+                      text={`${duration} Minutes`}
+                      status={
+                        selectedDuration === duration ? "active" : "default"
+                      }
                       onClick={() => setSelectedDuration(duration)}
-                      className={`rounded-full border px-4 py-2 text-small font-medium transition ${
-                        isActive
-                          ? "border-primary bg-primary/15 text-primary"
-                          : "border-border bg-white text-text-primary hover:bg-light"
-                      }`}
-                    >
-                      {duration} Minutes
-                    </button>
+                    />
                   );
                 })}
               </div>
@@ -435,20 +433,19 @@ export default function CourtDetails() {
               </h2>
               <div className="grid grid-cols-3 gap-2">
                 {TIME_SLOTS.map((slot) => {
-                  const isActive = selectedTimeSlot === slot;
                   return (
-                    <button
+                    <SelectButton
                       key={slot}
-                      type="button"
+                      text={slot}
+                      status={
+                        slot === "08:00 - 09:00" || slot === "09:00 - 10:00"
+                          ? "disabled"
+                          : slot === selectedTimeSlot
+                            ? "active"
+                            : "default"
+                      }
                       onClick={() => setSelectedTimeSlot(slot)}
-                      className={`rounded-full border px-4 py-2 text-small font-medium transition ${
-                        isActive
-                          ? "border-primary bg-primary/15 text-primary"
-                          : "border-border bg-white text-text-primary hover:bg-light"
-                      }`}
-                    >
-                      {slot}
-                    </button>
+                    />
                   );
                 })}
               </div>

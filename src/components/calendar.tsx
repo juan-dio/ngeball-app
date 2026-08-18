@@ -26,7 +26,11 @@ interface CalendarProps {
   className?: string;
 }
 
-export function Calendar({ selectedDate, onSelectDate, className }: CalendarProps) {
+export function Calendar({
+  selectedDate,
+  onSelectDate,
+  className,
+}: CalendarProps) {
   const today = React.useMemo(() => startOfDay(new Date()), []);
   const [currentMonth, setCurrentMonth] = React.useState<Date>(() => {
     const d = new Date(today);
@@ -82,7 +86,8 @@ export function Calendar({ selectedDate, onSelectDate, className }: CalendarProp
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const daysInPrevMonth = new Date(year, month, 0).getDate();
 
-    const days: { date: Date; isCurrentMonth: boolean; isDisabled: boolean }[] = [];
+    const days: { date: Date; isCurrentMonth: boolean; isDisabled: boolean }[] =
+      [];
 
     const maxSelectableDate = new Date(today);
     maxSelectableDate.setDate(maxSelectableDate.getDate() + 30);
@@ -96,7 +101,11 @@ export function Calendar({ selectedDate, onSelectDate, className }: CalendarProp
       const d = new Date(year, month, i);
       const isPast = d < today;
       const isTooFar = d > maxSelectableDate;
-      days.push({ date: d, isCurrentMonth: true, isDisabled: isPast || isTooFar });
+      days.push({
+        date: d,
+        isCurrentMonth: true,
+        isDisabled: isPast || isTooFar,
+      });
     }
 
     const totalSlots = Math.ceil(days.length / 7) * 7;
@@ -128,7 +137,9 @@ export function Calendar({ selectedDate, onSelectDate, className }: CalendarProp
           >
             <ChevronLeft className="size-4" />
           </button>
-          <h3 className="text-body font-medium text-text-primary">{monthYearDisplay}</h3>
+          <h3 className="text-body font-medium text-text-primary">
+            {monthYearDisplay}
+          </h3>
           <button
             type="button"
             onClick={handleNextMonth}
@@ -153,7 +164,8 @@ export function Calendar({ selectedDate, onSelectDate, className }: CalendarProp
 
         <div className="grid grid-cols-7 text-center">
           {calendarDays.map((item, idx) => {
-            const isSelected = !item.isDisabled && isSameDay(item.date, selectedDate);
+            const isSelected =
+              !item.isDisabled && isSameDay(item.date, selectedDate);
             const isToday = isSameDay(item.date, today);
 
             return (
@@ -169,7 +181,7 @@ export function Calendar({ selectedDate, onSelectDate, className }: CalendarProp
                       : isSelected
                         ? "bg-text-primary text-white"
                         : "text-text-primary hover:bg-light",
-                    !isSelected && isToday && "border-2 border-primary",
+                    isToday && "border-2 border-primary",
                   )}
                 >
                   {item.date.getDate()}

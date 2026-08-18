@@ -220,7 +220,10 @@ export default function CourtDetails() {
         {/* Bottom Row: Calendar + Schedule/Duration + Summary Card */}
         <div className="grid grid-cols-1 justify-center gap-6 lg:grid-cols-[max-content_max-content_1fr]">
           {/* Left: Interactive Calendar */}
-          <Calendar selectedDate={selectedDate} onSelectDate={setSelectedDate} />
+          <Calendar
+            selectedDate={selectedDate}
+            onSelectDate={setSelectedDate}
+          />
 
           {/* Middle: Duration and Schedule */}
           <div className="flex flex-col gap-6">
@@ -305,7 +308,7 @@ export default function CourtDetails() {
               </span>
             </div>
 
-            <Button className="h-auto w-full rounded-[12px] bg-primary py-3 text-body font-medium text-white hover:bg-primary/90">
+            <Button className="h-auto w-full rounded-[12px] bg-primary py-3 text-body font-medium text-white cursor-pointer hover:bg-primary/90">
               Proceed to Payment
             </Button>
           </div>

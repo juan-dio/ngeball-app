@@ -18,80 +18,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { CourtCard, type Court } from "@/components/court-card";
-
-const COURTS: Court[] = [
-  {
-    name: "Futsal Court A",
-    image: "/images/futsal1.jpg",
-    type: "Synthetic Grass Futsal Court",
-    price: "200.000,00",
-    sport: "Futsal",
-  },
-  {
-    name: "Futsal Court B",
-    image: "/images/futsal3.jpg",
-    type: "Interlock Futsal Court",
-    price: "250.000,00",
-    sport: "Futsal",
-  },
-  {
-    name: "Basketball Court B",
-    image: "/images/basket1.jpg",
-    type: "Indoor Basketball Court",
-    price: "220.000,00",
-    sport: "Basketball",
-  },
-  {
-    name: "Padel Court B",
-    image: "/images/padel1.jpg",
-    type: "Padel Court",
-    price: "300.000,00",
-    sport: "Padel",
-  },
-  {
-    name: "Futsal Court C",
-    image: "/images/futsal2.jpg",
-    type: "Interlock Futsal Court",
-    price: "270.000,00",
-    sport: "Futsal",
-  },
-  {
-    name: "Tennis Court A",
-    image: "/images/indoor-tennis1.jpg",
-    type: "Indoor Tennis Court",
-    price: "300.000,00",
-    sport: "Tennis",
-  },
-  {
-    name: "Basketball Court A",
-    image: "/images/indoor-basket1.jpg",
-    type: "Indoor Basketball Court",
-    price: "300.000,00",
-    sport: "Basketball",
-  },
-  {
-    name: "Padel Court A",
-    image: "/images/padel2.jpg",
-    type: "Padel Court",
-    price: "330.000,00",
-    sport: "Padel",
-  },
-  {
-    name: "Basketball Court C",
-    image: "/images/basket2.jpg",
-    type: "Indoor Basketball Court",
-    price: "320.000,00",
-    sport: "Basketball",
-  },
-  {
-    name: "Tennis Court B",
-    image: "/images/tennis1.jpg",
-    type: "Indoor Tennis Court",
-    price: "400.000,00",
-    sport: "Tennis",
-  },
-];
+import { CourtCard } from "@/components/court-card";
+import { COURTS } from "@/data/courts";
 
 function ToolbarDropdown({
   label,

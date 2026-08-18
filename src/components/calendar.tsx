@@ -154,6 +154,7 @@ export function Calendar({ selectedDate, onSelectDate, className }: CalendarProp
         <div className="grid grid-cols-7 text-center">
           {calendarDays.map((item, idx) => {
             const isSelected = !item.isDisabled && isSameDay(item.date, selectedDate);
+            const isToday = isSameDay(item.date, today);
 
             return (
               <div key={idx} className="flex items-center justify-center">
@@ -168,6 +169,7 @@ export function Calendar({ selectedDate, onSelectDate, className }: CalendarProp
                       : isSelected
                         ? "bg-text-primary text-white"
                         : "text-text-primary hover:bg-light",
+                    !isSelected && isToday && "border-2 border-primary",
                   )}
                 >
                   {item.date.getDate()}

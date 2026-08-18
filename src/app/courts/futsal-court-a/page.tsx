@@ -6,6 +6,7 @@ import { AppNavbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { SelectButton } from "@/components/select-button";
+import { Calendar } from "@/components/calendar";
 import { SportIconWithText } from "@/components/icons/sport-icon";
 import {
   Carousel,
@@ -22,7 +23,6 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const CAROUSEL_IMAGES = [
   "/images/futsal1.jpg",
@@ -48,16 +48,6 @@ const TIME_SLOTS = [
 const DURATIONS = [60, 90, 120];
 const BASE_HOURLY_PRICE = 300000;
 
-const DAYS_OF_WEEK = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-
-function isSameDay(d1: Date, d2: Date) {
-  return (
-    d1.getFullYear() === d2.getFullYear() &&
-    d1.getMonth() === d2.getMonth() &&
-    d1.getDate() === d2.getDate()
-  );
-}
-
 function startOfDay(d: Date) {
   const res = new Date(d);
   res.setHours(0, 0, 0, 0);
@@ -67,11 +57,6 @@ function startOfDay(d: Date) {
 export default function CourtDetails() {
   const today = React.useMemo(() => startOfDay(new Date()), []);
   const [selectedDate, setSelectedDate] = React.useState<Date>(today);
-  const [currentMonth, setCurrentMonth] = React.useState<Date>(() => {
-    const d = new Date(today);
-    d.setDate(1);
-    return d;
-  });
   const [selectedDuration, setSelectedDuration] = React.useState<number>(60);
   const [selectedTimeSlot, setSelectedTimeSlot] =
     React.useState<string>("10:00 - 11:00");
@@ -96,100 +81,6 @@ export default function CourtDetails() {
       overlayCarouselApi.off("select", onSelect);
     };
   }, [overlayCarouselApi]);
-
-  // Month navigation boundaries: current month of today up to today + 1 month
-  const minMonth = React.useMemo(() => {
-    const d = new Date(today);
-    d.setDate(1);
-    return d;
-  }, [today]);
-
-  const maxMonth = React.useMemo(() => {
-    const d = new Date(today);
-    d.setMonth(d.getMonth() + 1, 1);
-    return d;
-  }, [today]);
-
-  const canPrevMonth =
-    currentMonth.getFullYear() > minMonth.getFullYear() ||
-    (currentMonth.getFullYear() === minMonth.getFullYear() &&
-      currentMonth.getMonth() > minMonth.getMonth());
-
-  const canNextMonth =
-    currentMonth.getFullYear() < maxMonth.getFullYear() ||
-    (currentMonth.getFullYear() === maxMonth.getFullYear() &&
-      currentMonth.getMonth() < maxMonth.getMonth());
-
-  const handlePrevMonth = () => {
-    if (!canPrevMonth) return;
-    setCurrentMonth((prev) => {
-      const next = new Date(prev);
-      next.setMonth(next.getMonth() - 1);
-      return next;
-    });
-  };
-
-  const handleNextMonth = () => {
-    if (!canNextMonth) return;
-    setCurrentMonth((prev) => {
-      const next = new Date(prev);
-      next.setMonth(next.getMonth() + 1);
-      return next;
-    });
-  };
-
-  // Calendar dates computation
-  const calendarDays = React.useMemo(() => {
-    const year = currentMonth.getFullYear();
-    const month = currentMonth.getMonth();
-
-    const firstDayIndex = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const daysInPrevMonth = new Date(year, month, 0).getDate();
-
-    const days: { date: Date; isCurrentMonth: boolean; isDisabled: boolean }[] =
-      [];
-
-    // Max selectable date: today + 30 days
-    const maxSelectableDate = new Date(today);
-    maxSelectableDate.setDate(maxSelectableDate.getDate() + 30);
-
-    // Prev month padding
-    for (let i = firstDayIndex - 1; i >= 0; i--) {
-      const d = new Date(year, month - 1, daysInPrevMonth - i);
-      days.push({
-        date: d,
-        isCurrentMonth: false,
-        isDisabled: true,
-      });
-    }
-
-    // Current month days
-    for (let i = 1; i <= daysInMonth; i++) {
-      const d = new Date(year, month, i);
-      const isPast = d < today;
-      const isTooFar = d > maxSelectableDate;
-      days.push({
-        date: d,
-        isCurrentMonth: true,
-        isDisabled: isPast || isTooFar,
-      });
-    }
-
-    // Next month padding to fill 35 or 42 grid slots
-    const totalSlots = Math.ceil(days.length / 7) * 7;
-    const remainingSlots = totalSlots - days.length;
-    for (let i = 1; i <= remainingSlots; i++) {
-      const d = new Date(year, month + 1, i);
-      days.push({
-        date: d,
-        isCurrentMonth: false,
-        isDisabled: true,
-      });
-    }
-
-    return days;
-  }, [currentMonth, today]);
 
   // Lock body scroll on overlay open
   React.useEffect(() => {
@@ -242,11 +133,6 @@ export default function CourtDetails() {
       document.removeEventListener("keydown", handleKeydown);
     };
   }, [isOverlayOpen]);
-
-  const monthYearDisplay = currentMonth.toLocaleString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
 
   const formattedDateDisplay = selectedDate.toLocaleDateString("en-GB", {
     day: "numeric",
@@ -334,76 +220,7 @@ export default function CourtDetails() {
         {/* Bottom Row: Calendar + Schedule/Duration + Summary Card */}
         <div className="grid grid-cols-1 justify-center gap-6 lg:grid-cols-[max-content_max-content_1fr]">
           {/* Left: Interactive Calendar */}
-          <div className="flex flex-col gap-3">
-            <h2 className="text-h2 text-text-primary leading-tight">
-              Select Date
-            </h2>
-            <div className="rounded-[16px] border border-border bg-white p-6">
-              <div className="mb-6 flex items-center justify-between">
-                <button
-                  type="button"
-                  onClick={handlePrevMonth}
-                  disabled={!canPrevMonth}
-                  aria-label="Previous month"
-                  className="flex size-8 items-center justify-center rounded-full border border-border text-text-secondary transition hover:bg-light hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  <ChevronLeft className="size-4" />
-                </button>
-                <h3 className="text-body font-medium text-text-primary">
-                  {monthYearDisplay}
-                </h3>
-                <button
-                  type="button"
-                  onClick={handleNextMonth}
-                  disabled={!canNextMonth}
-                  aria-label="Next month"
-                  className="flex size-8 items-center justify-center rounded-full border border-border text-text-secondary transition hover:bg-light hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  <ChevronRight className="size-4" />
-                </button>
-              </div>
-
-              {/* Days header */}
-              <div className="grid grid-cols-7 text-center">
-                {DAYS_OF_WEEK.map((d) => (
-                  <div
-                    key={d}
-                    className="size-10 flex items-center justify-center text-body font-medium text-text-secondary"
-                  >
-                    {d}
-                  </div>
-                ))}
-              </div>
-
-              {/* Dates Grid */}
-              <div className="grid grid-cols-7 text-center">
-                {calendarDays.map((item, idx) => {
-                  const isSelected =
-                    !item.isDisabled && isSameDay(item.date, selectedDate);
-
-                  return (
-                    <div key={idx} className="flex items-center justify-center">
-                      <button
-                        type="button"
-                        disabled={item.isDisabled}
-                        onClick={() => setSelectedDate(item.date)}
-                        className={cn(
-                          "flex size-10 items-center justify-center rounded-full text-body transition cursor-pointer",
-                          item.isDisabled
-                            ? "cursor-not-allowed text-muted opacity-50"
-                            : isSelected
-                              ? "bg-text-primary text-white"
-                              : "text-text-primary hover:bg-light",
-                        )}
-                      >
-                        {item.date.getDate()}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+          <Calendar selectedDate={selectedDate} onSelectDate={setSelectedDate} />
 
           {/* Middle: Duration and Schedule */}
           <div className="flex flex-col gap-6">

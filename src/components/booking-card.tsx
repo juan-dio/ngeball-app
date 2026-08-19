@@ -4,6 +4,9 @@ import { useState } from "react"
 import { Calendar, ChevronDown, ChevronUp } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { FutsalIcon } from "@/components/icons/futsal-icon"
+import { BasketballIcon } from "@/components/icons/basketball-icon"
+import { TennisIcon } from "@/components/icons/tennis-icon"
+import { PadelIcon } from "@/components/icons/padel-icon"
 
 interface TimelineItem {
   label: string
@@ -37,6 +40,19 @@ export function BookingCard({
 }: BookingCardProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
 
+  const getSportIcon = (sportName: string) => {
+    switch (sportName.toLowerCase()) {
+      case "basketball":
+        return <BasketballIcon className="w-5 h-5 text-[#bb4d00]" />
+      case "tennis":
+        return <TennisIcon className="w-5 h-5 text-[#285a48]" />
+      case "padel":
+        return <PadelIcon className="w-5 h-5 text-[#4c8ce4]" />
+      default:
+        return <FutsalIcon className="w-5 h-5 text-[#008236]" />
+    }
+  }
+
   return (
     <Card className="border border-border rounded-[16px] bg-white w-full max-w-[832px] overflow-hidden shadow-none">
       <div className="p-6 flex flex-col gap-6">
@@ -44,7 +60,7 @@ export function BookingCard({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-[#008236]/10 flex items-center justify-center border border-[#008236]">
-              <FutsalIcon className="w-5 h-5 text-[#008236]" />
+              {getSportIcon(sport)}
             </div>
             <span className="text-h2 text-text-primary font-medium">{id}</span>
           </div>

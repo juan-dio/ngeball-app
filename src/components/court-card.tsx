@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 import { Card } from "@/components/ui/card";
@@ -6,11 +7,14 @@ import { Separator } from "@/components/ui/separator";
 import { SportIcon, type SportKey } from "@/components/icons/sport-icon";
 
 export type Court = {
+  id: string;
   name: string;
   image: string;
+  images?: string[];
   type: string;
   price: string;
   sport: SportKey;
+  description: string;
 };
 
 type CourtCardProps = {
@@ -49,7 +53,11 @@ export function CourtCard({ court, priority }: CourtCardProps) {
       <Separator className="bg-border" />
 
       <div className="p-4">
-        <Button className="h-10 w-full rounded-[8px] bg-primary text-white cursor-pointer hover:bg-primary/90">
+        <Button
+          nativeButton={false}
+          render={<Link href={`/courts/${court.id}`} />}
+          className="h-10 w-full rounded-[8px] bg-primary text-white cursor-pointer hover:bg-primary/90"
+        >
           Select
         </Button>
       </div>

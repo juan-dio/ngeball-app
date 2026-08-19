@@ -152,6 +152,9 @@ Before creating a new component, always check `src/components/` for existing one
   - Accepts a `drawer` prop for mobile-drawer content; pass buttons with `w-full` so they stretch full-width in the drawer
 - `<AccountDropdown />` — `src/components/account-dropdown.tsx` — profile/logout dropdown; must be rendered inside a `<Navbar>` (needs `MenuContext`)
 - `useMenu()` / `MenuContext` — `src/components/menu-context.ts` — shared single-open menu state (`"drawer" | "account" | null`); `useMenu()` throws outside a `<Navbar>`
+- `<Calendar />` — `src/components/calendar.tsx` — interactive date picker with validation (30-day window)
+- `<CourtCard />` — `src/components/court-card.tsx` — court preview card with image, price, and select link
+- `<SelectButton />` — `src/components/select-button.tsx` — button for duration/slot selection supporting active/disabled states
 - Icons in `src/components/icons/` — `FutsalIcon`, `BasketballIcon`, `TennisIcon`, `PadelIcon`, `FieldIcon`, `DatetimeIcon`, `PayIcon`
 
 > **Icon color:** All custom icon components use `currentColor` for fill/stroke, so colors are overridable at the call site with Tailwind utilities (`text-*`, `fill-*`, `stroke-*`).
@@ -252,6 +255,7 @@ When a design requires an icon inside an input field, use this pattern:
 | `/`         | `src/app/page.tsx`                | ✅ Done   | Landing page (hero, sports, courts, benefits, CTA) |
 | `/login`    | `src/app/login/page.tsx`          | ✅ Done   | Login with email/password + Google SSO   |
 | `/register` | `src/app/register/page.tsx`       | ✅ Done   | Sign up (names, email, password) + validation |
+| `/courts/[id]`| `src/app/courts/[id]/page.tsx`  | ✅ Done   | Court details with carousel, interactive calendar, duration/schedule selection, summary card, and image lightbox |
 
 > **Responsive:** All landing page sections and the footer are fully responsive (see Section 11).
 

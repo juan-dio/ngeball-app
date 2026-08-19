@@ -155,7 +155,7 @@ export function Calendar({
           {DAYS_OF_WEEK.map((d) => (
             <div
               key={d}
-              className="size-10 flex items-center justify-center text-body font-medium text-text-secondary"
+              className="flex h-10 items-center justify-center text-body font-medium text-text-primary"
             >
               {d}
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, ChevronDown, ChevronUp } from "lucide-react";
+import { Calendar, ChevronDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { SportIcon, type SportKey } from "@/components/icons/sport-icon";
 
@@ -45,8 +45,9 @@ export function BookingCard({
   duration,
   time,
   timeline,
+  defaultExpanded = false,
 }: BookingCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (
     <Card className="border border-border rounded-[16px] py-0 gap-0 bg-white w-full max-w-200 overflow-hidden shadow-none">
@@ -98,17 +99,21 @@ export function BookingCard({
           className="p-2 rounded-full cursor-pointer"
           aria-label="Toggle details"
         >
-          {isExpanded ? (
-            <ChevronUp className="w-5 h-5 text-text-primary" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-text-primary" />
-          )}
+          <ChevronDown
+            className={`w-5 h-5 text-text-primary transition-transform duration-300 ${
+              isExpanded ? "rotate-180" : ""
+            }`}
+          />
         </button>
       </div>
 
-      {/* Expanded Details */}
-      {isExpanded && (
-        <div className="px-8 pt-4 pb-6 flex flex-col gap-4">
+      {/* Expanded Details Wrapper with Smooth Height & Opacity Transition */}
+      <div
+        className={`transition-all duration-300 ease-in-out overflow-hidden ${
+          isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="px-8 pt-4 pb-6 flex flex-col gap-4 border-t border-border">
           <h3 className="text-h3 text-text-primary">Details</h3>
 
           <div className="flex flex-col gap-3">
@@ -130,7 +135,7 @@ export function BookingCard({
             </div>
           </div>
         </div>
-      )}
+      </div>
     </Card>
   );
 }

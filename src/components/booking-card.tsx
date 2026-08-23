@@ -3,51 +3,20 @@
 import { useState } from "react";
 import { Calendar, ChevronDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { SportIcon, type SportKey } from "@/components/icons/sport-icon";
-
-type TimelineItem = {
-  label: string;
-  date: string;
-};
-
-export type Booking = {
-  id: string;
-  sport: SportKey;
-  courtName: string;
-  price: string;
-  status: string;
-  date: string;
-  duration: string;
-  time: string;
-  timeline: TimelineItem[];
-};
+import { SportIcon } from "@/components/icons/sport-icon";
+import { type Booking } from "@/data/bookings";
 
 type BookingCardProps = {
-  id: string;
-  sport: SportKey;
-  courtName: string;
-  price: string;
-  status: string;
-  date: string;
-  duration: string;
-  time: string;
-  timeline: TimelineItem[];
+  booking: Booking;
   defaultExpanded?: boolean;
 };
 
 export function BookingCard({
-  id,
-  sport,
-  courtName,
-  price,
-  status,
-  date,
-  duration,
-  time,
-  timeline,
+  booking,
   defaultExpanded = false,
 }: BookingCardProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const { id, sport, courtName, price, status, date, duration, time, timeline } = booking;
 
   return (
     <Card className="border border-border rounded-[16px] py-0 gap-0 bg-white w-full max-w-200 overflow-hidden shadow-none">

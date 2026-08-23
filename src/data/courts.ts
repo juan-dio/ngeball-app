@@ -1,4 +1,15 @@
-import { type Court } from "@/components/court-card";
+import { type SportKey } from "@/components/icons/sport-icon";
+
+export type Court = {
+  id: string;
+  name: string;
+  image: string;
+  images?: string[];
+  type: string;
+  price: string;
+  sport: SportKey;
+  description: string;
+};
 
 const DEFAULT_IMAGES = [
   "/images/futsal1.jpg",

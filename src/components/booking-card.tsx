@@ -57,24 +57,25 @@ export function BookingCard({
         </div>
       </div>
 
-      {/* Toggle Button */}
-      <div className="border-t border-border px-6 py-2 flex items-center justify-between">
+      {/* Toggle Button Container */}
+      <button
+        type="button"
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full border-t border-border px-6 py-3 flex items-center justify-between cursor-pointer hover:bg-light/50 transition-colors text-left"
+        aria-label="Toggle details"
+        aria-expanded={isExpanded}
+      >
         <span className="text-body font-medium text-text-primary">
           {isExpanded ? "Hide details" : "Expand details"}
         </span>
-        <button
-          type="button"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="p-2 rounded-full cursor-pointer"
-          aria-label="Toggle details"
-        >
+        <div className="p-1 rounded-full">
           <ChevronDown
             className={`w-5 h-5 text-text-primary transition-transform duration-300 ${
               isExpanded ? "rotate-180" : ""
             }`}
           />
-        </button>
-      </div>
+        </div>
+      </button>
 
       {/* Expanded Details Wrapper with Smooth Height & Opacity Transition */}
       <div

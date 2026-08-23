@@ -4,18 +4,8 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { SportIcon, type SportKey } from "@/components/icons/sport-icon";
-
-export type Court = {
-  id: string;
-  name: string;
-  image: string;
-  images?: string[];
-  type: string;
-  price: string;
-  sport: SportKey;
-  description: string;
-};
+import { SportIcon } from "@/components/icons/sport-icon";
+import { type Court } from "@/data/courts";
 
 type CourtCardProps = {
   court: Court;

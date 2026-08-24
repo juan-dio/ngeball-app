@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { ComponentType } from "react";
@@ -10,7 +12,7 @@ import {
   Zap,
 } from "lucide-react";
 
-import { LandingPageNavbarAuth } from "@/components/navbar";
+import { LandingPageNavbarAuth, LandingPageNavbarUnauth } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -21,6 +23,7 @@ import { PadelIcon } from "@/components/icons/padel-icon";
 import { FieldIcon } from "@/components/icons/field-icon";
 import { DatetimeIcon } from "@/components/icons/datetime-icon";
 import { PayIcon } from "@/components/icons/pay-icon";
+import { useAuth } from "@/hooks/use-auth";
 
 const STEPS = [
   { label: "Select court", icon: FieldIcon },
@@ -326,9 +329,11 @@ function Cta() {
 }
 
 export default function Home() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <main className="flex min-h-screen flex-col bg-background pt-16">
-      <LandingPageNavbarAuth />
+      {isAuthenticated ? <LandingPageNavbarAuth /> : <LandingPageNavbarUnauth />}
       <Hero />
       <Sports />
       <CourtSelection />

@@ -73,7 +73,7 @@ function AdminSidebarContent() {
                   className={cn(
                     "flex h-9 w-full items-center gap-2 rounded-[8px] px-2 py-2 text-body font-medium transition-colors",
                     active
-                      ? "bg-background text-primary hover:bg-background hover:text-primary data-active:bg-background data-active:text-primary"
+                      ? "border border-primary bg-background text-primary hover:bg-background hover:text-primary data-active:border data-active:border-primary data-active:bg-background data-active:text-primary"
                       : "bg-white text-text-primary hover:bg-light hover:text-text-primary",
                   )}
                 >

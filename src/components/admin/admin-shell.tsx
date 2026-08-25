@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,11 +12,20 @@ import {
   Tags,
   Trophy,
   Users,
-  X,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/logo";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 type AdminNavItem = {
   label: string;
@@ -38,33 +46,48 @@ function isActivePathname(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-function AdminNavLinks({ onNavigate }: { onNavigate?: () => void }) {
+function AdminSidebarContent() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-1">
-      {ADMIN_NAV_ITEMS.map((item) => {
-        const Icon = item.icon;
-        const active = isActivePathname(pathname, item.href);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={onNavigate}
-            aria-current={active ? "page" : undefined}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-body transition-colors",
-              active
-                ? "bg-primary text-white"
-                : "text-text-secondary hover:bg-light hover:text-text-primary",
-            )}
-          >
-            <Icon className="size-5" />
-            {item.label}
-          </Link>
-        );
-      })}
-    </nav>
+    <div className="flex flex-col gap-12 p-6">
+      {/* Header / Logo Frame (Frame 177) */}
+      <SidebarHeader className="h-[61px] w-[272px] justify-center p-4">
+        <Link href="/admin/dashboard" className="shrink-0">
+          <Logo />
+        </Link>
+      </SidebarHeader>
+
+      {/* Nav Menu List (Frame 173) */}
+      <SidebarContent className="p-0">
+        <SidebarMenu className="w-[272px] gap-2">
+          {ADMIN_NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const active = isActivePathname(pathname, item.href);
+
+            return (
+              <SidebarMenuItem key={item.href}>
+                <SidebarMenuButton
+                  render={<Link href={item.href} />}
+                  isActive={active}
+                  className={cn(
+                    "flex h-9 w-[272px] items-center gap-2 rounded-[8px] px-2 py-2 text-body font-medium transition-colors",
+                    active
+                      ? "bg-primary text-white hover:bg-primary/90 hover:text-white"
+                      : "bg-white text-text-primary hover:bg-light hover:text-text-primary",
+                  )}
+                >
+                  <span className="flex size-5 items-center justify-center">
+                    <Icon className="size-4 shrink-0" />
+                  </span>
+                  <span>{item.label}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarContent>
+    </div>
   );
 }
 
@@ -84,89 +107,41 @@ function AdminIdentityButton() {
 }
 
 export function AdminShell({ children }: { children: ReactNode }) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const pathname = usePathname();
   const currentSection = ADMIN_NAV_ITEMS.find((item) =>
     isActivePathname(pathname, item.href),
   );
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border bg-white px-4 md:hidden">
-        <Link href="/admin/dashboard" className="shrink-0">
-          <Logo />
-        </Link>
-        <button
-          type="button"
-          aria-label="Open menu"
-          aria-expanded={drawerOpen}
-          aria-controls="admin-mobile-drawer"
-          onClick={() => setDrawerOpen(true)}
-          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-text-primary transition-colors hover:bg-light"
-        >
-          <Menu className="size-5" />
-        </button>
-      </header>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "320px",
+          "--sidebar-width-mobile": "320px",
+        } as React.CSSProperties
+      }
+    >
+      <div className="flex min-h-screen w-full bg-background">
+        <Sidebar className="w-[320px] border-r border-border bg-white">
+          <AdminSidebarContent />
+        </Sidebar>
 
-      <div
-        className={cn(
-          "fixed inset-0 z-50 md:hidden",
-          !drawerOpen && "pointer-events-none",
-        )}
-      >
-        <div
-          aria-hidden="true"
-          onClick={() => setDrawerOpen(false)}
-          className={cn(
-            "absolute inset-0 bg-black/50 transition-opacity duration-300",
-            drawerOpen ? "opacity-100" : "opacity-0",
-          )}
-        />
-        <aside
-          id="admin-mobile-drawer"
-          inert={!drawerOpen}
-          className={cn(
-            "absolute inset-y-0 left-0 flex w-64 max-w-[80vw] flex-col bg-white transition-transform duration-300 ease-in-out",
-            drawerOpen ? "translate-x-0" : "-translate-x-full",
-          )}
-        >
-          <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-4">
-            <Logo />
-            <button
-              type="button"
-              aria-label="Close menu"
-              onClick={() => setDrawerOpen(false)}
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-text-primary transition-colors hover:bg-light"
-            >
-              <X className="size-5" />
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto p-4">
-            <AdminNavLinks onNavigate={() => setDrawerOpen(false)} />
-          </div>
-        </aside>
-      </div>
+        <div className="flex min-h-screen flex-1 flex-col">
+          <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-white px-6">
+            <div className="flex items-center gap-4">
+              <SidebarTrigger className="cursor-pointer text-text-primary hover:bg-light">
+                <Menu className="size-5" />
+              </SidebarTrigger>
+              <span className="text-h3 font-medium text-text-primary">
+                {currentSection?.label ?? "Admin"}
+              </span>
+            </div>
+            <AdminIdentityButton />
+          </header>
 
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-white md:flex">
-        <div className="flex h-16 shrink-0 items-center border-b border-border px-6">
-          <Link href="/admin/dashboard" className="shrink-0">
-            <Logo />
-          </Link>
+          <main className="flex-1 p-6 md:p-8">{children}</main>
         </div>
-        <div className="flex-1 overflow-y-auto p-4">
-          <AdminNavLinks />
-        </div>
-      </aside>
-
-      <div className="flex min-h-screen flex-col md:pl-64">
-        <header className="sticky top-0 z-30 hidden h-16 items-center justify-between border-b border-border bg-white px-6 md:flex">
-          <span className="text-h3 text-text-primary">
-            {currentSection?.label ?? "Admin"}
-          </span>
-          <AdminIdentityButton />
-        </header>
-        <main className="flex-1 p-6 md:p-8">{children}</main>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }

@@ -90,6 +90,15 @@
   --yellow: #ffdf20;
 
   /* shadcn UI Variable Mappings */
+  --sidebar: var(--white);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--white);
+  --sidebar-accent: var(--light);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--primary);
+
   --foreground: var(--text-primary);
   --card: var(--white);
   --card-foreground: var(--text-primary);
@@ -130,6 +139,15 @@
   --yellow: #ffdf20;
 
   /* shadcn UI Variable Mappings */
+  --sidebar: var(--dark);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--white);
+  --sidebar-accent: var(--light);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--primary);
+
   --foreground: var(--text-primary);
   --card: var(--dark);
   --card-foreground: var(--text-primary);

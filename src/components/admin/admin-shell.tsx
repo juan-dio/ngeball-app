@@ -52,7 +52,7 @@ function AdminSidebarContent() {
   return (
     <div className="flex flex-col gap-12 p-6">
       {/* Header / Logo Frame (Frame 177) */}
-      <SidebarHeader className="h-[61px] w-[272px] justify-center p-4">
+      <SidebarHeader className="h-[61px] w-full justify-center p-4">
         <Link href="/admin/dashboard" className="shrink-0">
           <Logo />
         </Link>
@@ -60,7 +60,7 @@ function AdminSidebarContent() {
 
       {/* Nav Menu List (Frame 173) */}
       <SidebarContent className="p-0">
-        <SidebarMenu className="w-[272px] gap-2">
+        <SidebarMenu className="w-full gap-2">
           {ADMIN_NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const active = isActivePathname(pathname, item.href);
@@ -71,9 +71,9 @@ function AdminSidebarContent() {
                   render={<Link href={item.href} />}
                   isActive={active}
                   className={cn(
-                    "flex h-9 w-[272px] items-center gap-2 rounded-[8px] px-2 py-2 text-body font-medium transition-colors",
+                    "flex h-9 w-full items-center gap-2 rounded-[8px] px-2 py-2 text-body font-medium transition-colors",
                     active
-                      ? "bg-primary text-white hover:bg-primary/90 hover:text-white"
+                      ? "bg-background text-primary hover:bg-background hover:text-primary data-active:bg-background data-active:text-primary"
                       : "bg-white text-text-primary hover:bg-light hover:text-text-primary",
                   )}
                 >
@@ -122,7 +122,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
       }
     >
       <div className="flex min-h-screen w-full bg-background">
-        <Sidebar className="w-[320px] border-r border-border bg-white">
+        <Sidebar className="w-[320px] bg-white">
           <AdminSidebarContent />
         </Sidebar>
 

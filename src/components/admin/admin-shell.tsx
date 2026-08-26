@@ -148,7 +148,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
           } as React.CSSProperties
         }
       >
-        <div ref={containerRef} className="flex min-h-screen w-full bg-background">
+        <div
+          ref={containerRef}
+          className="flex min-h-screen w-full bg-background"
+        >
           <Sidebar className="w-[320px] bg-white">
             <AdminSidebarContent />
           </Sidebar>
@@ -156,10 +159,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <div className="flex min-h-screen flex-1 flex-col">
             <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-white px-6">
               <div className="flex items-center gap-4">
-                <SidebarTrigger className="cursor-pointer text-text-primary hover:bg-light">
+                <SidebarTrigger className="cursor-pointer text-primary hover:bg-light">
                   <Menu className="size-5" />
                 </SidebarTrigger>
-                <span className="text-h3 font-medium text-text-primary">
+                <span className="text-h3 text-primary">
                   {currentSection?.label ?? "Admin"}
                 </span>
               </div>

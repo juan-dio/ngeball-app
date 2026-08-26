@@ -64,6 +64,15 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
     };
   }, [open]);
 
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [open]);
+
   const toggleMenu = (menu: MenuId) => {
     setOpenMenu((prev) => (prev === menu ? null : menu));
   };
@@ -122,14 +131,24 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
         </header>
 
         <div
-          className="fixed inset-x-0 top-16 z-40 h-[calc(100vh-4rem)] overflow-hidden pointer-events-none md:hidden"
+          className={cn(
+            "fixed inset-x-0 top-16 z-40 h-[calc(100vh-4rem)] overflow-hidden md:hidden transition-all duration-300",
+            openMenu === "drawer" ? "pointer-events-auto" : "pointer-events-none delay-300",
+          )}
           aria-hidden={openMenu !== "drawer"}
         >
+          <div
+            onClick={() => setOpenMenu(null)}
+            className={cn(
+              "absolute inset-0 bg-black/15 backdrop-blur-xs transition-opacity duration-300",
+              openMenu === "drawer" ? "opacity-100" : "opacity-0",
+            )}
+          />
           <div
             id="mobile-drawer"
             inert={openMenu !== "drawer"}
             className={cn(
-              "bg-white transition-transform duration-300 ease-in-out pointer-events-auto",
+              "absolute inset-x-0 top-0 bg-white transition-transform duration-300 ease-in-out shadow-lg",
               openMenu === "drawer" ? "translate-y-0" : "-translate-y-full",
             )}
           >

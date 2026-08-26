@@ -1,23 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Building2,
   CalendarDays,
-  ChevronDown,
   LayoutDashboard,
   Menu,
   Tags,
   Trophy,
   Users,
-  X,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/logo";
+import { AccountDropdown } from "@/components/account-dropdown";
+import { MenuContext, type MenuId } from "@/components/menu-context";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 type AdminNavItem = {
   label: string;
@@ -38,135 +48,134 @@ function isActivePathname(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-function AdminNavLinks({ onNavigate }: { onNavigate?: () => void }) {
+function AdminSidebarContent() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-1">
-      {ADMIN_NAV_ITEMS.map((item) => {
-        const Icon = item.icon;
-        const active = isActivePathname(pathname, item.href);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={onNavigate}
-            aria-current={active ? "page" : undefined}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-body transition-colors",
-              active
-                ? "bg-primary text-white"
-                : "text-text-secondary hover:bg-light hover:text-text-primary",
-            )}
-          >
-            <Icon className="size-5" />
-            {item.label}
-          </Link>
-        );
-      })}
-    </nav>
-  );
-}
+    <div className="flex flex-col gap-12 p-6">
+      {/* Header / Logo Frame (Frame 177) */}
+      <SidebarHeader className="w-full justify-center p-4">
+        <Link href="/admin/dashboard" className="shrink-0">
+          <Logo />
+        </Link>
+      </SidebarHeader>
 
-function AdminIdentityButton() {
-  return (
-    <button
-      type="button"
-      className="flex cursor-pointer items-center gap-2 rounded-full border border-border bg-white py-1 pr-3 pl-1 transition-colors hover:bg-light"
-    >
-      <span className="flex size-8 items-center justify-center rounded-full bg-primary text-small font-semibold text-white">
-        A
-      </span>
-      <span className="text-body font-medium text-text-primary">Admin</span>
-      <ChevronDown className="size-4 text-text-secondary" />
-    </button>
+      {/* Nav Menu List (Frame 173) */}
+      <SidebarContent className="p-0">
+        <SidebarMenu className="w-full gap-2">
+          {ADMIN_NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const active = isActivePathname(pathname, item.href);
+
+            return (
+              <SidebarMenuItem key={item.href}>
+                <SidebarMenuButton
+                  render={<Link href={item.href} />}
+                  isActive={active}
+                  className={cn(
+                    "flex w-full items-center gap-2 rounded-[8px] p-2 text-body font-medium transition-colors",
+                    active
+                      ? "border border-primary bg-background text-primary hover:bg-background hover:text-primary data-active:border data-active:border-primary data-active:bg-background data-active:text-primary"
+                      : "bg-white text-text-primary hover:bg-light hover:text-text-primary",
+                  )}
+                >
+                  <span className="flex size-5 items-center justify-center">
+                    <Icon className="size-4 shrink-0" />
+                  </span>
+                  <span>{item.label}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarContent>
+    </div>
   );
 }
 
 export function AdminShell({ children }: { children: ReactNode }) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const open = openMenu !== null;
   const pathname = usePathname();
   const currentSection = ADMIN_NAV_ITEMS.find((item) =>
     isActivePathname(pathname, item.href),
   );
 
-  return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border bg-white px-4 md:hidden">
-        <Link href="/admin/dashboard" className="shrink-0">
-          <Logo />
-        </Link>
-        <button
-          type="button"
-          aria-label="Open menu"
-          aria-expanded={drawerOpen}
-          aria-controls="admin-mobile-drawer"
-          onClick={() => setDrawerOpen(true)}
-          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-text-primary transition-colors hover:bg-light"
-        >
-          <Menu className="size-5" />
-        </button>
-      </header>
+  useEffect(() => {
+    if (!open) return;
 
-      <div
-        className={cn(
-          "fixed inset-0 z-50 md:hidden",
-          !drawerOpen && "pointer-events-none",
-        )}
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setOpenMenu(null);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenMenu(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  const toggleMenu = (menu: MenuId) => {
+    setOpenMenu((prev) => (prev === menu ? null : menu));
+  };
+
+  const menuContext = {
+    openMenu,
+    toggleMenu,
+    close: () => setOpenMenu(null),
+  };
+
+  return (
+    <MenuContext.Provider value={menuContext}>
+      <SidebarProvider
+        style={
+          {
+            "--sidebar-width": "320px",
+            "--sidebar-width-mobile": "320px",
+          } as React.CSSProperties
+        }
       >
         <div
-          aria-hidden="true"
-          onClick={() => setDrawerOpen(false)}
-          className={cn(
-            "absolute inset-0 bg-black/50 transition-opacity duration-300",
-            drawerOpen ? "opacity-100" : "opacity-0",
-          )}
-        />
-        <aside
-          id="admin-mobile-drawer"
-          inert={!drawerOpen}
-          className={cn(
-            "absolute inset-y-0 left-0 flex w-64 max-w-[80vw] flex-col bg-white transition-transform duration-300 ease-in-out",
-            drawerOpen ? "translate-x-0" : "-translate-x-full",
-          )}
+          ref={containerRef}
+          className="flex min-h-screen w-full bg-background"
         >
-          <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-4">
-            <Logo />
-            <button
-              type="button"
-              aria-label="Close menu"
-              onClick={() => setDrawerOpen(false)}
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-text-primary transition-colors hover:bg-light"
-            >
-              <X className="size-5" />
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto p-4">
-            <AdminNavLinks onNavigate={() => setDrawerOpen(false)} />
-          </div>
-        </aside>
-      </div>
+          <Sidebar className="w-[320px] bg-white">
+            <AdminSidebarContent />
+          </Sidebar>
 
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-white md:flex">
-        <div className="flex h-16 shrink-0 items-center border-b border-border px-6">
-          <Link href="/admin/dashboard" className="shrink-0">
-            <Logo />
-          </Link>
-        </div>
-        <div className="flex-1 overflow-y-auto p-4">
-          <AdminNavLinks />
-        </div>
-      </aside>
+          <div className="flex min-h-screen flex-1 flex-col">
+            <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-white px-6">
+              <div className="flex items-center gap-4">
+                <SidebarTrigger className="cursor-pointer text-primary hover:bg-light">
+                  <Menu className="size-5" />
+                </SidebarTrigger>
+                <span className="text-h3 text-primary">
+                  {currentSection?.label ?? "Admin"}
+                </span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-body text-primary">Hello, User</span>
+                <AccountDropdown />
+              </div>
+            </header>
 
-      <div className="flex min-h-screen flex-col md:pl-64">
-        <header className="sticky top-0 z-30 hidden h-16 items-center justify-between border-b border-border bg-white px-6 md:flex">
-          <span className="text-h3 text-text-primary">
-            {currentSection?.label ?? "Admin"}
-          </span>
-          <AdminIdentityButton />
-        </header>
-        <main className="flex-1 p-6 md:p-8">{children}</main>
-      </div>
-    </div>
+            <main className="flex-1 p-6 md:p-8">{children}</main>
+          </div>
+        </div>
+      </SidebarProvider>
+    </MenuContext.Provider>
   );
 }

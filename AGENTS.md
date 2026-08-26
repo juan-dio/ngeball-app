@@ -29,7 +29,7 @@ This project uses **Bun** exclusively.
 - Lint: `bun run lint` (ESLint flat config in `eslint.config.mjs`)
 - There is **no test suite**. Verify changes with lint + `bun run build`; typecheck manually with `bunx tsc --noEmit`.
 - **Do NOT use** `npm`, `yarn`, or `pnpm`.
-- **Git workflow:** development happens on page-specific feature branches (`landing-page`, `login-page`, `register-page`) that are merged into `main` via PRs.
+- **Git workflow:** development happens on page-specific feature branches merged into `main` via PRs.
 
 ## 1.5 Git Configuration
 
@@ -121,12 +121,7 @@ When choosing a font size class, follow this order:
 > ```
 
 ### Already Installed Components
-The following shadcn components are already available in `src/components/ui/`:
-- `button`
-- `card` (+ `CardHeader`, `CardContent`, `CardFooter`, `CardTitle`, `CardDescription`)
-- `input`
-- `label`
-- `separator`
+- `badge`, `button`, `card`, `carousel`, `dropdown-menu`, `input`, `label`, `pagination`, `separator`, `sheet`, `sidebar`, `skeleton`, `tooltip`
 
 ### Override Pattern
 Override shadcn component styles at the call site using `className`:
@@ -148,37 +143,20 @@ Before creating a new component, always check `src/components/` for existing one
 ### Currently Available Components
 
 - `<Navbar />` — `src/components/navbar.tsx`, `<Footer />` — `src/components/footer.tsx`
-  - Navbar has no default export — use one of the variants: `LandingPageNavbarUnauth` (login + book buttons), `LandingPageNavbarAuth` (book button + account dropdown), `AppNavbar` (app shell)
+  - Navbar variants: `LandingPageNavbarUnauth`, `LandingPageNavbarAuth`, `AppNavbar`
   - Accepts a `drawer` prop for mobile-drawer content; pass buttons with `w-full` so they stretch full-width in the drawer
-- `<AccountDropdown />` — `src/components/account-dropdown.tsx` — profile/logout dropdown; must be rendered inside a `<Navbar>` (needs `MenuContext`)
-- `useMenu()` / `MenuContext` — `src/components/menu-context.ts` — shared single-open menu state (`"drawer" | "account" | null`); `useMenu()` throws outside a `<Navbar>`
+- `<AccountDropdown />` — `src/components/account-dropdown.tsx` — profile/logout dropdown inside `<Navbar>` (needs `MenuContext`)
+- `useMenu()` / `MenuContext` — `src/components/menu-context.ts` — shared single-open menu state
 - `<Calendar />` — `src/components/calendar.tsx` — interactive date picker with validation (30-day window)
 - `<CourtCard />` — `src/components/court-card.tsx` — court preview card with image, price, and select link
 - `<SelectButton />` — `src/components/select-button.tsx` — button for duration/slot selection supporting active/disabled states
-- Icons in `src/components/icons/` — `FutsalIcon`, `BasketballIcon`, `TennisIcon`, `PadelIcon`, `FieldIcon`, `DatetimeIcon`, `PayIcon`
+- `<BookingCard />` — `src/components/booking-card.tsx` — booking details card with accordion timeline
+- `<BookingStatus />` — `src/components/booking-status.tsx` — status badge (`Pending`, `Rejected`, `Paid`/`Confirmed`)
+- `<AdminShell />` — `src/components/admin/admin-shell.tsx` — admin layout shell with sidebar
+- `<Logo />` — `src/components/logo.tsx` — application logo (Volleyball icon + "ngeBall")
+- Icons in `src/components/icons/` — `FutsalIcon`, `BasketballIcon`, `TennisIcon`, `PadelIcon`, `FieldIcon`, `DatetimeIcon`, `PayIcon`, `SportIcon`, `SportIconWithText`, `SPORT_META`
 
-> **Icon color:** All custom icon components use `currentColor` for fill/stroke, so colors are overridable at the call site with Tailwind utilities (`text-*`, `fill-*`, `stroke-*`).
-
-#### `<Logo />` — `src/components/logo.tsx`
-The application logo. Renders the Volleyball icon from `lucide-react` alongside the branded "ngeBall" text.
-
-**Props:**
-| Prop            | Type     | Default | Description                          |
-|-----------------|----------|---------|--------------------------------------|
-| `className`     | `string` | `""`    | Wrapper div class overrides          |
-| `iconClassName` | `string` | `""`    | Class overrides for the icon         |
-| `textClassName` | `string` | `""`    | Class overrides for the text wrapper |
-
-**Usage:**
-```tsx
-import { Logo } from "@/components/logo";
-
-// Default
-<Logo />
-
-// With size override
-<Logo className="gap-2" iconClassName="h-8 w-8" />
-```
+> **Icon color:** All custom icon components use `currentColor` for fill/stroke, overridable via Tailwind utilities (`text-*`, `fill-*`, `stroke-*`).
 
 ---
 
@@ -189,24 +167,33 @@ src/
 ├── app/                    # Next.js App Router pages and layouts
 │   ├── globals.css         # Tailwind v4 + design tokens + typography utilities
 │   ├── layout.tsx          # Root layout (Inter via --font-sans)
-│   ├── page.tsx            # Landing page (navbar, hero, sports, courts, benefits, CTA)
-│   ├── login/page.tsx      # Login page (reference implementation)
-│   └── register/page.tsx   # Register page (sign up form)
+│   ├── (public)/           # Public route group
+│   │   ├── layout.tsx      # Public layout wrapper
+│   │   ├── page.tsx        # Landing page
+│   │   ├── login/page.tsx  # Login page
+│   │   ├── register/page.tsx # Register page
+│   │   ├── courts/page.tsx # Court search & list page
+│   │   ├── courts/[id]/page.tsx # Court details page
+│   │   └── booking/page.tsx # User bookings history/management page
+│   └── (admin)/            # Admin route group
+│       ├── layout.tsx      # Admin layout wrapper using <AdminShell />
+│       └── admin/          # Admin pages (dashboard, bookings, courts, sports, court-types, users)
 ├── components/
 │   ├── ui/                 # shadcn/ui components (DO NOT MODIFY)
-│   │   ├── button.tsx
-│   │   ├── card.tsx
-│   │   ├── input.tsx
-│   │   ├── label.tsx
-│   │   └── separator.tsx
-│   ├── icons/              # Icon components (sport, field, datetime, pay)
-│   ├── navbar.tsx          # Navbar variants + mobile drawer; owns MenuContext provider
-│   ├── account-dropdown.tsx# Profile/logout dropdown (consumes useMenu)
-│   ├── menu-context.ts     # MenuContext + useMenu (shared single-open menu state)
-│   ├── footer.tsx
-│   └── logo.tsx            # Reusable Logo component
+│   ├── admin/              # Admin components (<AdminShell />)
+│   ├── icons/              # Icon components & sport metadata
+│   ├── navbar.tsx          # Navbar variants + mobile drawer
+│   ├── account-dropdown.tsx# Profile/logout dropdown
+│   ├── menu-context.ts     # MenuContext + useMenu
+│   ├── calendar.tsx        # Calendar component
+│   ├── court-card.tsx      # Court card component
+│   ├── select-button.tsx   # Duration/slot select button
+│   ├── booking-card.tsx    # Booking card component
+│   ├── booking-status.tsx  # Booking status badge
+│   ├── footer.tsx          # Footer component
+│   └── logo.tsx            # Logo component
 └── lib/
-    └── utils.ts            # Utility functions (cn helper from shadcn)
+    └── utils.ts            # Utility functions (cn helper)
 ```
 
 ---
@@ -250,14 +237,15 @@ When a design requires an icon inside an input field, use this pattern:
 
 ## 9. Implemented Pages (Reference)
 
-| Route       | File                              | Status    | Description                              |
-|-------------|-----------------------------------|-----------|------------------------------------------|
-| `/`         | `src/app/page.tsx`                | ✅ Done   | Landing page (hero, sports, courts, benefits, CTA) |
-| `/login`    | `src/app/login/page.tsx`          | ✅ Done   | Login with email/password + Google SSO   |
-| `/register` | `src/app/register/page.tsx`       | ✅ Done   | Sign up (names, email, password) + validation |
-| `/courts/[id]`| `src/app/courts/[id]/page.tsx`  | ✅ Done   | Court details with carousel, interactive calendar, duration/schedule selection, summary card, and image lightbox |
-
-> **Responsive:** All landing page sections and the footer are fully responsive (see Section 11).
+| Route               | File                                      | Status    | Description                                       |
+|---------------------|-------------------------------------------|-----------|---------------------------------------------------|
+| `/`                 | `src/app/(public)/page.tsx`               | ✅ Done   | Landing page (hero, sports, courts, benefits, CTA)|
+| `/login`            | `src/app/(public)/login/page.tsx`         | ✅ Done   | Login with email/password + Google SSO            |
+| `/register`         | `src/app/(public)/register/page.tsx`      | ✅ Done   | Sign up (names, email, password) + validation     |
+| `/courts`           | `src/app/(public)/courts/page.tsx`        | ✅ Done   | Court search & list page with filters/pagination  |
+| `/courts/[id]`      | `src/app/(public)/courts/[id]/page.tsx`   | ✅ Done   | Court details with carousel, interactive calendar |
+| `/booking`          | `src/app/(public)/booking/page.tsx`       | ✅ Done   | User bookings history & management                |
+| `/admin/*`          | `src/app/(admin)/admin/*/page.tsx`        | ✅ Done   | Admin dashboard, bookings, courts, sports, etc.   |
 
 ---
 
@@ -283,12 +271,11 @@ All responsiveness is done with Tailwind breakpoints in JSX — there are **no**
 
 - **Mobile-first:** base classes target mobile; `md:` / `lg:` overrides adjust for desktop.
 - **Breakpoints in use:** `sm:` (640px), `md:` (768px), `lg:` (1024px), plus arbitrary `max-[351px]:` for very small viewports.
-- **Desktop/mobile swap:** use `hidden md:flex` (desktop element) + `md:hidden` (mobile element). Examples: navbar links vs hamburger drawer, hero steps (3x3 grid mobile, horizontal flex desktop).
-- **Full-width CTAs on mobile:** `w-full md:w-auto` (hero buttons, mobile drawer buttons).
-- **Grid collapse:** `grid-cols-2 md:grid-cols-4` (sports section).
-- **Page container:** `mx-auto flex w-full max-w-300 px-6` (or `flex-col` for stacked layouts).
-- **`next/image`:** always set `sizes` with breakpoints, e.g. `sizes="(max-width: 768px) 90vw, (max-width: 1024px) 80vw, 320px"`.
-- **Navbar mobile drawer:** `md:hidden` + `inert={openMenu !== "drawer"}` + animated `max-h` / `translate-y` (see Section 10 React 19 note).
+- **Desktop/mobile swap:** use `hidden md:flex` (desktop element) + `md:hidden` (mobile element).
+- **Full-width CTAs on mobile:** `w-full md:w-auto`.
+- **Grid collapse:** `grid-cols-2 md:grid-cols-4`.
+- **Page container:** `mx-auto flex w-full max-w-300 px-6`.
+- **`next/image`:** always set `sizes` with breakpoints.
 
 ### Tailwind v4 Spacing Gotcha
 
@@ -297,6 +284,4 @@ Numeric utilities use the v4 spacing scale (`0.25rem` base). Non-obvious values 
 
 ### Test Viewports
 
-When making layout changes, check at minimum: 320px (small mobile), 375px (mobile), 768px (tablet), 1440px (desktop). The hero step grid specifically needs a check in the 336–351px range where `max-[351px]:` overrides kick in.
-
-<!-- END:project-conventions -->
+When making layout changes, check at minimum: 320px (small mobile), 375px (mobile), 768px (tablet), 1440px (desktop).

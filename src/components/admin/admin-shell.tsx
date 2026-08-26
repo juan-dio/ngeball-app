@@ -1,12 +1,12 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Building2,
   CalendarDays,
-  ChevronDown,
   LayoutDashboard,
   Menu,
   Tags,
@@ -16,6 +16,8 @@ import {
 
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/logo";
+import { AccountDropdown } from "@/components/account-dropdown";
+import { MenuContext, type MenuId } from "@/components/menu-context";
 import {
   Sidebar,
   SidebarContent,
@@ -52,7 +54,7 @@ function AdminSidebarContent() {
   return (
     <div className="flex flex-col gap-12 p-6">
       {/* Header / Logo Frame (Frame 177) */}
-      <SidebarHeader className="h-[61px] w-full justify-center p-4">
+      <SidebarHeader className="w-full justify-center p-4">
         <Link href="/admin/dashboard" className="shrink-0">
           <Logo />
         </Link>
@@ -71,7 +73,7 @@ function AdminSidebarContent() {
                   render={<Link href={item.href} />}
                   isActive={active}
                   className={cn(
-                    "flex h-9 w-full items-center gap-2 rounded-[8px] px-2 py-2 text-body font-medium transition-colors",
+                    "flex w-full items-center gap-2 rounded-[8px] p-2 text-body font-medium transition-colors",
                     active
                       ? "border border-primary bg-background text-primary hover:bg-background hover:text-primary data-active:border data-active:border-primary data-active:bg-background data-active:text-primary"
                       : "bg-white text-text-primary hover:bg-light hover:text-text-primary",
@@ -91,57 +93,86 @@ function AdminSidebarContent() {
   );
 }
 
-function AdminIdentityButton() {
-  return (
-    <button
-      type="button"
-      className="flex cursor-pointer items-center gap-2 rounded-full border border-border bg-white py-1 pr-3 pl-1 transition-colors hover:bg-light"
-    >
-      <span className="flex size-8 items-center justify-center rounded-full bg-primary text-small font-semibold text-white">
-        A
-      </span>
-      <span className="text-body font-medium text-text-primary">Admin</span>
-      <ChevronDown className="size-4 text-text-secondary" />
-    </button>
-  );
-}
-
 export function AdminShell({ children }: { children: ReactNode }) {
+  const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const open = openMenu !== null;
   const pathname = usePathname();
   const currentSection = ADMIN_NAV_ITEMS.find((item) =>
     isActivePathname(pathname, item.href),
   );
 
-  return (
-    <SidebarProvider
-      style={
-        {
-          "--sidebar-width": "320px",
-          "--sidebar-width-mobile": "320px",
-        } as React.CSSProperties
+  useEffect(() => {
+    if (!open) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setOpenMenu(null);
       }
-    >
-      <div className="flex min-h-screen w-full bg-background">
-        <Sidebar className="w-[320px] bg-white">
-          <AdminSidebarContent />
-        </Sidebar>
+    };
 
-        <div className="flex min-h-screen flex-1 flex-col">
-          <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-white px-6">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger className="cursor-pointer text-text-primary hover:bg-light">
-                <Menu className="size-5" />
-              </SidebarTrigger>
-              <span className="text-h3 font-medium text-text-primary">
-                {currentSection?.label ?? "Admin"}
-              </span>
-            </div>
-            <AdminIdentityButton />
-          </header>
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenMenu(null);
+      }
+    };
 
-          <main className="flex-1 p-6 md:p-8">{children}</main>
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  const toggleMenu = (menu: MenuId) => {
+    setOpenMenu((prev) => (prev === menu ? null : menu));
+  };
+
+  const menuContext = {
+    openMenu,
+    toggleMenu,
+    close: () => setOpenMenu(null),
+  };
+
+  return (
+    <MenuContext.Provider value={menuContext}>
+      <SidebarProvider
+        style={
+          {
+            "--sidebar-width": "320px",
+            "--sidebar-width-mobile": "320px",
+          } as React.CSSProperties
+        }
+      >
+        <div ref={containerRef} className="flex min-h-screen w-full bg-background">
+          <Sidebar className="w-[320px] bg-white">
+            <AdminSidebarContent />
+          </Sidebar>
+
+          <div className="flex min-h-screen flex-1 flex-col">
+            <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-white px-6">
+              <div className="flex items-center gap-4">
+                <SidebarTrigger className="cursor-pointer text-text-primary hover:bg-light">
+                  <Menu className="size-5" />
+                </SidebarTrigger>
+                <span className="text-h3 font-medium text-text-primary">
+                  {currentSection?.label ?? "Admin"}
+                </span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-body text-primary">Hello, User</span>
+                <AccountDropdown />
+              </div>
+            </header>
+
+            <main className="flex-1 p-6 md:p-8">{children}</main>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </MenuContext.Provider>
   );
 }

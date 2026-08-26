@@ -73,6 +73,17 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
     return () => document.body.classList.remove("overflow-hidden");
   }, [open]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setOpenMenu(null);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const toggleMenu = (menu: MenuId) => {
     setOpenMenu((prev) => (prev === menu ? null : menu));
   };

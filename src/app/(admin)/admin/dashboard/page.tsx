@@ -39,6 +39,19 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+function getAxisTicks(data: { bookings: number }[]) {
+  const max = Math.max(...data.map((d) => d.bookings));
+  const step = Math.max(50, Math.ceil(max / 5 / 50) * 50);
+  const top = Math.ceil(max / step) * step;
+  const ticks: number[] = [];
+  for (let v = 0; v <= top; v += step) {
+    ticks.push(v);
+  }
+  return ticks;
+}
+
+const axisTicks = getAxisTicks(bookingData);
+
 export default function DashboardPage() {
   return (
     <section className="flex flex-col gap-4">
@@ -122,7 +135,10 @@ export default function DashboardPage() {
               config={chartConfig}
               className="min-w-150 w-full h-75"
             >
-              <BarChart data={bookingData}>
+              <BarChart
+                data={bookingData}
+                margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
+              >
                 <CartesianGrid stroke="#D1D5DC" />
                 <XAxis
                   dataKey="month"
@@ -134,7 +150,8 @@ export default function DashboardPage() {
                   tick={{ fill: "#6A7282", fontSize: 12 }}
                   tickLine={false}
                   axisLine={false}
-                  domain={[0, 250]}
+                  domain={[0, axisTicks[axisTicks.length - 1]]}
+                  ticks={axisTicks}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Bar

@@ -43,10 +43,10 @@ export default function DashboardPage() {
   return (
     <section className="flex flex-col gap-4">
       {/* Top Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {/* Total Revenue */}
         <Card className="bg-dark border-0 rounded-[16px] p-0">
-          <CardContent className="flex flex-col justify-start gap-6 p-5">
+          <CardContent className="flex md:flex-col justify-start gap-6 p-5">
             <div className="flex h-14 w-14 items-center justify-center rounded-[8px] bg-primary/80">
               <Banknote className="h-8 w-8 text-white" />
             </div>
@@ -63,7 +63,7 @@ export default function DashboardPage() {
 
         {/* Active Bookings */}
         <Card className="bg-[#E2E8F0] border-0 rounded-[16px] p-0">
-          <CardContent className="flex flex-col justify-start gap-6 p-5">
+          <CardContent className="flex md:flex-col justify-start gap-6 p-5">
             <div className="flex h-14 w-14 items-center justify-center rounded-[8px] bg-primary/10">
               <Ticket className="h-6 w-6 text-primary" />
             </div>
@@ -80,7 +80,7 @@ export default function DashboardPage() {
 
         {/* Total Users */}
         <Card className="bg-[#E2E8F0] border-0 rounded-[16px] p-0">
-          <CardContent className="flex flex-col justify-start gap-6 p-5">
+          <CardContent className="flex md:flex-col justify-start gap-6 p-5">
             <div className="flex h-14 w-14 items-center justify-center rounded-[8px] bg-primary/10">
               <Users className="h-6 w-6 text-primary" />
             </div>
@@ -97,7 +97,7 @@ export default function DashboardPage() {
 
         {/* Court Occupancy */}
         <Card className="bg-primary border-0 rounded-[16px] p-0">
-          <CardContent className="flex flex-col justify-start gap-6 p-5">
+          <CardContent className="flex md:flex-col justify-start gap-6 p-5">
             <div className="flex h-14 w-14 items-center justify-center rounded-[8px] bg-white/20">
               <LayoutGrid className="h-6 w-6 text-white" />
             </div>
@@ -117,45 +117,50 @@ export default function DashboardPage() {
       <Card className="border border-border rounded-[16px]">
         <CardContent className="p-6">
           <h2 className="text-h2 text-text-primary mb-6">Booking Trends</h2>
-          <ChartContainer config={chartConfig} className="h-75 w-full">
-            <BarChart data={bookingData}>
-              <CartesianGrid stroke="#D1D5DC" />
-              <XAxis
-                dataKey="month"
-                tick={{ fill: "#6A7282", fontSize: 12 }}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                tick={{ fill: "#6A7282", fontSize: 12 }}
-                tickLine={false}
-                axisLine={false}
-                domain={[0, 250]}
-              />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar
-                dataKey="bookings"
-                fill="var(--color-bookings)"
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ChartContainer>
+          <div className="w-full overflow-x-auto">
+            <ChartContainer
+              config={chartConfig}
+              className="min-w-150 w-full h-75"
+            >
+              <BarChart data={bookingData}>
+                <CartesianGrid stroke="#D1D5DC" />
+                <XAxis
+                  dataKey="month"
+                  tick={{ fill: "#6A7282", fontSize: 12 }}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  tick={{ fill: "#6A7282", fontSize: 12 }}
+                  tickLine={false}
+                  axisLine={false}
+                  domain={[0, 250]}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar
+                  dataKey="bookings"
+                  fill="var(--color-bookings)"
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ChartContainer>
+          </div>
         </CardContent>
       </Card>
 
       {/* Bottom Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-[auto_min-content_auto] gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[minmax(min-content,1fr)_minmax(min-content,1fr)_auto] gap-4">
         {/* Peak Booking Schedule */}
         <Card className="border border-border rounded-[16px] p-0">
           <CardContent className="h-full flex items-center p-6 gap-4">
             <div className="flex shrink-0 h-14 w-14 items-center justify-center rounded-[8px] bg-primary/10">
               <Clock className="h-6 w-6 text-primary" />
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 whitespace-nowrap">
               <span className="text-body font-medium text-text-secondary leading-tight">
                 Peak Booking Schedule
               </span>
-              <span className="text-h2 text-text-primary font-semibold leading-tight whitespace-nowrap">
+              <span className="text-h2 text-text-primary font-semibold leading-tight">
                 09:00 - 10:00
               </span>
             </div>
@@ -168,12 +173,12 @@ export default function DashboardPage() {
             <div className="flex shrink-0 h-14 w-14 items-center justify-center rounded-[8px] bg-primary/10">
               <TrendingUp className="h-6 w-6 text-primary" />
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 whitespace-nowrap">
               <span className="text-body font-medium text-text-secondary leading-tight">
                 Top Performing Court
               </span>
-              <span className="text-h2 text-text-primary font-semibold leading-tight whitespace-nowrap">
-                Futsal Court A Lorem
+              <span className="text-h2 text-text-primary font-semibold leading-tight">
+                Futsal Court A
               </span>
             </div>
           </CardContent>

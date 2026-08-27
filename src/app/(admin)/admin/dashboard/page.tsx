@@ -139,7 +139,7 @@ export default function DashboardPage() {
                 data={bookingData}
                 margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
               >
-                <CartesianGrid stroke="#D1D5DC" />
+                <CartesianGrid stroke="#D1D5DC" vertical={false} />
                 <XAxis
                   dataKey="month"
                   tick={{ fill: "#6A7282", fontSize: 12 }}

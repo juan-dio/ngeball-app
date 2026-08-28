@@ -121,7 +121,9 @@ When choosing a font size class, follow this order:
 > ```
 
 ### Already Installed Components
-- `badge`, `button`, `card`, `carousel`, `dropdown-menu`, `input`, `label`, `pagination`, `separator`, `sheet`, `sidebar`, `skeleton`, `tooltip`
+- `badge`, `button`, `card`, `carousel`, `chart`, `dropdown-menu`, `input`, `label`, `pagination`, `separator`, `sheet`, `sidebar`, `skeleton`, `tooltip`
+
+> **Recharts:** The `chart` shadcn component (in `src/components/ui/chart.tsx`) wraps Recharts (`recharts` is a dependency). Use `ChartContainer`/`ChartTooltip` from `@/components/ui/chart` for all charts.
 
 ### Override Pattern
 Override shadcn component styles at the call site using `className`:
@@ -177,7 +179,7 @@ src/
 │   │   └── booking/page.tsx # User bookings history/management page
 │   └── (admin)/            # Admin route group
 │       ├── layout.tsx      # Admin layout wrapper using <AdminShell />
-│       └── admin/          # Admin pages (dashboard, bookings, courts, sports, court-types, users)
+│       └── admin/          # Admin pages (dashboard at /admin, bookings, courts, sports, court-types, users)
 ├── components/
 │   ├── ui/                 # shadcn/ui components (DO NOT MODIFY)
 │   ├── admin/              # Admin components (<AdminShell />)
@@ -245,7 +247,8 @@ When a design requires an icon inside an input field, use this pattern:
 | `/courts`           | `src/app/(public)/courts/page.tsx`        | ✅ Done   | Court search & list page with filters/pagination  |
 | `/courts/[id]`      | `src/app/(public)/courts/[id]/page.tsx`   | ✅ Done   | Court details with carousel, interactive calendar |
 | `/booking`          | `src/app/(public)/booking/page.tsx`       | ✅ Done   | User bookings history & management                |
-| `/admin/*`          | `src/app/(admin)/admin/*/page.tsx`        | ✅ Done   | Admin dashboard, bookings, courts, sports, etc.   |
+| `/admin`            | `src/app/(admin)/admin/page.tsx`          | ✅ Done   | Admin dashboard (metrics, booking trends chart, summary cards) |
+| `/admin/*`          | `src/app/(admin)/admin/*/page.tsx`        | ✅ Done   | Admin bookings, courts, sports, etc.              |
 
 ---
 
@@ -271,6 +274,7 @@ All responsiveness is done with Tailwind breakpoints in JSX — there are **no**
 
 - **Mobile-first:** base classes target mobile; `md:` / `lg:` overrides adjust for desktop.
 - **Breakpoints in use:** `sm:` (640px), `md:` (768px), `lg:` (1024px), plus arbitrary `max-[351px]:` for very small viewports.
+- **Sidebar mobile/desktop breakpoint is `lg:` (1024px)** — controlled by `MOBILE_BREAKPOINT = 1024` in `src/hooks/use-mobile.ts` and the `lg:` classes in `src/components/ui/sidebar.tsx`. Below `lg` the admin sidebar renders as a mobile drawer (`Sheet`); at `lg`+ it becomes a fixed desktop sidebar. Keep these two in sync if changing the breakpoint.
 - **Desktop/mobile swap:** use `hidden md:flex` (desktop element) + `md:hidden` (mobile element).
 - **Full-width CTAs on mobile:** `w-full md:w-auto`.
 - **Grid collapse:** `grid-cols-2 md:grid-cols-4`.
@@ -280,7 +284,7 @@ All responsiveness is done with Tailwind breakpoints in JSX — there are **no**
 ### Tailwind v4 Spacing Gotcha
 
 Numeric utilities use the v4 spacing scale (`0.25rem` base). Non-obvious values used in this codebase:
-`max-w-300` = 75rem, `max-w-118` = 29.5rem, `max-w-190` = 47.5rem, `md:pb-18` = 4.5rem, `md:px-26` = 6.5rem. These are valid — do not replace them with arbitrary values.
+`max-w-300` = 75rem, `max-w-118` = 29.5rem, `max-w-190` = 47.5rem, `md:pb-18` = 4.5rem, `md:px-26` = 6.5rem, `min-w-150` = 37.5rem, `h-75` = 18.75rem. These are valid — do not replace them with arbitrary values.
 
 ### Test Viewports
 

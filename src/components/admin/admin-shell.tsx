@@ -36,7 +36,7 @@ type AdminNavItem = {
 };
 
 const ADMIN_NAV_ITEMS: AdminNavItem[] = [
-  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Bookings", href: "/admin/bookings", icon: CalendarDays },
   { label: "Courts", href: "/admin/courts", icon: Building2 },
   { label: "Sports", href: "/admin/sports", icon: Trophy },
@@ -55,7 +55,7 @@ function AdminSidebarContent() {
     <div className="flex flex-col gap-12 p-6">
       {/* Header / Logo Frame (Frame 177) */}
       <SidebarHeader className="w-full justify-center p-4">
-        <Link href="/admin/dashboard" className="shrink-0">
+        <Link href="/admin" className="shrink-0">
           <Logo />
         </Link>
       </SidebarHeader>

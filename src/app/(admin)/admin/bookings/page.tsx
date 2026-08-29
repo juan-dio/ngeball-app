@@ -222,11 +222,8 @@ export default function BookingsPage() {
                             align="end"
                             className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow"
                           >
-                            <DropdownMenuItem className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary">
-                              View Details
-                            </DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer text-body text-danger focus:bg-danger/10 focus:text-danger">
-                              Cancel Booking
+                              Reject Booking
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

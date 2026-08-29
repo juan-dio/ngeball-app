@@ -150,7 +150,6 @@ export default function BookingsPage() {
                 </PopoverTrigger>
                 <PopoverContent align="start" className="w-auto p-0 border border-border bg-white shadow-lg">
                   <Calendar
-                    initialFocus
                     mode="range"
                     defaultMonth={dateRange?.from}
                     selected={dateRange}

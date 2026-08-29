@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Search, CalendarDays, ChevronDown, MoreVertical } from "lucide-react";
+import { format } from "date-fns";
+import type { DateRange } from "react-day-picker";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { BookingStatus } from "@/components/booking-status";
@@ -28,6 +30,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 
 type AdminBooking = {
   id: string;
@@ -99,6 +107,19 @@ const ADMIN_BOOKINGS: AdminBooking[] = [
 
 export default function BookingsPage() {
   const [currentPage, setCurrentPage] = useState(2);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(2026, 0, 20),
+    to: new Date(2026, 1, 20),
+  });
+
+  const formattedDateRange = dateRange?.from
+    ? dateRange.to
+      ? `${format(dateRange.from, "LLL dd, yyyy")} - ${format(
+          dateRange.to,
+          "LLL dd, yyyy",
+        )}`
+      : format(dateRange.from, "LLL dd, yyyy")
+    : "Pick a date range";
 
   return (
     <section className="flex flex-col gap-6">
@@ -118,14 +139,26 @@ export default function BookingsPage() {
 
             <div className="flex flex-col md:flex-row items-stretch gap-4">
               {/* Date Range Selector */}
-              <div className="flex h-10 w-full md:w-60 items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-text-primary">
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="h-4 w-4 text-text-secondary shrink-0" />
-                  <span className="text-small font-normal text-text-primary truncate">
-                    Jan 20, 2026 - Feb 20, 2026
-                  </span>
-                </div>
-              </div>
+              <Popover>
+                <PopoverTrigger className="flex h-10 w-full md:w-60 cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-text-primary hover:bg-light">
+                  <div className="flex items-center gap-2 overflow-hidden">
+                    <CalendarDays className="h-4 w-4 text-text-secondary shrink-0" />
+                    <span className="text-small font-normal text-text-primary truncate">
+                      {formattedDateRange}
+                    </span>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-auto p-0 border border-border bg-white shadow-lg">
+                  <Calendar
+                    initialFocus
+                    mode="range"
+                    defaultMonth={dateRange?.from}
+                    selected={dateRange}
+                    onSelect={setDateRange}
+                    numberOfMonths={2}
+                  />
+                </PopoverContent>
+              </Popover>
 
               {/* Dropdown Filter */}
               <DropdownMenu>

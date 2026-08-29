@@ -121,7 +121,7 @@ When choosing a font size class, follow this order:
 > ```
 
 ### Already Installed Components
-- `badge`, `button`, `card`, `carousel`, `chart`, `dropdown-menu`, `input`, `label`, `pagination`, `separator`, `sheet`, `sidebar`, `skeleton`, `tooltip`
+- `badge`, `button`, `card`, `carousel`, `chart`, `dropdown-menu`, `input`, `label`, `pagination`, `separator`, `sheet`, `sidebar`, `skeleton`, `tooltip`, `table`, `popover`, `calendar`
 
 > **Recharts:** The `chart` shadcn component (in `src/components/ui/chart.tsx`) wraps Recharts (`recharts` is a dependency). Use `ChartContainer`/`ChartTooltip` from `@/components/ui/chart` for all charts.
 
@@ -248,7 +248,8 @@ When a design requires an icon inside an input field, use this pattern:
 | `/courts/[id]`      | `src/app/(public)/courts/[id]/page.tsx`   | ✅ Done   | Court details with carousel, interactive calendar |
 | `/booking`          | `src/app/(public)/booking/page.tsx`       | ✅ Done   | User bookings history & management                |
 | `/admin`            | `src/app/(admin)/admin/page.tsx`          | ✅ Done   | Admin dashboard (metrics, booking trends chart, summary cards) |
-| `/admin/*`          | `src/app/(admin)/admin/*/page.tsx`        | ✅ Done   | Admin bookings, courts, sports, etc.              |
+| `/admin/bookings`   | `src/app/(admin)/admin/bookings/page.tsx` | ✅ Done   | Admin bookings list page with filters, table, pagination |
+| `/admin/*`          | `src/app/(admin)/admin/*/page.tsx`        | ✅ Done   | Other admin pages (courts, sports, court-types, users) |
 
 ---
 

@@ -45,6 +45,9 @@ const ADMIN_NAV_ITEMS: AdminNavItem[] = [
 ];
 
 function isActivePathname(pathname: string, href: string) {
+  if (href === "/admin") {
+    return pathname === "/admin";
+  }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 

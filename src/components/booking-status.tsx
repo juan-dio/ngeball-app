@@ -17,7 +17,7 @@ export function BookingStatus({ status }: BookingStatusProps) {
   return (
     <Badge
       variant="outline"
-      className={`h-auto px-6 py-2 rounded-[24px] text-small font-medium leading-tight ${variantClasses}`}
+      className={`h-auto px-2 py-1 rounded-[24px] ${variantClasses}`}
     >
       {status}
     </Badge>

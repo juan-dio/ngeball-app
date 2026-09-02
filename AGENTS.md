@@ -167,40 +167,19 @@ Before creating a new component, always check `src/components/` for existing one
 ```
 src/
 ├── app/                    # Next.js App Router pages and layouts
-│   ├── globals.css         # Tailwind v4 + design tokens + typography utilities
-│   ├── layout.tsx          # Root layout (Inter via --font-sans)
-│   ├── (public)/           # Public route group
-│   │   ├── layout.tsx      # Public layout wrapper
-│   │   ├── page.tsx        # Landing page
-│   │   ├── login/page.tsx  # Login page
-│   │   ├── register/page.tsx # Register page
-│   │   ├── courts/page.tsx # Court search & list page
-│   │   ├── courts/[id]/page.tsx # Court details page
-│   │   └── booking/page.tsx # User bookings history/management page
-│   └── (admin)/            # Admin route group
-│       ├── layout.tsx      # Admin layout wrapper using <AdminShell />
-│       └── admin/          # Admin pages (dashboard at /admin, bookings, courts, sports, court-types, users)
-├── components/
-│   ├── ui/                 # shadcn/ui components (DO NOT MODIFY)
-│   ├── admin/              # Admin components (<AdminShell />)
-│   ├── icons/              # Icon components & sport metadata
-│   ├── navbar.tsx          # Navbar variants + mobile drawer
-│   ├── account-dropdown.tsx# Profile/logout dropdown
-│   ├── menu-context.ts     # MenuContext + useMenu
-│   ├── calendar.tsx        # Calendar component
-│   ├── court-card.tsx      # Court card component
-│   ├── select-button.tsx   # Duration/slot select button
-│   ├── booking-card.tsx    # Booking card component
-│   ├── booking-status.tsx  # Booking status badge
-│   ├── footer.tsx          # Footer component
-│   └── logo.tsx            # Logo component
-└── lib/
-    └── utils.ts            # Utility functions (cn helper)
+├── components/             # shadcn ui (src/components/ui), admin, icons, navbar, etc.
+├── data/                   # Mock data files (bookings.ts, courts.ts)
+├── hooks/                  # Custom hooks (use-mobile.ts)
+└── lib/                    # Utility functions (cn helper)
 ```
+
+## 7. Data Layer Conventions
+- Mock data resides in `src/data/` (`bookings.ts`, `courts.ts`).
+- `BOOKINGS` in `src/data/bookings.ts` contains shared items with `userId` and `userName`. Public booking page (`src/app/(public)/booking/page.tsx`) filters by a specific user, while admin bookings page (`src/app/(admin)/admin/bookings/page.tsx`) consumes all items.
 
 ---
 
-## 7. Icons
+## 8. Icons
 
 This project uses **`lucide-react`** for all icons. Do not add other icon libraries.
 
@@ -212,7 +191,7 @@ Custom icon components in `src/components/icons/` use `currentColor` for fill/st
 
 ---
 
-## 8. Input with Inline Icons Pattern
+## 9. Input with Inline Icons Pattern
 
 When a design requires an icon inside an input field, use this pattern:
 
@@ -237,7 +216,7 @@ When a design requires an icon inside an input field, use this pattern:
 
 ---
 
-## 9. Implemented Pages (Reference)
+## 10. Implemented Pages (Reference)
 
 | Route               | File                                      | Status    | Description                                       |
 |---------------------|-------------------------------------------|-----------|---------------------------------------------------|
@@ -253,7 +232,7 @@ When a design requires an icon inside an input field, use this pattern:
 
 ---
 
-## 10. Coding Standards
+## 11. Coding Standards
 
 - **Language:** TypeScript. All new files must use `.tsx` (for JSX) or `.ts` (for utilities).
 - **Naming conventions:** Use kebab-case for file and folder names, while strictly using PascalCase for the React component functions inside those files.
@@ -267,7 +246,7 @@ When a design requires an icon inside an input field, use this pattern:
 
 ---
 
-## 11. Responsive Design
+## 12. Responsive Design
 
 All responsiveness is done with Tailwind breakpoints in JSX — there are **no** `@media` queries in `globals.css` (it only defines tokens + `@utility` typography).
 

@@ -36,74 +36,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-
-type AdminBooking = {
-  id: string;
-  name: string;
-  court: string;
-  date: string;
-  schedule: string;
-  payment: string;
-};
-
-const ADMIN_BOOKINGS: AdminBooking[] = [
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-];
+import { BOOKINGS } from "@/data/bookings";
 
 export default function BookingsPage() {
   const [currentPage, setCurrentPage] = useState(2);
@@ -214,7 +147,7 @@ export default function BookingsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {ADMIN_BOOKINGS.map((booking, index) => {
+                {BOOKINGS.map((booking, index) => {
                   const isEven = index % 2 === 1;
                   return (
                     <TableRow
@@ -229,20 +162,20 @@ export default function BookingsPage() {
                         {booking.id}
                       </TableCell>
                       <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                        {booking.name}
+                        {booking.userName}
                       </TableCell>
                       <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                        {booking.court}
+                        {booking.courtName}
                       </TableCell>
                       <TableCell className="p-2 text-center text-small text-text-primary font-light">
                         {booking.date}
                       </TableCell>
                       <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                        {booking.schedule}
+                        {booking.time}
                       </TableCell>
                       <TableCell className="p-2 text-center">
                         <div className="flex justify-center">
-                          <BookingStatus status={booking.payment} />
+                          <BookingStatus status={booking.status} />
                         </div>
                       </TableCell>
                       <TableCell className="p-2 text-center">

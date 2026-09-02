@@ -36,74 +36,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-
-type AdminBooking = {
-  id: string;
-  name: string;
-  court: string;
-  date: string;
-  schedule: string;
-  payment: string;
-};
-
-const ADMIN_BOOKINGS: AdminBooking[] = [
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-  {
-    id: "#123123123",
-    name: "Marcus Rashford",
-    court: "Futsal Court A",
-    date: "Jan 24, 2026",
-    schedule: "19:00 - 21:00",
-    payment: "Paid",
-  },
-];
+import { ADMIN_BOOKINGS } from "@/data/bookings";
 
 export default function BookingsPage() {
   const [currentPage, setCurrentPage] = useState(2);

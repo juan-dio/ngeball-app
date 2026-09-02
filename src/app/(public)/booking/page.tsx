@@ -44,13 +44,15 @@ function PaginationNav() {
 }
 
 export default function BookingPage() {
+  const userBookings = BOOKINGS.filter((booking) => booking.userId === "USR-001");
+
   return (
     <main className="flex min-h-screen flex-col bg-background pt-16">
       <AppNavbar />
 
       <div className="mx-auto flex w-full max-w-300 flex-col gap-8 px-6 pt-12 pb-22">
         <div className="w-full flex flex-col items-center gap-4">
-          {BOOKINGS.map((booking, index) => (
+          {userBookings.map((booking, index) => (
             <BookingCard key={index} booking={booking} />
           ))}
         </div>

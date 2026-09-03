@@ -34,7 +34,7 @@ export default function NewCourtPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-2">
               <label
-                className="text-body text-text-primary"
+                className="text-body text-text-primary leading-tight"
                 htmlFor="court-name"
               >
                 Name
@@ -42,20 +42,20 @@ export default function NewCourtPage() {
               <Input
                 id="court-name"
                 className="h-10 w-full rounded-[6px] border-border bg-white text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
-                placeholder="eg, Futsal Court X"
+                placeholder="eg. Futsal Court X"
               />
             </div>
             <div className="flex flex-col gap-2">
               <label
-                className="text-body text-text-primary"
+                className="text-body text-text-primary leading-tight"
                 htmlFor="court-price"
               >
-                Price per hour
+                Price /hour
               </label>
               <Input
                 id="court-price"
                 className="h-10 w-full rounded-[6px] border-border bg-white text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
-                placeholder="eg, 100000"
+                placeholder="eg. 100000"
               />
             </div>
           </div>
@@ -63,7 +63,9 @@ export default function NewCourtPage() {
           {/* Sport & Court type */}
           <div className="grid gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-2">
-              <label className="text-body text-text-primary">Sport</label>
+              <label className="text-body text-text-primary leading-tight">
+                Sport
+              </label>
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
                   <span className="text-body font-normal text-text-primary truncate">
@@ -84,7 +86,9 @@ export default function NewCourtPage() {
               </DropdownMenu>
             </div>
             <div className="flex flex-col gap-2">
-              <label className="text-body text-text-primary">Court type</label>
+              <label className="text-body text-text-primary leading-tight">
+                Court type
+              </label>
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
                   <span className="text-body font-normal text-text-primary truncate">
@@ -109,21 +113,23 @@ export default function NewCourtPage() {
           {/* Description */}
           <div className="flex flex-col gap-2">
             <label
-              className="text-body text-text-primary"
+              className="text-body text-text-primary leading-tight"
               htmlFor="court-description"
             >
               Description
             </label>
             <textarea
               id="court-description"
-              className="h-[144px] w-full resize-none rounded-[6px] border border-border bg-white p-3 text-body text-text-primary placeholder:text-text-secondary outline-none transition-colors focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
-              placeholder="eg, Court description"
+              className="h-36 w-full resize-none rounded-[6px] border border-border bg-white p-3 text-body text-text-primary placeholder:text-text-secondary outline-none transition-colors focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+              placeholder="eg. Court description"
             />
           </div>
 
           {/* Picture gallery */}
           <div className="flex flex-col gap-2">
-            <label className="text-body text-text-primary">Picture</label>
+            <label className="text-body text-text-primary leading-tight">
+              Picture
+            </label>
             <div className="w-full flex gap-4 overflow-x-auto">
               <label className="flex size-60 shrink-0 cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] border border-dashed border-border bg-light">
                 <ImagePlus className="size-6 text-text-secondary" />

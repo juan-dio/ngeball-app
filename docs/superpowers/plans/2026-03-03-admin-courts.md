@@ -1,11 +1,45 @@
+# Admin Courts Page Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Build the Admin Courts listing page at `/admin/courts` with toolbar, table, and pagination using shadcn/ui and mock data.
+
+**Architecture:** Single `"use client"` page component following the exact same pattern as `src/app/(admin)/admin/bookings/page.tsx`. State managed via `useState` for search, filters, and pagination. Data source is the static `COURTS` array.
+
+**Tech Stack:** Next.js App Router, shadcn/ui (Card, Input, Table, Pagination, DropdownMenu, Select), lucide-react icons, `SportIconWithText` from `@/components/icons/sport-icon`, `COURTS` from `@/data/courts`.
+
+## Global Constraints
+- Bun exclusively. No npm/yarn/pnpm.
+- Tailwind v4 tokens: use `bg-background`, `text-text-primary`, `text-body`, `text-small`, `bg-primary`, `text-white`, `border-border`, `text-blue`, `bg-white`, `bg-light`, `text-text-secondary`, `bg-green/10`, `bg-orange/10`, etc.
+- Never modify `src/components/ui/*`. Override styles via `className` at call site.
+- React Compiler enabled: no manual `useMemo`/`useCallback`.
+- Files/folders: `kebab-case`. Component functions: `PascalCase` with named exports.
+- `"use client"` only when using React state/effects/browser APIs.
+- Imports use `@/` path alias. No inline `style` prop.
+
+---
+
+### Task 1: Implement Courts Page Structure with Toolbar and Table
+
+**Files:**
+- Modify: `src/app/(admin)/admin/courts/page.tsx`
+
+**Interfaces:**
+- Consumes: `COURTS` from `@/data/courts` (type `Court[]`), `SportIconWithText` from `@/components/icons/sport-icon`
+- Produces: Default export `CourtsPage` component
+
+- [ ] **Step 1: Write the full page implementation**
+
+Replace contents of `src/app/(admin)/admin/courts/page.tsx`:
+
+```tsx
 "use client";
 
 import { useState } from "react";
 import { Search, Plus, ChevronDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { SportIconWithText } from "@/components/icons/sport-icon";
+import { SportIconWithText, type SportKey } from "@/components/icons/sport-icon";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,30 +65,25 @@ import {
 } from "@/components/ui/table";
 import { COURTS } from "@/data/courts";
 
+const SPORTS: SportKey[] = ["Futsal", "Basketball", "Tennis", "Padel"];
+const TYPES = ["All Types", "Indoor", "Outdoor", "Synthetic Grass", "Interlock"];
 const ITEMS_PER_PAGE = 5;
 
 export default function CourtsPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [selectedSport, setSelectedSport] = useState("All Sports");
-  const [selectedType, setSelectedType] = useState("All Types");
+  const [selectedSport, setSelectedSport] = useState<string>("All Sports");
+  const [selectedType, setSelectedType] = useState<string>("All Types");
 
   const filteredCourts = COURTS.filter((court) => {
-    const matchSearch = court.name
-      .toLowerCase()
-      .includes(search.trim().toLowerCase());
-    const matchSport =
-      selectedSport === "All Sports" || court.sport === selectedSport;
-    const matchType =
-      selectedType === "All Types" || court.type.includes(selectedType);
-    return matchSearch && matchSport && matchType;
+    const matchSport = selectedSport === "All Sports" || court.sport === selectedSport;
+    const matchType = selectedType === "All Types" || court.type.includes(selectedType);
+    return matchSport && matchType;
   });
 
-  const totalPages = Math.max(1, Math.ceil(filteredCourts.length / ITEMS_PER_PAGE));
-  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const totalPages = Math.ceil(filteredCourts.length / ITEMS_PER_PAGE);
   const paginatedCourts = filteredCourts.slice(
-    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
-    safeCurrentPage * ITEMS_PER_PAGE,
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
   );
 
   return (
@@ -70,18 +99,13 @@ export default function CourtsPage() {
               <Input
                 className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="Search court"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setCurrentPage(1);
-                }}
               />
             </div>
 
             <div className="flex flex-col md:flex-row items-stretch gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex h-10 w-full md:w-36 cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
-                  <span className="text-small font-normal text-text-primary truncate">
+                  <span className="text-small font-normal text-text-primary">
                     {selectedSport}
                   </span>
                   <ChevronDown className="size-4 shrink-0 text-text-secondary" />
@@ -89,21 +113,15 @@ export default function CourtsPage() {
                 <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
                   <DropdownMenuItem
                     className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                    onClick={() => {
-                      setSelectedSport("All Sports");
-                      setCurrentPage(1);
-                    }}
+                    onClick={() => { setSelectedSport("All Sports"); setCurrentPage(1); }}
                   >
                     All Sports
                   </DropdownMenuItem>
-                  {Array.from(new Set(COURTS.map((c) => c.sport))).map((sport) => (
+                  {SPORTS.map((sport) => (
                     <DropdownMenuItem
                       key={sport}
                       className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                      onClick={() => {
-                        setSelectedSport(sport);
-                        setCurrentPage(1);
-                      }}
+                      onClick={() => { setSelectedSport(sport); setCurrentPage(1); }}
                     >
                       {sport}
                     </DropdownMenuItem>
@@ -113,29 +131,17 @@ export default function CourtsPage() {
 
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex h-10 w-full md:w-36 cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
-                  <span className="text-small font-normal text-text-primary truncate">
+                  <span className="text-small font-normal text-text-primary">
                     {selectedType}
                   </span>
                   <ChevronDown className="size-4 shrink-0 text-text-secondary" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
-                  <DropdownMenuItem
-                    className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                    onClick={() => {
-                      setSelectedType("All Types");
-                      setCurrentPage(1);
-                    }}
-                  >
-                    All Types
-                  </DropdownMenuItem>
-                  {Array.from(new Set(COURTS.map((c) => c.type))).map((type) => (
+                  {TYPES.map((type) => (
                     <DropdownMenuItem
                       key={type}
                       className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                      onClick={() => {
-                        setSelectedType(type);
-                        setCurrentPage(1);
-                      }}
+                      onClick={() => { setSelectedType(type); setCurrentPage(1); }}
                     >
                       {type}
                     </DropdownMenuItem>
@@ -144,10 +150,10 @@ export default function CourtsPage() {
               </DropdownMenu>
             </div>
 
-            <Button className="h-10 gap-2 rounded-[12px] bg-primary px-4 text-small text-white cursor-pointer hover:bg-accent md:ml-auto">
-              <Plus />
+            <button className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-[12px] bg-primary px-4 text-small font-medium text-white hover:bg-accent md:ml-auto">
+              <Plus className="h-4 w-4" />
               Add Court
-            </Button>
+            </button>
           </div>
 
           {/* Table */}
@@ -205,10 +211,7 @@ export default function CourtsPage() {
                         Rp {court.price}
                       </TableCell>
                       <TableCell className="p-2 text-center">
-                        <a
-                          href="#"
-                          className="text-small font-medium text-blue underline hover:text-secondary"
-                        >
+                        <a href="#" className="text-small font-medium text-blue underline hover:text-secondary">
                           Details
                         </a>
                       </TableCell>
@@ -220,52 +223,80 @@ export default function CourtsPage() {
           </div>
 
           {/* Pagination */}
-          <Pagination className="pt-4">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (safeCurrentPage > 1) setCurrentPage(safeCurrentPage - 1);
-                  }}
-                  className={safeCurrentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                />
-              </PaginationItem>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <PaginationItem key={page}>
-                  <PaginationLink
+          <div className="flex justify-end">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
                     href="#"
-                    isActive={page === safeCurrentPage}
                     onClick={(e) => {
                       e.preventDefault();
-                      setCurrentPage(page);
+                      setCurrentPage((p) => Math.max(1, p - 1));
                     }}
-                  >
-                    {page}
-                  </PaginationLink>
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  />
                 </PaginationItem>
-              ))}
-              {totalPages > 3 && (
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      href="#"
+                      isActive={page === currentPage}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPage(page);
+                      }}
+                      className="text-small"
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                {totalPages > 3 && (
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                )}
                 <PaginationItem>
-                  <PaginationEllipsis />
+                  <PaginationNext
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCurrentPage((p) => Math.min(totalPages, p + 1));
+                    }}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                  />
                 </PaginationItem>
-              )}
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (safeCurrentPage < totalPages)
-                      setCurrentPage(safeCurrentPage + 1);
-                  }}
-                  className={safeCurrentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+              </PaginationContent>
+            </Pagination>
+          </div>
         </CardContent>
       </Card>
     </section>
   );
 }
+```
+
+- [ ] **Step 2: Run lint**
+
+```bash
+bun run lint
+```
+
+- [ ] **Step 3: Run typecheck**
+
+```bash
+bunx tsc --noEmit
+```
+
+- [ ] **Step 4: Run build**
+
+```bash
+bun run build
+```
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/app/\(admin\)/admin/courts/page.tsx
+git commit -m "feat: implement admin courts listing page with toolbar, table, and pagination"
+```

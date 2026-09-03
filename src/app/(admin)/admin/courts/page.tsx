@@ -50,7 +50,10 @@ export default function CourtsPage() {
     return matchSearch && matchSport && matchType;
   });
 
-  const totalPages = Math.max(1, Math.ceil(filteredCourts.length / ITEMS_PER_PAGE));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredCourts.length / ITEMS_PER_PAGE),
+  );
   const safeCurrentPage = Math.min(currentPage, totalPages);
   const paginatedCourts = filteredCourts.slice(
     (safeCurrentPage - 1) * ITEMS_PER_PAGE,
@@ -96,18 +99,20 @@ export default function CourtsPage() {
                   >
                     All Sports
                   </DropdownMenuItem>
-                  {Array.from(new Set(COURTS.map((c) => c.sport))).map((sport) => (
-                    <DropdownMenuItem
-                      key={sport}
-                      className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                      onClick={() => {
-                        setSelectedSport(sport);
-                        setCurrentPage(1);
-                      }}
-                    >
-                      {sport}
-                    </DropdownMenuItem>
-                  ))}
+                  {Array.from(new Set(COURTS.map((c) => c.sport))).map(
+                    (sport) => (
+                      <DropdownMenuItem
+                        key={sport}
+                        className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
+                        onClick={() => {
+                          setSelectedSport(sport);
+                          setCurrentPage(1);
+                        }}
+                      >
+                        {sport}
+                      </DropdownMenuItem>
+                    ),
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
 
@@ -128,25 +133,27 @@ export default function CourtsPage() {
                   >
                     All Types
                   </DropdownMenuItem>
-                  {Array.from(new Set(COURTS.map((c) => c.type))).map((type) => (
-                    <DropdownMenuItem
-                      key={type}
-                      className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                      onClick={() => {
-                        setSelectedType(type);
-                        setCurrentPage(1);
-                      }}
-                    >
-                      {type}
-                    </DropdownMenuItem>
-                  ))}
+                  {Array.from(new Set(COURTS.map((c) => c.type))).map(
+                    (type) => (
+                      <DropdownMenuItem
+                        key={type}
+                        className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
+                        onClick={() => {
+                          setSelectedType(type);
+                          setCurrentPage(1);
+                        }}
+                      >
+                        {type}
+                      </DropdownMenuItem>
+                    ),
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
 
-            <Button className="h-10 gap-2 rounded-[12px] bg-primary px-4 text-small text-white cursor-pointer hover:bg-accent md:ml-auto">
+            <Button className="h-10 gap-2 rounded-[12px] bg-primary px-4 text-small text-white cursor-pointer hover:bg-primary/90 md:ml-auto">
               <Plus />
-              Add Court
+              New Court
             </Button>
           </div>
 
@@ -207,7 +214,7 @@ export default function CourtsPage() {
                       <TableCell className="p-2 text-center">
                         <a
                           href="#"
-                          className="text-small font-medium text-blue underline hover:text-secondary"
+                          className="text-small font-light text-blue underline hover:text-secondary"
                         >
                           Details
                         </a>
@@ -227,25 +234,32 @@ export default function CourtsPage() {
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    if (safeCurrentPage > 1) setCurrentPage(safeCurrentPage - 1);
+                    if (safeCurrentPage > 1)
+                      setCurrentPage(safeCurrentPage - 1);
                   }}
-                  className={safeCurrentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  className={
+                    safeCurrentPage === 1
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
                 />
               </PaginationItem>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <PaginationItem key={page}>
-                  <PaginationLink
-                    href="#"
-                    isActive={page === safeCurrentPage}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setCurrentPage(page);
-                    }}
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      href="#"
+                      isActive={page === safeCurrentPage}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPage(page);
+                      }}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ),
+              )}
               {totalPages > 3 && (
                 <PaginationItem>
                   <PaginationEllipsis />
@@ -259,7 +273,11 @@ export default function CourtsPage() {
                     if (safeCurrentPage < totalPages)
                       setCurrentPage(safeCurrentPage + 1);
                   }}
-                  className={safeCurrentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                  className={
+                    safeCurrentPage === totalPages
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
                 />
               </PaginationItem>
             </PaginationContent>

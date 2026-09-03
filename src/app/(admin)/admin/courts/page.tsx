@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Search, Plus, ChevronDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -61,7 +62,7 @@ export default function CourtsPage() {
   );
 
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col">
       <Card className="border border-border rounded-[16px] bg-white p-6 shadow-none">
         <CardContent className="p-0 flex flex-col gap-6">
           {/* Toolbar / Filters */}
@@ -151,7 +152,11 @@ export default function CourtsPage() {
               </DropdownMenu>
             </div>
 
-            <Button className="h-10 gap-2 rounded-[12px] bg-primary px-4 text-small text-white cursor-pointer hover:bg-primary/90 md:ml-auto">
+            <Button
+              nativeButton={false}
+              render={<Link href="/admin/courts/new" />}
+              className="h-10 gap-2 rounded-[12px] bg-primary px-4 text-small text-white cursor-pointer hover:bg-primary/90 md:ml-auto"
+            >
               <Plus />
               New Court
             </Button>

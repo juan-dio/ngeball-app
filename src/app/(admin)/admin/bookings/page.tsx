@@ -38,8 +38,12 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { BOOKINGS } from "@/data/bookings";
 
+const ITEMS_PER_PAGE = 6;
+
 export default function BookingsPage() {
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState("All");
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(2026, 0, 20),
     to: new Date(2026, 1, 20),
@@ -54,6 +58,27 @@ export default function BookingsPage() {
       : format(dateRange.from, "LLL dd, yyyy")
     : "Pick a date range";
 
+  const filteredBookings = BOOKINGS.filter((booking) => {
+    const matchSearch =
+      booking.userName.toLowerCase().includes(search.trim().toLowerCase()) ||
+      booking.courtName.toLowerCase().includes(search.trim().toLowerCase()) ||
+      booking.id.toLowerCase().includes(search.trim().toLowerCase());
+    const matchPayment =
+      selectedPayment === "All" ||
+      booking.status.toLowerCase() === selectedPayment.toLowerCase();
+    return matchSearch && matchPayment;
+  });
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredBookings.length / ITEMS_PER_PAGE),
+  );
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const paginatedBookings = filteredBookings.slice(
+    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
+    safeCurrentPage * ITEMS_PER_PAGE,
+  );
+
   return (
     <section className="flex flex-col gap-6">
       <Card className="border border-border rounded-[16px] bg-white p-6 shadow-none">
@@ -67,6 +92,11 @@ export default function BookingsPage() {
               <Input
                 className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="Search booking"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setCurrentPage(1);
+                }}
               />
             </div>
 
@@ -95,24 +125,24 @@ export default function BookingsPage() {
               {/* Dropdown Filter */}
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex h-10 w-full md:w-36 cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
-                  <span className="text-small font-normal text-text-primary">
-                    Payment
+                  <span className="text-small font-normal text-text-primary truncate">
+                    {selectedPayment}
                   </span>
                   <ChevronDown className="size-4 shrink-0 text-text-secondary" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
-                  <DropdownMenuItem className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary">
-                    All
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary">
-                    Paid
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary">
-                    Pending
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary">
-                    Rejected
-                  </DropdownMenuItem>
+                  {["All", "Paid", "Pending", "Rejected"].map((status) => (
+                    <DropdownMenuItem
+                      key={status}
+                      className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
+                      onClick={() => {
+                        setSelectedPayment(status);
+                        setCurrentPage(1);
+                      }}
+                    >
+                      {status}
+                    </DropdownMenuItem>
+                  ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -147,7 +177,7 @@ export default function BookingsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {BOOKINGS.map((booking, index) => {
+                {paginatedBookings.map((booking, index) => {
                   const isEven = index % 2 === 1;
                   return (
                     <TableRow
@@ -208,56 +238,38 @@ export default function BookingsPage() {
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    if (currentPage > 1) setCurrentPage(currentPage - 1);
+                    if (safeCurrentPage > 1) setCurrentPage(safeCurrentPage - 1);
                   }}
+                  className={safeCurrentPage === 1 ? "pointer-events-none opacity-50" : ""}
                 />
               </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  href="#"
-                  isActive={currentPage === 1}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setCurrentPage(1);
-                  }}
-                >
-                  1
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  href="#"
-                  isActive={currentPage === 2}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setCurrentPage(2);
-                  }}
-                >
-                  2
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  href="#"
-                  isActive={currentPage === 3}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setCurrentPage(3);
-                  }}
-                >
-                  3
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    href="#"
+                    isActive={page === safeCurrentPage}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCurrentPage(page);
+                    }}
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              {totalPages > 3 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              )}
               <PaginationItem>
                 <PaginationNext
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    setCurrentPage(currentPage + 1);
+                    if (safeCurrentPage < totalPages) setCurrentPage(safeCurrentPage + 1);
                   }}
+                  className={safeCurrentPage === totalPages ? "pointer-events-none opacity-50" : ""}
                 />
               </PaginationItem>
             </PaginationContent>

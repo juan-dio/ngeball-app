@@ -117,7 +117,7 @@ export default function CourtsPage() {
               </DropdownMenu>
 
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex h-10 w-full md:w-36 cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
+                <DropdownMenuTrigger className="flex h-10 w-full md:w-56 cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
                   <span className="text-small font-normal text-text-primary truncate">
                     {selectedType}
                   </span>

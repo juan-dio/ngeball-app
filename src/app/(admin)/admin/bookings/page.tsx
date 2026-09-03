@@ -43,7 +43,7 @@ const ITEMS_PER_PAGE = 6;
 export default function BookingsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [selectedPayment, setSelectedPayment] = useState("All");
+  const [selectedPayment, setSelectedPayment] = useState("All Payment");
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(2026, 0, 20),
     to: new Date(2026, 1, 20),
@@ -64,7 +64,7 @@ export default function BookingsPage() {
       booking.courtName.toLowerCase().includes(search.trim().toLowerCase()) ||
       booking.id.toLowerCase().includes(search.trim().toLowerCase());
     const matchPayment =
-      selectedPayment === "All" ||
+      selectedPayment === "All Payment" ||
       booking.status.toLowerCase() === selectedPayment.toLowerCase();
     return matchSearch && matchPayment;
   });
@@ -111,7 +111,10 @@ export default function BookingsPage() {
                     </span>
                   </div>
                 </PopoverTrigger>
-                <PopoverContent align="start" className="w-auto p-0 border border-border bg-white shadow-lg">
+                <PopoverContent
+                  align="start"
+                  className="w-auto p-0 border border-border bg-white shadow-lg"
+                >
                   <Calendar
                     mode="range"
                     defaultMonth={dateRange?.from}
@@ -131,18 +134,20 @@ export default function BookingsPage() {
                   <ChevronDown className="size-4 shrink-0 text-text-secondary" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
-                  {["All", "Paid", "Pending", "Rejected"].map((status) => (
-                    <DropdownMenuItem
-                      key={status}
-                      className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                      onClick={() => {
-                        setSelectedPayment(status);
-                        setCurrentPage(1);
-                      }}
-                    >
-                      {status}
-                    </DropdownMenuItem>
-                  ))}
+                  {["All Payment", "Paid", "Pending", "Rejected"].map(
+                    (status) => (
+                      <DropdownMenuItem
+                        key={status}
+                        className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
+                        onClick={() => {
+                          setSelectedPayment(status);
+                          setCurrentPage(1);
+                        }}
+                      >
+                        {status}
+                      </DropdownMenuItem>
+                    ),
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -238,25 +243,32 @@ export default function BookingsPage() {
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    if (safeCurrentPage > 1) setCurrentPage(safeCurrentPage - 1);
+                    if (safeCurrentPage > 1)
+                      setCurrentPage(safeCurrentPage - 1);
                   }}
-                  className={safeCurrentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  className={
+                    safeCurrentPage === 1
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
                 />
               </PaginationItem>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <PaginationItem key={page}>
-                  <PaginationLink
-                    href="#"
-                    isActive={page === safeCurrentPage}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setCurrentPage(page);
-                    }}
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      href="#"
+                      isActive={page === safeCurrentPage}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPage(page);
+                      }}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ),
+              )}
               {totalPages > 3 && (
                 <PaginationItem>
                   <PaginationEllipsis />
@@ -267,9 +279,14 @@ export default function BookingsPage() {
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    if (safeCurrentPage < totalPages) setCurrentPage(safeCurrentPage + 1);
+                    if (safeCurrentPage < totalPages)
+                      setCurrentPage(safeCurrentPage + 1);
                   }}
-                  className={safeCurrentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                  className={
+                    safeCurrentPage === totalPages
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
                 />
               </PaginationItem>
             </PaginationContent>

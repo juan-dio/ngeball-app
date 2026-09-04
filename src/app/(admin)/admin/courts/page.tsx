@@ -217,12 +217,12 @@ export default function CourtsPage() {
                         Rp {court.price}
                       </TableCell>
                       <TableCell className="p-2 text-center">
-                        <a
-                          href="#"
+                        <Link
+                          href={`/admin/courts/${court.id}`}
                           className="text-small font-light text-blue underline hover:text-secondary"
                         >
                           Details
-                        </a>
+                        </Link>
                       </TableCell>
                     </TableRow>
                   );

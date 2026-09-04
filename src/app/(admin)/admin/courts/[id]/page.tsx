@@ -82,7 +82,7 @@ export default function CourtDetailPage({ params }: PageProps) {
                 id="court-name"
                 readOnly
                 value={court.name}
-                className="h-10 w-full rounded-[6px] border-border bg-white px-3 text-body text-text-primary focus-visible:ring-0"
+                className="h-10 w-full rounded-[6px] border-border bg-white px-3 text-body md:text-body text-text-primary focus-visible:ring-0"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -94,9 +94,10 @@ export default function CourtDetailPage({ params }: PageProps) {
               </label>
               <Input
                 id="court-price"
+                type="number"
                 readOnly
-                value={court.price}
-                className="h-10 w-full rounded-[6px] border-border bg-white px-3 text-body text-text-primary focus-visible:ring-0"
+                value={court.price.replace(/[^0-9]/g, "")}
+                className="h-10 w-full rounded-[6px] border-border bg-white px-3 text-body md:text-body text-text-primary focus-visible:ring-0"
               />
             </div>
           </div>

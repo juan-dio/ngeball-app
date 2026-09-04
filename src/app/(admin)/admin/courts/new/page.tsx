@@ -41,7 +41,7 @@ export default function NewCourtPage() {
               </label>
               <Input
                 id="court-name"
-                className="h-10 w-full rounded-[6px] border-border bg-white text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+                className="h-10 w-full rounded-[6px] border-border bg-white text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. Futsal Court X"
               />
             </div>
@@ -54,7 +54,8 @@ export default function NewCourtPage() {
               </label>
               <Input
                 id="court-price"
-                className="h-10 w-full rounded-[6px] border-border bg-white text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+                type="number"
+                className="h-10 w-full rounded-[6px] border-border bg-white text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. 100000"
               />
             </div>

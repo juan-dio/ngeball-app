@@ -11,7 +11,7 @@ export type Court = {
   description: string;
 };
 
-const DEFAULT_IMAGES = [
+export const DEFAULT_IMAGES = [
   "/images/futsal1.jpg",
   "/images/carousel2.jpg",
   "/images/carousel3.jpg",

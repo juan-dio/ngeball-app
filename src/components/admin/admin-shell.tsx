@@ -159,10 +159,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <AdminSidebarContent />
           </Sidebar>
 
-          <div className="flex w-full min-h-screen flex-1 flex-col">
+          <div className="flex w-full lg:w-[calc(100%-320px)] min-h-screen flex-col">
             <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-white px-6">
               <div className="flex items-center gap-4">
-                <SidebarTrigger className="cursor-pointer text-primary hover:bg-light">
+                <SidebarTrigger className="cursor-pointer text-primary hover:bg-light lg:hidden">
                   <Menu className="size-5" />
                 </SidebarTrigger>
                 <span className="text-h3 text-primary">

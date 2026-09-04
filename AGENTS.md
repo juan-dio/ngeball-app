@@ -67,6 +67,7 @@ Defined in `src/app/globals.css` via Tailwind v4 `@utility`. Font is **Inter**. 
 - **Never modify** files in `src/components/ui/`. Override styles via `className` at the call site.
 - **Base UI preset (shadcn v4):** Built on `@base-ui/react`, **not Radix**. `Button` uses `nativeButton={false}` + `render={<Link href="..." />}` instead of `asChild`.
 - Install components: `bunx --bun shadcn@latest add <component>`.
+- Installed: badge, button, calendar, card, carousel, chart, dropdown-menu, input, label, pagination, popover, separator, sheet, sidebar, skeleton, table, tooltip.
 - Use `ChartContainer`/`ChartTooltip` from `@/components/ui/chart` (wraps Recharts).
 
 ## 5. Reusable Components & Structure
@@ -75,8 +76,10 @@ Check `src/components/` before creating new ones:
 - `<AccountDropdown />` + `useMenu()` / `MenuContext`
 - `<Calendar />` (interactive date picker with 30-day window)
 - `<CourtCard />`, `<SelectButton />`, `<BookingCard />`, `<BookingStatus />`
-- `<AdminShell />` (admin layout shell with sidebar)
+- `<AdminShell />` (admin layout shell with sidebar) — nav: Dashboard, Bookings, Courts, Sports, Court Types, Users
 - `<Logo />`, custom icons in `src/components/icons/` (`currentColor` fill/stroke)
+- `<SportIcon />` / `<SportIconWithText />` — sport badge system with per-sport colors (`src/components/icons/sport-icon.tsx`). `SportKey = "Futsal" | "Basketball" | "Tennis" | "Padel"`. Use `SPORT_META` for icon + color mapping.
+- Hooks: `useAuth()` in `src/hooks/use-auth.ts` (stub — returns `{ isAuthenticated: false }`)
 
 ### File Structure & Data Layer
 ```
@@ -84,7 +87,7 @@ src/
 ├── app/          # Next.js App Router (public and admin route groups)
 ├── components/   # UI components (ui/, admin/, icons/, etc.)
 ├── data/         # Mock data files (bookings.ts, courts.ts)
-├── hooks/        # Custom hooks (use-mobile.ts)
+├── hooks/        # Custom hooks (use-mobile.ts, use-auth.ts)
 └── lib/          # Utility functions (cn helper in utils.ts)
 ```
 - `BOOKINGS` in `src/data/bookings.ts` contains shared items with `userId` and `userName`. Public booking page (`src/app/(public)/booking/page.tsx`) filters by a specific user, while admin bookings page (`src/app/(admin)/admin/bookings/page.tsx`) consumes all items.

@@ -56,7 +56,7 @@ export default function CourtDetailPage({ params }: PageProps) {
               {images.map((image, index) => (
                 <div
                   key={`${image}-${index}`}
-                  className="h-60 aspect-3/2 shrink-0 overflow-hidden rounded-[8px] border border-border"
+                  className="relative h-60 aspect-3/2 shrink-0 overflow-hidden rounded-[8px] border border-border"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

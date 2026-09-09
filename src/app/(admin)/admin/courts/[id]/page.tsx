@@ -21,7 +21,7 @@ export default function CourtDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const galleryImages =
+  const images =
     court.images && court.images.length > 0 ? court.images : [court.image];
 
   return (
@@ -53,14 +53,14 @@ export default function CourtDetailPage({ params }: PageProps) {
               Picture
             </label>
             <div className="w-full flex gap-4 overflow-x-auto pb-2">
-              {galleryImages.map((imgUrl, index) => (
+              {images.map((image, index) => (
                 <div
-                  key={`${imgUrl}-${index}`}
+                  key={`${image}-${index}`}
                   className="h-60 aspect-3/2 shrink-0 overflow-hidden rounded-[8px] border border-border"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={imgUrl}
+                    src={image}
                     alt={`${court.name} image ${index + 1}`}
                     className="h-full w-full object-cover"
                   />

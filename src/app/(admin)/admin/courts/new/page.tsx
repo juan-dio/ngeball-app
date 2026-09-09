@@ -131,7 +131,7 @@ export default function NewCourtPage() {
             <label className="text-body text-text-primary leading-tight">
               Picture
             </label>
-            <div className="w-full flex gap-4 overflow-x-auto">
+            <div className="w-full flex gap-4 overflow-x-auto pb-2">
               <label className="flex size-60 shrink-0 cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] border border-dashed border-border bg-light">
                 <ImagePlus className="size-6 text-text-secondary" />
                 <span className="text-[12px] font-light text-text-secondary text-center">
@@ -139,15 +139,15 @@ export default function NewCourtPage() {
                 </span>
                 <input type="file" accept="image/*" className="hidden" />
               </label>
-              {images.map((image) => (
+              {images.map((image, index) => (
                 <div
-                  key={image}
-                  className="relative h-60 aspect-3/2 shrink-0 overflow-hidden rounded-[6px]"
+                  key={`${image}-${index}`}
+                  className="h-60 aspect-3/2 shrink-0 overflow-hidden rounded-[8px] border border-border"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={image}
-                    alt=""
+                    alt={`Court image ${index + 1}`}
                     className="h-full w-full object-cover"
                   />
                   <button

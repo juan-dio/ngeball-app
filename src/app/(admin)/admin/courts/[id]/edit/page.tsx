@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { use, useState } from "react";
+import { notFound } from "next/navigation";
 import { ChevronDown, ImagePlus, X } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,23 +12,53 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { COURTS, DEFAULT_IMAGES } from "@/data/courts";
+import { COURTS } from "@/data/courts";
+import { type SportKey } from "@/components/icons/sport-icon";
 
 const SPORTS = Array.from(new Set(COURTS.map((c) => c.sport)));
 const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.type)));
 
-export default function NewCourtPage() {
-  const [images, setImages] = useState<string[]>([...DEFAULT_IMAGES]);
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
 
-  const removeImage = (image: string) => {
-    setImages((prev) => prev.filter((img) => img !== image));
+export default function EditCourtPage({ params }: PageProps) {
+  const { id } = use(params);
+  const court = COURTS.find((c) => c.id === id);
+
+  if (!court) {
+    notFound();
+  }
+
+  const initialImages =
+    court.images && court.images.length > 0 ? court.images : [court.image];
+  const initialPrice = court.price.replace(/[^0-9]/g, "");
+
+  const [name, setName] = useState(court.name);
+  const [price, setPrice] = useState(initialPrice);
+  const [selectedSport, setSelectedSport] = useState<SportKey>(court.sport);
+  const [selectedType, setSelectedType] = useState(court.type);
+  const [description, setDescription] = useState(court.description);
+  const [images, setImages] = useState<string[]>(initialImages);
+
+  const handleReset = () => {
+    setName(court.name);
+    setPrice(initialPrice);
+    setSelectedSport(court.sport);
+    setSelectedType(court.type);
+    setDescription(court.description);
+    setImages(initialImages);
+  };
+
+  const removeImage = (indexToRemove: number) => {
+    setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
   };
 
   return (
     <section className="flex flex-col">
       <Card className="border border-border rounded-[16px] bg-white p-6 shadow-none">
         <CardContent className="flex flex-col gap-6 p-0">
-          <h1 className="text-h2 text-text-primary">New Court</h1>
+          <h1 className="text-h2 text-text-primary">Edit Court</h1>
 
           {/* Name & Price */}
           <div className="grid gap-4 md:grid-cols-2">
@@ -41,6 +71,8 @@ export default function NewCourtPage() {
               </label>
               <Input
                 id="court-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="h-10 w-full rounded-[6px] border-border bg-white text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. Futsal Court X"
               />
@@ -55,6 +87,8 @@ export default function NewCourtPage() {
               <Input
                 id="court-price"
                 type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
                 className="h-10 w-full rounded-[6px] border-border bg-white text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. 100000"
               />
@@ -70,7 +104,7 @@ export default function NewCourtPage() {
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
                   <span className="text-body font-normal text-text-primary truncate">
-                    Select sport
+                    {selectedSport}
                   </span>
                   <ChevronDown className="size-4 shrink-0 text-text-secondary" />
                 </DropdownMenuTrigger>
@@ -78,6 +112,7 @@ export default function NewCourtPage() {
                   {SPORTS.map((sport) => (
                     <DropdownMenuItem
                       key={sport}
+                      onClick={() => setSelectedSport(sport)}
                       className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
                     >
                       {sport}
@@ -93,7 +128,7 @@ export default function NewCourtPage() {
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
                   <span className="text-body font-normal text-text-primary truncate">
-                    Select type
+                    {selectedType}
                   </span>
                   <ChevronDown className="size-4 shrink-0 text-text-secondary" />
                 </DropdownMenuTrigger>
@@ -101,6 +136,7 @@ export default function NewCourtPage() {
                   {COURT_TYPES.map((type) => (
                     <DropdownMenuItem
                       key={type}
+                      onClick={() => setSelectedType(type)}
                       className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
                     >
                       {type}
@@ -121,6 +157,8 @@ export default function NewCourtPage() {
             </label>
             <textarea
               id="court-description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="h-36 w-full resize-none rounded-[6px] border border-border bg-white p-3 text-body text-text-primary placeholder:text-text-secondary outline-none transition-colors focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
               placeholder="eg. Court description"
             />
@@ -152,7 +190,7 @@ export default function NewCourtPage() {
                   />
                   <button
                     type="button"
-                    onClick={() => removeImage(image)}
+                    onClick={() => removeImage(index)}
                     aria-label="Remove image"
                     className="absolute right-2 top-2 flex size-6 cursor-pointer items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70"
                   >
@@ -166,14 +204,17 @@ export default function NewCourtPage() {
           {/* Action buttons */}
           <div className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end">
             <Button
-              nativeButton={false}
+              type="button"
               variant="outline"
-              render={<Link href="/admin/courts" />}
+              onClick={handleReset}
               className="h-14 px-8 cursor-pointer rounded-[12px] border-border bg-white text-primary font-semibold hover:bg-light"
             >
-              Cancel
+              Reset
             </Button>
-            <Button className="h-14 px-8 cursor-pointer rounded-[12px] bg-primary text-white font-semibold hover:bg-primary/90">
+            <Button
+              type="button"
+              className="h-14 px-8 cursor-pointer rounded-[12px] bg-primary text-white font-semibold hover:bg-primary/90"
+            >
               Save
             </Button>
           </div>

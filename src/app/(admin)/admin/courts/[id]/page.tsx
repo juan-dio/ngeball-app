@@ -1,13 +1,14 @@
 "use client";
 
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { SquarePen, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { COURTS } from "@/data/courts";
+import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -15,11 +16,18 @@ interface PageProps {
 
 export default function CourtDetailPage({ params }: PageProps) {
   const { id } = use(params);
+  const router = useRouter();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const court = COURTS.find((c) => c.id === id);
 
   if (!court) {
     notFound();
   }
+
+  const handleDeleteConfirm = () => {
+    setIsDeleteModalOpen(false);
+    router.push("/admin/courts");
+  };
 
   const images =
     court.images && court.images.length > 0 ? court.images : [court.image];
@@ -40,7 +48,11 @@ export default function CourtDetailPage({ params }: PageProps) {
                 <SquarePen />
                 Edit
               </Button>
-              <Button className="h-10 px-4 cursor-pointer rounded-[12px] bg-red text-white! text-small hover:bg-red/90 gap-2">
+              <Button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(true)}
+                className="h-10 px-4 cursor-pointer rounded-[12px] bg-red text-white! text-small hover:bg-red/90 gap-2"
+              >
                 <Trash2 />
                 Delete
               </Button>
@@ -151,6 +163,13 @@ export default function CourtDetailPage({ params }: PageProps) {
           </div>
         </CardContent>
       </Card>
+
+      <DeleteConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        entityType="court"
+      />
     </section>
   );
 }

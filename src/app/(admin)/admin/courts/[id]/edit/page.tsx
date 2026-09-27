@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { COURTS } from "@/data/courts";
-import { type SportKey } from "@/components/icons/sport-icon";
+import { type SportKey } from "@/data/sports";
 
 const SPORTS = Array.from(new Set(COURTS.map((c) => c.sport)));
 const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.type)));

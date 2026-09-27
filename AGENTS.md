@@ -78,7 +78,7 @@ Check `src/components/` before creating new ones:
 - `<CourtCard />`, `<SelectButton />`, `<BookingCard />`, `<BookingStatus />`
 - `<AdminShell />` (admin layout shell with sidebar) — nav: Dashboard, Bookings, Courts, Sports, Court Types, Users
 - `<Logo />`, custom icons in `src/components/icons/` (`currentColor` fill/stroke)
-- `<SportIcon />` / `<SportIconWithText />` — sport badge system with per-sport colors (`src/components/icons/sport-icon.tsx`). `SportKey = "Futsal" | "Basketball" | "Tennis" | "Padel"`. Use `SPORT_META` for icon + color mapping.
+- `<SportIcon />` / `<SportIconWithText />` — sport badge system, fully data-driven (`src/components/icons/sport-icon.tsx`). `SportKey = "Futsal" | "Basketball" | "Tennis" | "Padel"` is defined in `src/data/sports.ts`; SVG markup lives in `SPORT_ICONS`, hex colors in `SPORT_COLOR_HEX`. Props: `sport` (required), plus optional `iconSvg` / `colorHex` overrides. Icons render via `dangerouslySetInnerHTML` — only feed them trusted, project-owned strings.
 - Hooks: `useAuth()` in `src/hooks/use-auth.ts` (stub — returns `{ isAuthenticated: false }`)
 
 ### File Structure & Data Layer

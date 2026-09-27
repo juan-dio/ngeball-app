@@ -12,6 +12,32 @@ Always use shadcn components from `src/components/ui` when building interfaces.
 
 ---
 
+# Project Overview
+
+**ngeBall** is a court booking web app for sports venues. Players browse courts, check availability, and reserve a slot; venue staff manage courts, sports, court types, bookings, and users through an admin back office. Supported sports: Futsal, Basketball, Tennis, Padel.
+
+Read `README.md` for the full project description, feature list, and getting started guide.
+
+### Domain Model
+| Type | File | Notes |
+|---|---|---|
+| `Court` | `src/data/courts.ts` | `id`, `name`, `image`, `images?`, `type` (free-text court type), `price` (formatted string, e.g. `"200.000,00"`), `sport: SportKey`, `description` |
+| `SportKey` / `Sport` | `src/data/sports.ts` | `SportKey = "Futsal" \| "Basketball" \| "Tennis" \| "Padel"`. Also exports `SPORT_ICONS` (SVG markup) and `SPORT_COLOR_HEX` |
+| `Booking` / `TimelineItem` | `src/data/bookings.ts` | `userId` + `userName` identify the customer. Public booking page filters by user; admin bookings page shows all |
+
+### Route Groups
+- `src/app/(public)/` — `page.tsx` (landing), `courts/`, `courts/[id]/`, `booking/`, `login/`, `register/`
+- `src/app/(admin)/admin/` — `page.tsx` (dashboard), `bookings/`, `courts/` (+ `new/`, `[id]/`, `[id]/edit/`), `sports/`, `court-types/`, `users/`. All wrapped by `<AdminShell />`
+
+### Data Layer
+All data is **mocked** in `src/data/` and imported directly — no backend, database, or API layer exists yet. Adding a new entity means adding its type + array to `src/data/`, not creating a fetch layer. `price` fields are pre-formatted strings, not numbers.
+
+### Current Limits
+- `useAuth()` in `src/hooks/use-auth.ts` is a stub returning `{ isAuthenticated: false }` — no sessions, no route protection.
+- Court types have an admin page but no dedicated data file; `Court.type` is a free-text string.
+
+---
+
 # Project Conventions for ngeBall
 
 ## 1. Package Manager & Workflow

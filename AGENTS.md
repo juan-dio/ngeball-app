@@ -18,6 +18,7 @@ Always use shadcn components from `src/components/ui` when building interfaces.
 - **Bun** exclusively: `bun add <pkg>`, `bunx --bun shadcn@latest add <comp>`, `bun run dev`, `bun run build`. **Do NOT use** `npm`, `yarn`, or `pnpm`.
 - **Verification:** No test suite. Run `bun run lint` and `bunx tsc --noEmit`.
 - **Git Config:** `user.name` and `user.email` are pre-configured globally — do not override per commit.
+- **Git Commits:** Do not commit automatically upon completing tasks. Commit only when explicitly instructed.
 
 ## 2. Color System
 Defined as CSS custom properties in `src/app/globals.css` mapped via `@theme inline`. Selection priority:

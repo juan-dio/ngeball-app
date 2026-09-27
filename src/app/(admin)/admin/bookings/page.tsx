@@ -182,7 +182,17 @@ export default function BookingsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {paginatedBookings.map((booking, index) => {
+                {paginatedBookings.length === 0 ? (
+                  <TableRow className="border-0 bg-white">
+                    <TableCell
+                      colSpan={7}
+                      className="p-8 text-center text-small text-text-secondary font-light"
+                    >
+                      No bookings found.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  paginatedBookings.map((booking, index) => {
                   const isEven = index % 2 === 1;
                   return (
                     <TableRow
@@ -230,7 +240,8 @@ export default function BookingsPage() {
                       </TableCell>
                     </TableRow>
                   );
-                })}
+                })
+                )}
               </TableBody>
             </Table>
           </div>

@@ -188,7 +188,17 @@ export default function CourtsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {paginatedCourts.map((court, index) => {
+                {paginatedCourts.length === 0 ? (
+                  <TableRow className="border-0 bg-white">
+                    <TableCell
+                      colSpan={6}
+                      className="p-8 text-center text-small text-text-secondary font-light"
+                    >
+                      No courts found.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  paginatedCourts.map((court, index) => {
                   const isEven = index % 2 === 1;
                   return (
                     <TableRow
@@ -226,7 +236,8 @@ export default function CourtsPage() {
                       </TableCell>
                     </TableRow>
                   );
-                })}
+                })
+                )}
               </TableBody>
             </Table>
           </div>

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
 
 import { AppNavbar } from "@/components/navbar";
@@ -21,12 +24,16 @@ import {
 import { CourtCard } from "@/components/court-card";
 import { COURTS } from "@/data/courts";
 
+const ITEMS_PER_PAGE = 6;
+
 function ToolbarDropdown({
-  label,
+  value,
+  onChange,
   items,
   widthClass,
 }: {
-  label: string;
+  value: string;
+  onChange: (val: string) => void;
   items: string[];
   widthClass: string;
 }) {
@@ -35,8 +42,8 @@ function ToolbarDropdown({
       <DropdownMenuTrigger
         className={`flex h-10 max-w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left ${widthClass}`}
       >
-        <span className="text-small font-normal text-text-primary">
-          {label}
+        <span className="text-small font-normal text-text-primary truncate">
+          {value}
         </span>
         <ChevronDown className="size-5 shrink-0 text-text-secondary" />
       </DropdownMenuTrigger>
@@ -45,6 +52,7 @@ function ToolbarDropdown({
           <DropdownMenuItem
             key={item}
             className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
+            onClick={() => onChange(item)}
           >
             {item}
           </DropdownMenuItem>
@@ -54,36 +62,34 @@ function ToolbarDropdown({
   );
 }
 
-function PaginationNav() {
-  return (
-    <Pagination className="pt-10">
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#" isActive className="rounded-[6px] bg-white">
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">3</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
-  );
-}
-
 export default function CourtsPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [selectedSport, setSelectedSport] = useState("All Sports");
+  const [selectedType, setSelectedType] = useState("All Types");
+
+  const filteredCourts = COURTS.filter((court) => {
+    const matchSearch = court.name
+      .toLowerCase()
+      .includes(search.trim().toLowerCase());
+    const matchSport =
+      selectedSport === "All Sports" || court.sport === selectedSport;
+    const matchType =
+      selectedType === "All Types" ||
+      court.type.toLowerCase().includes(selectedType.toLowerCase());
+    return matchSearch && matchSport && matchType;
+  });
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredCourts.length / ITEMS_PER_PAGE),
+  );
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const paginatedCourts = filteredCourts.slice(
+    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
+    safeCurrentPage * ITEMS_PER_PAGE,
+  );
+
   return (
     <main className="flex min-h-screen flex-col bg-background pt-16">
       <AppNavbar />
@@ -97,16 +103,29 @@ export default function CourtsPage() {
             <Input
               className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
               placeholder="Search court"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
             />
           </div>
           <div className="flex w-full items-stretch gap-2 md:w-auto md:max-w-103">
             <ToolbarDropdown
-              label="Sports"
+              value={selectedSport}
+              onChange={(val) => {
+                setSelectedSport(val);
+                setCurrentPage(1);
+              }}
               items={["All Sports", "Futsal", "Basketball", "Tennis", "Padel"]}
               widthClass="w-2/5 md:w-[144px]"
             />
             <ToolbarDropdown
-              label="Type"
+              value={selectedType}
+              onChange={(val) => {
+                setSelectedType(val);
+                setCurrentPage(1);
+              }}
               items={[
                 "All Types",
                 "Synthetic Grass",
@@ -120,12 +139,73 @@ export default function CourtsPage() {
         </div>
 
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fill,360px)] md:justify-center">
-          {COURTS.map((court, index) => (
-            <CourtCard key={court.name} court={court} priority={index === 0} />
-          ))}
+          {paginatedCourts.length === 0 ? (
+            <div className="col-span-full py-12 text-center text-small text-text-secondary font-light">
+              No courts found.
+            </div>
+          ) : (
+            paginatedCourts.map((court, index) => (
+              <CourtCard key={court.id} court={court} priority={index === 0} />
+            ))
+          )}
         </div>
 
-        <PaginationNav />
+        <Pagination className="pt-10">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (safeCurrentPage > 1) {
+                    setCurrentPage(safeCurrentPage - 1);
+                  }
+                }}
+                className={
+                  safeCurrentPage === 1 ? "pointer-events-none opacity-50" : ""
+                }
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  href="#"
+                  isActive={page === safeCurrentPage}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentPage(page);
+                  }}
+                  className={
+                    page === safeCurrentPage ? "rounded-[6px] bg-white" : ""
+                  }
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            {totalPages > 3 && (
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            )}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (safeCurrentPage < totalPages) {
+                    setCurrentPage(safeCurrentPage + 1);
+                  }
+                }}
+                className={
+                  safeCurrentPage === totalPages
+                    ? "pointer-events-none opacity-50"
+                    : ""
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
 
       <Footer />

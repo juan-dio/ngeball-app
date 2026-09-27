@@ -40,8 +40,34 @@ export const SPORT_META: Record<SportKey, SportMeta> = {
   },
 };
 
-export function SportIcon({ sport }: { sport: SportKey }) {
+type SportIconProps = {
+  sport?: SportKey;
+  iconSvg?: string;
+  colorHex?: string;
+};
+
+export function SportIcon({ sport, iconSvg, colorHex }: SportIconProps) {
+  if (iconSvg && colorHex) {
+    return (
+      <span
+        className="flex size-9 shrink-0 items-center justify-center rounded-full"
+        style={{
+          backgroundColor: `${colorHex}1a`,
+          color: colorHex,
+        }}
+      >
+        <span
+          className="h-5 w-5 flex items-center justify-center [&>svg]:h-5 [&>svg]:w-5"
+          dangerouslySetInnerHTML={{ __html: iconSvg }}
+        />
+      </span>
+    );
+  }
+
+  if (!sport) return null;
+
   const meta = SPORT_META[sport];
+  if (!meta) return null;
   const Icon = meta.icon;
 
   return (
@@ -53,8 +79,34 @@ export function SportIcon({ sport }: { sport: SportKey }) {
   );
 }
 
-export function SportIconWithText({ sport }: { sport: SportKey }) {
+export function SportIconWithText({
+  sport,
+  iconSvg,
+  colorHex,
+}: SportIconProps) {
+  if (iconSvg && colorHex) {
+    return (
+      <span
+        className="px-4 py-2 flex items-center justify-center rounded-full gap-2 border-2"
+        style={{
+          backgroundColor: `${colorHex}1a`,
+          borderColor: colorHex,
+          color: colorHex,
+        }}
+      >
+        <span
+          className="h-5 w-5 flex items-center justify-center [&>svg]:h-5 [&>svg]:w-5"
+          dangerouslySetInnerHTML={{ __html: iconSvg }}
+        />
+        <span className="text-small font-semibold">{sport}</span>
+      </span>
+    );
+  }
+
+  if (!sport) return null;
+
   const meta = SPORT_META[sport];
+  if (!meta) return null;
   const Icon = meta.icon;
 
   return (

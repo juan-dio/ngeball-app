@@ -6,7 +6,7 @@ import { Search, Plus } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SportIcon, type SportKey } from "@/components/icons/sport-icon";
+import { SportIcon } from "@/components/icons/sport-icon";
 import {
   Pagination,
   PaginationContent,
@@ -25,16 +25,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { SPORTS } from "@/data/sports";
-import { cn } from "@/lib/utils";
 
 const ITEMS_PER_PAGE = 5;
-
-const SPORT_COLOR_CLASS: Record<SportKey, string> = {
-  Futsal: "bg-green",
-  Basketball: "bg-orange",
-  Tennis: "bg-red",
-  Padel: "bg-blue",
-};
 
 export default function SportsPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -138,16 +130,18 @@ export default function SportsPage() {
                         </TableCell>
                         <TableCell className="p-2 text-center">
                           <div className="flex justify-center">
-                            <SportIcon sport={sport.sport} />
+                            <SportIcon
+                              sport={sport.sport}
+                              iconSvg={sport.iconSvg}
+                              colorHex={sport.colorHex}
+                            />
                           </div>
                         </TableCell>
                         <TableCell className="p-2 text-center text-small text-text-primary font-light">
                           <div className="flex items-center justify-center gap-2">
                             <span
-                              className={cn(
-                                "size-4 rounded-full inline-block shrink-0",
-                                SPORT_COLOR_CLASS[sport.sport] ?? "bg-primary",
-                              )}
+                              className="size-4 rounded-full inline-block shrink-0"
+                              style={{ backgroundColor: sport.colorHex }}
                             />
                             <span>{sport.colorHex}</span>
                           </div>

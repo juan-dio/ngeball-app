@@ -15,7 +15,7 @@ import {
 import { TablePagination } from "@/components/table-pagination";
 import { CourtCard } from "@/components/court-card";
 import { COURTS } from "@/data/courts";
-import { clampPage, getTotalPages } from "@/lib/pagination";
+import { usePagination } from "@/hooks/use-pagination";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -56,7 +56,6 @@ function ToolbarDropdown({
 }
 
 export default function CourtsPage() {
-  const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [selectedSport, setSelectedSport] = useState("All Sports");
   const [selectedType, setSelectedType] = useState("All Types");
@@ -73,12 +72,12 @@ export default function CourtsPage() {
     return matchSearch && matchSport && matchType;
   });
 
-  const totalPages = getTotalPages(filteredCourts.length, ITEMS_PER_PAGE);
-  const safeCurrentPage = clampPage(currentPage, totalPages);
-  const paginatedCourts = filteredCourts.slice(
-    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
-    safeCurrentPage * ITEMS_PER_PAGE,
-  );
+  const {
+    items: paginatedCourts,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+  } = usePagination(filteredCourts, ITEMS_PER_PAGE);
 
   return (
     <main className="flex min-h-screen flex-col bg-background pt-16">

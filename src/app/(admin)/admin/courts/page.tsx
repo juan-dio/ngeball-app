@@ -23,12 +23,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { COURTS } from "@/data/courts";
-import { clampPage, getTotalPages } from "@/lib/pagination";
+import { usePagination } from "@/hooks/use-pagination";
 
 const ITEMS_PER_PAGE = 5;
 
 export default function CourtsPage() {
-  const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [selectedSport, setSelectedSport] = useState("All Sports");
   const [selectedType, setSelectedType] = useState("All Types");
@@ -44,12 +43,12 @@ export default function CourtsPage() {
     return matchSearch && matchSport && matchType;
   });
 
-  const totalPages = getTotalPages(filteredCourts.length, ITEMS_PER_PAGE);
-  const safeCurrentPage = clampPage(currentPage, totalPages);
-  const paginatedCourts = filteredCourts.slice(
-    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
-    safeCurrentPage * ITEMS_PER_PAGE,
-  );
+  const {
+    items: paginatedCourts,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+  } = usePagination(filteredCourts, ITEMS_PER_PAGE);
 
   return (
     <section className="flex flex-col">

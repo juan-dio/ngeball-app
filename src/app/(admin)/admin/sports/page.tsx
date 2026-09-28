@@ -17,25 +17,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { SPORTS } from "@/data/sports";
-import { clampPage, getTotalPages } from "@/lib/pagination";
+import { usePagination } from "@/hooks/use-pagination";
 
 const ITEMS_PER_PAGE = 5;
 
 export default function SportsPage() {
-  const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
 
-  const filteredSports = SPORTS.filter((item) =>
-    item.name.toLowerCase().includes(search.trim().toLowerCase()) ||
-    item.id.toLowerCase().includes(search.trim().toLowerCase()),
+  const filteredSports = SPORTS.filter(
+    (item) =>
+      item.name.toLowerCase().includes(search.trim().toLowerCase()) ||
+      item.id.toLowerCase().includes(search.trim().toLowerCase()),
   );
 
-  const totalPages = getTotalPages(filteredSports.length, ITEMS_PER_PAGE);
-  const safeCurrentPage = clampPage(currentPage, totalPages);
-  const paginatedSports = filteredSports.slice(
-    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
-    safeCurrentPage * ITEMS_PER_PAGE,
-  );
+  const {
+    items: paginatedSports,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+  } = usePagination(filteredSports, ITEMS_PER_PAGE);
 
   return (
     <section className="flex flex-col">

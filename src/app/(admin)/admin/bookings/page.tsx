@@ -29,12 +29,11 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { BOOKINGS } from "@/data/bookings";
-import { clampPage, getTotalPages } from "@/lib/pagination";
+import { usePagination } from "@/hooks/use-pagination";
 
 const ITEMS_PER_PAGE = 6;
 
 export default function BookingsPage() {
-  const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [selectedPayment, setSelectedPayment] = useState("All Payment");
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -62,12 +61,12 @@ export default function BookingsPage() {
     return matchSearch && matchPayment;
   });
 
-  const totalPages = getTotalPages(filteredBookings.length, ITEMS_PER_PAGE);
-  const safeCurrentPage = clampPage(currentPage, totalPages);
-  const paginatedBookings = filteredBookings.slice(
-    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
-    safeCurrentPage * ITEMS_PER_PAGE,
-  );
+  const {
+    items: paginatedBookings,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+  } = usePagination(filteredBookings, ITEMS_PER_PAGE);
 
   return (
     <section className="flex flex-col gap-6">

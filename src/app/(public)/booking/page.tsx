@@ -1,27 +1,25 @@
 "use client";
 
-import { useState } from "react";
 import { AppNavbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { BookingCard } from "@/components/booking-card";
 import { TablePagination } from "@/components/table-pagination";
 import { BOOKINGS } from "@/data/bookings";
-import { clampPage, getTotalPages } from "@/lib/pagination";
+import { usePagination } from "@/hooks/use-pagination";
 
 const ITEMS_PER_PAGE = 5;
 
 export default function BookingPage() {
-  const [currentPage, setCurrentPage] = useState(1);
   const userBookings = BOOKINGS.filter(
     (booking) => booking.userId === "USR-001",
   );
 
-  const totalPages = getTotalPages(userBookings.length, ITEMS_PER_PAGE);
-  const safeCurrentPage = clampPage(currentPage, totalPages);
-  const paginatedBookings = userBookings.slice(
-    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
-    safeCurrentPage * ITEMS_PER_PAGE,
-  );
+  const {
+    items: paginatedBookings,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+  } = usePagination(userBookings, ITEMS_PER_PAGE);
 
   return (
     <main className="flex min-h-screen flex-col bg-background pt-16">

@@ -1,4 +1,4 @@
-import { type SportKey } from "@/components/icons/sport-icon";
+import { type SportKey } from "@/data/sports";
 
 export type Court = {
   id: string;

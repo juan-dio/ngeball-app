@@ -7,21 +7,13 @@ import type { DateRange } from "react-day-picker";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { BookingStatus } from "@/components/booking-status";
+import { TablePagination } from "@/components/table-pagination";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import {
   Table,
   TableBody,
@@ -37,6 +29,7 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { BOOKINGS } from "@/data/bookings";
+import { clampPage, getTotalPages } from "@/lib/pagination";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -69,11 +62,8 @@ export default function BookingsPage() {
     return matchSearch && matchPayment;
   });
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredBookings.length / ITEMS_PER_PAGE),
-  );
-  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const totalPages = getTotalPages(filteredBookings.length, ITEMS_PER_PAGE);
+  const safeCurrentPage = clampPage(currentPage, totalPages);
   const paginatedBookings = filteredBookings.slice(
     (safeCurrentPage - 1) * ITEMS_PER_PAGE,
     safeCurrentPage * ITEMS_PER_PAGE,
@@ -247,61 +237,12 @@ export default function BookingsPage() {
           </div>
 
           {/* Pagination */}
-          <Pagination className="pt-4">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (safeCurrentPage > 1)
-                      setCurrentPage(safeCurrentPage - 1);
-                  }}
-                  className={
-                    safeCurrentPage === 1
-                      ? "pointer-events-none opacity-50"
-                      : ""
-                  }
-                />
-              </PaginationItem>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      href="#"
-                      isActive={page === safeCurrentPage}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setCurrentPage(page);
-                      }}
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                ),
-              )}
-              {totalPages > 3 && (
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              )}
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (safeCurrentPage < totalPages)
-                      setCurrentPage(safeCurrentPage + 1);
-                  }}
-                  className={
-                    safeCurrentPage === totalPages
-                      ? "pointer-events-none opacity-50"
-                      : ""
-                  }
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <TablePagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            className="pt-4"
+          />
         </CardContent>
       </Card>
     </section>

@@ -17,6 +17,7 @@ type TablePaginationProps = {
   onPageChange: (page: number) => void;
   className?: string;
   siblings?: number;
+  activeClassName?: string;
 };
 
 export function TablePagination({
@@ -25,6 +26,7 @@ export function TablePagination({
   onPageChange,
   className,
   siblings = 1,
+  activeClassName,
 }: TablePaginationProps) {
   const safeTotalPages = Math.max(totalPages, 1);
   if (safeTotalPages <= 1) return null;
@@ -67,6 +69,7 @@ export function TablePagination({
             <PaginationLink
               href="#"
               isActive={page === safeCurrentPage}
+              className={page === safeCurrentPage ? activeClassName : undefined}
               onClick={(e) => {
                 e.preventDefault();
                 onPageChange(page);

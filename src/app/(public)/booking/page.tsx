@@ -1,50 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import { AppNavbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { BookingCard } from "@/components/booking-card";
+import { TablePagination } from "@/components/table-pagination";
 import { BOOKINGS } from "@/data/bookings";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-  PaginationEllipsis,
-} from "@/components/ui/pagination";
+import { clampPage, getTotalPages } from "@/lib/pagination";
 
-function PaginationNav() {
-  return (
-    <Pagination className="pt-10">
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#" isActive className="rounded-[6px] bg-white">
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">3</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
-  );
-}
+const ITEMS_PER_PAGE = 5;
 
 export default function BookingPage() {
-  const userBookings = BOOKINGS.filter((booking) => booking.userId === "USR-001");
+  const [currentPage, setCurrentPage] = useState(1);
+  const userBookings = BOOKINGS.filter(
+    (booking) => booking.userId === "USR-001",
+  );
+
+  const totalPages = getTotalPages(userBookings.length, ITEMS_PER_PAGE);
+  const safeCurrentPage = clampPage(currentPage, totalPages);
+  const paginatedBookings = userBookings.slice(
+    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
+    safeCurrentPage * ITEMS_PER_PAGE,
+  );
 
   return (
     <main className="flex min-h-screen flex-col bg-background pt-16">
@@ -52,12 +29,24 @@ export default function BookingPage() {
 
       <div className="mx-auto flex w-full max-w-300 flex-col gap-8 px-6 pt-12 pb-22">
         <div className="w-full flex flex-col items-center gap-4">
-          {userBookings.map((booking, index) => (
-            <BookingCard key={index} booking={booking} />
-          ))}
+          {paginatedBookings.length === 0 ? (
+            <div className="py-12 text-center text-small text-text-secondary font-light">
+              No bookings found.
+            </div>
+          ) : (
+            paginatedBookings.map((booking, index) => (
+              <BookingCard key={index} booking={booking} />
+            ))
+          )}
         </div>
 
-        <PaginationNav />
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          className="pt-10"
+          activeClassName="rounded-[6px] bg-white"
+        />
       </div>
       <Footer />
     </main>

@@ -145,7 +145,7 @@ export default function CourtsPage() {
           totalPages={totalPages}
           onPageChange={setCurrentPage}
           className="pt-10"
-          activeClassName="rounded-[6px] bg-white"
+          activeClassName="bg-white"
         />
       </div>
 

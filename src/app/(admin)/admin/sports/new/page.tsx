@@ -7,12 +7,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { FieldError } from "@/components/field-error";
+import { useFormValidation } from "@/hooks/use-form-validation";
+import { type FormErrors } from "@/lib/form-validation";
 
 const DEFAULT_COLOR = "#285A48";
 const HEX_PATTERN = /^#[0-9A-F]{6}$/;
 
 type FormField = "name" | "color" | "icon";
-type FormErrors = Partial<Record<FormField, string>>;
 
 const FIELD_ORDER: FormField[] = ["name", "color", "icon"];
 
@@ -29,8 +31,8 @@ function validateForm({
   name: string;
   colorHex: string;
   iconSvg: string;
-}): FormErrors {
-  const errors: FormErrors = {};
+}): FormErrors<FormField> {
+  const errors: FormErrors<FormField> = {};
 
   if (!name.trim()) {
     errors.name = "Name is required";
@@ -53,21 +55,15 @@ export default function NewSportPage() {
   const [name, setName] = useState("");
   const [colorHex, setColorHex] = useState("");
   const [iconSvg, setIconSvg] = useState("");
-  const [errors, setErrors] = useState<FormErrors>({});
 
-  const clearError = (field: FormField) => {
-    setErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
-  };
+  const { errors, clearError, validate } = useFormValidation(
+    FIELD_ORDER,
+    "sport",
+    validateForm,
+  );
 
   const handleSave = () => {
-    const nextErrors = validateForm({ name, colorHex, iconSvg });
-    setErrors(nextErrors);
-
-    const firstInvalid = FIELD_ORDER.find((field) => nextErrors[field]);
-    if (firstInvalid) {
-      document.getElementById(`sport-${firstInvalid}`)?.focus();
-      return;
-    }
+    if (!validate({ name, colorHex, iconSvg })) return;
 
     router.push("/admin/sports");
   };
@@ -103,11 +99,7 @@ export default function NewSportPage() {
                 className="h-10 w-full rounded-[6px] border-border bg-white text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. Futsal"
               />
-              {errors.name && (
-                <p id="sport-name-error" className="text-small text-danger">
-                  {errors.name}
-                </p>
-              )}
+              <FieldError id="sport-name-error" message={errors.name} />
             </div>
             <div className="flex flex-col gap-2">
               <label
@@ -140,18 +132,12 @@ export default function NewSportPage() {
                     }
                   }}
                   aria-invalid={Boolean(errors.color)}
-                  aria-describedby={
-                    errors.color ? "sport-color-error" : undefined
-                  }
+                  aria-describedby={errors.color ? "sport-color-error" : undefined}
                   className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                   placeholder="eg. 285A48"
                 />
               </div>
-              {errors.color && (
-                <p id="sport-color-error" className="text-small text-danger">
-                  {errors.color}
-                </p>
-              )}
+              <FieldError id="sport-color-error" message={errors.color} />
             </div>
           </div>
 
@@ -172,14 +158,10 @@ export default function NewSportPage() {
               }}
               aria-invalid={Boolean(errors.icon)}
               aria-describedby={errors.icon ? "sport-icon-error" : undefined}
-              className="h-36 w-full resize-none rounded-[6px] border border-border bg-white p-3 text-body text-text-primary placeholder:text-text-secondary outline-none transition-colors focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+              className="h-36 w-full resize-none rounded-[6px] border border-border bg-white p-3 text-body md:text-body text-text-primary placeholder:text-text-secondary outline-none transition-colors focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
               placeholder="eg. <svg></svg>"
             />
-            {errors.icon && (
-              <p id="sport-icon-error" className="text-small text-danger">
-                {errors.icon}
-              </p>
-            )}
+            <FieldError id="sport-icon-error" message={errors.icon} />
           </div>
 
           {/* Action buttons */}

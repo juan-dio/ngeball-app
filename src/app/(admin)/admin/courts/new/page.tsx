@@ -2,23 +2,87 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronDown, ImagePlus, X } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { FieldError } from "@/components/field-error";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useFormValidation } from "@/hooks/use-form-validation";
+import { type FormErrors } from "@/lib/form-validation";
 import { COURTS, DEFAULT_IMAGES } from "@/data/courts";
+import { type SportKey } from "@/data/sports";
 
 const SPORTS = Array.from(new Set(COURTS.map((c) => c.sport)));
 const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.type)));
 
+type FormField = "name" | "price" | "sport" | "type";
+
+const FIELD_ORDER: FormField[] = ["name", "price", "sport", "type"];
+
+type CourtFormValues = {
+  name: string;
+  price: string;
+  sport: SportKey | "";
+  type: string;
+};
+
+function validateForm({
+  name,
+  price,
+  sport,
+  type,
+}: CourtFormValues): FormErrors<FormField> {
+  const errors: FormErrors<FormField> = {};
+
+  if (!name.trim()) {
+    errors.name = "Name is required";
+  }
+
+  if (!price.trim()) {
+    errors.price = "Price is required";
+  } else if (!Number.isFinite(Number(price)) || Number(price) <= 0) {
+    errors.price = "Price must be greater than 0";
+  }
+
+  if (!sport) {
+    errors.sport = "Select a sport";
+  }
+
+  if (!type) {
+    errors.type = "Select a court type";
+  }
+
+  return errors;
+}
+
 export default function NewCourtPage() {
+  const router = useRouter();
+
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [sport, setSport] = useState<SportKey | "">("");
+  const [type, setType] = useState("");
   const [images, setImages] = useState<string[]>([...DEFAULT_IMAGES]);
+
+  const { errors, clearError, validate } = useFormValidation(
+    FIELD_ORDER,
+    "court",
+    validateForm,
+  );
+
+  const handleSave = () => {
+    if (!validate({ name, price, sport, type })) return;
+
+    router.push("/admin/courts");
+  };
 
   const removeImage = (image: string) => {
     setImages((prev) => prev.filter((img) => img !== image));
@@ -41,9 +105,17 @@ export default function NewCourtPage() {
               </label>
               <Input
                 id="court-name"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  clearError("name");
+                }}
+                aria-invalid={Boolean(errors.name)}
+                aria-describedby={errors.name ? "court-name-error" : undefined}
                 className="h-10 w-full rounded-[6px] border-border bg-white text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. Futsal Court X"
               />
+              <FieldError id="court-name-error" message={errors.name} />
             </div>
             <div className="flex flex-col gap-2">
               <label
@@ -55,59 +127,97 @@ export default function NewCourtPage() {
               <Input
                 id="court-price"
                 type="number"
+                value={price}
+                onChange={(e) => {
+                  setPrice(e.target.value);
+                  clearError("price");
+                }}
+                aria-invalid={Boolean(errors.price)}
+                aria-describedby={errors.price ? "court-price-error" : undefined}
                 className="h-10 w-full rounded-[6px] border-border bg-white text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. 100000"
               />
+              <FieldError id="court-price-error" message={errors.price} />
             </div>
           </div>
 
           {/* Sport & Court type */}
           <div className="grid gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-2">
-              <label className="text-body text-text-primary leading-tight">
+              <label
+                className="text-body text-text-primary leading-tight"
+                htmlFor="court-sport"
+              >
                 Sport
               </label>
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
+                <DropdownMenuTrigger
+                  id="court-sport"
+                  aria-invalid={Boolean(errors.sport)}
+                  aria-describedby={
+                    errors.sport ? "court-sport-error" : undefined
+                  }
+                  className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left"
+                >
                   <span className="text-body font-normal text-text-primary truncate">
-                    Select sport
+                    {sport || "Select sport"}
                   </span>
                   <ChevronDown className="size-4 shrink-0 text-text-secondary" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
-                  {SPORTS.map((sport) => (
+                  {SPORTS.map((option) => (
                     <DropdownMenuItem
-                      key={sport}
+                      key={option}
+                      onClick={() => {
+                        setSport(option);
+                        clearError("sport");
+                      }}
                       className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
                     >
-                      {sport}
+                      {option}
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
+              <FieldError id="court-sport-error" message={errors.sport} />
             </div>
             <div className="flex flex-col gap-2">
-              <label className="text-body text-text-primary leading-tight">
+              <label
+                className="text-body text-text-primary leading-tight"
+                htmlFor="court-type"
+              >
                 Court type
               </label>
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
+                <DropdownMenuTrigger
+                  id="court-type"
+                  aria-invalid={Boolean(errors.type)}
+                  aria-describedby={
+                    errors.type ? "court-type-error" : undefined
+                  }
+                  className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left"
+                >
                   <span className="text-body font-normal text-text-primary truncate">
-                    Select type
+                    {type || "Select type"}
                   </span>
                   <ChevronDown className="size-4 shrink-0 text-text-secondary" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
-                  {COURT_TYPES.map((type) => (
+                  {COURT_TYPES.map((option) => (
                     <DropdownMenuItem
-                      key={type}
+                      key={option}
+                      onClick={() => {
+                        setType(option);
+                        clearError("type");
+                      }}
                       className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
                     >
-                      {type}
+                      {option}
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
+              <FieldError id="court-type-error" message={errors.type} />
             </div>
           </div>
 
@@ -119,9 +229,9 @@ export default function NewCourtPage() {
             >
               Description
             </label>
-            <textarea
+            <Textarea
               id="court-description"
-              className="h-36 w-full resize-none rounded-[6px] border border-border bg-white p-3 text-body text-text-primary placeholder:text-text-secondary outline-none transition-colors focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+              className="h-36 w-full resize-none rounded-[6px] border border-border bg-white p-3 text-body md:text-body text-text-primary placeholder:text-text-secondary outline-none transition-colors focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
               placeholder="eg. Court description"
             />
           </div>
@@ -137,7 +247,7 @@ export default function NewCourtPage() {
                 <span className="text-[12px] font-light text-text-secondary text-center">
                   Upload Court Picture
                 </span>
-                <input type="file" accept="image/*" className="hidden" />
+                <Input type="file" accept="image/*" className="hidden" />
               </label>
               {images.map((image, index) => (
                 <div
@@ -173,7 +283,11 @@ export default function NewCourtPage() {
             >
               Cancel
             </Button>
-            <Button className="h-14 px-8 cursor-pointer rounded-[12px] bg-primary text-white font-semibold hover:bg-primary/90">
+            <Button
+              type="button"
+              onClick={handleSave}
+              className="h-14 px-8 cursor-pointer rounded-[12px] bg-primary text-white font-semibold hover:bg-primary/90"
+            >
               Save
             </Button>
           </div>

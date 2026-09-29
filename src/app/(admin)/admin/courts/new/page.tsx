@@ -5,10 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronDown, ImagePlus, X } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { FieldError } from "@/components/field-error";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +26,9 @@ const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.type)));
 type FormField = "name" | "price" | "sport" | "type";
 
 const FIELD_ORDER: FormField[] = ["name", "price", "sport", "type"];
+
+const LABEL_CLASS = "text-body font-normal text-text-primary leading-tight";
+const ERROR_CLASS = "text-small text-danger";
 
 type CourtFormValues = {
   name: string;
@@ -96,13 +99,10 @@ export default function NewCourtPage() {
 
           {/* Name & Price */}
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="court-name"
-              >
+            <Field data-invalid={Boolean(errors.name)}>
+              <FieldLabel className={LABEL_CLASS} htmlFor="court-name">
                 Name
-              </label>
+              </FieldLabel>
               <Input
                 id="court-name"
                 value={name}
@@ -115,15 +115,14 @@ export default function NewCourtPage() {
                 className="h-10 w-full rounded-[6px] border-border bg-white text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. Futsal Court X"
               />
-              <FieldError id="court-name-error" message={errors.name} />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="court-price"
-              >
+              <FieldError id="court-name-error" className={ERROR_CLASS}>
+                {errors.name}
+              </FieldError>
+            </Field>
+            <Field data-invalid={Boolean(errors.price)}>
+              <FieldLabel className={LABEL_CLASS} htmlFor="court-price">
                 Price /hour
-              </label>
+              </FieldLabel>
               <Input
                 id="court-price"
                 type="number"
@@ -137,19 +136,18 @@ export default function NewCourtPage() {
                 className="h-10 w-full rounded-[6px] border-border bg-white text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. 100000"
               />
-              <FieldError id="court-price-error" message={errors.price} />
-            </div>
+              <FieldError id="court-price-error" className={ERROR_CLASS}>
+                {errors.price}
+              </FieldError>
+            </Field>
           </div>
 
           {/* Sport & Court type */}
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="court-sport"
-              >
+            <Field data-invalid={Boolean(errors.sport)}>
+              <FieldLabel className={LABEL_CLASS} htmlFor="court-sport">
                 Sport
-              </label>
+              </FieldLabel>
               <DropdownMenu>
                 <DropdownMenuTrigger
                   id="court-sport"
@@ -179,15 +177,14 @@ export default function NewCourtPage() {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-              <FieldError id="court-sport-error" message={errors.sport} />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="court-type"
-              >
+              <FieldError id="court-sport-error" className={ERROR_CLASS}>
+                {errors.sport}
+              </FieldError>
+            </Field>
+            <Field data-invalid={Boolean(errors.type)}>
+              <FieldLabel className={LABEL_CLASS} htmlFor="court-type">
                 Court type
-              </label>
+              </FieldLabel>
               <DropdownMenu>
                 <DropdownMenuTrigger
                   id="court-type"
@@ -217,30 +214,27 @@ export default function NewCourtPage() {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-              <FieldError id="court-type-error" message={errors.type} />
-            </div>
+              <FieldError id="court-type-error" className={ERROR_CLASS}>
+                {errors.type}
+              </FieldError>
+            </Field>
           </div>
 
           {/* Description */}
-          <div className="flex flex-col gap-2">
-            <label
-              className="text-body text-text-primary leading-tight"
-              htmlFor="court-description"
-            >
+          <Field>
+            <FieldLabel className={LABEL_CLASS} htmlFor="court-description">
               Description
-            </label>
+            </FieldLabel>
             <Textarea
               id="court-description"
               className="h-36 w-full resize-none rounded-[6px] border border-border bg-white p-3 text-body md:text-body text-text-primary placeholder:text-text-secondary outline-none transition-colors focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
               placeholder="eg. Court description"
             />
-          </div>
+          </Field>
 
           {/* Picture gallery */}
-          <div className="flex flex-col gap-2">
-            <label className="text-body text-text-primary leading-tight">
-              Picture
-            </label>
+          <Field>
+            <FieldLabel className={LABEL_CLASS}>Picture</FieldLabel>
             <div className="w-full flex gap-4 overflow-x-auto pb-2">
               <label className="flex size-60 shrink-0 cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] border border-dashed border-border bg-light">
                 <ImagePlus className="size-6 text-text-secondary" />
@@ -271,7 +265,7 @@ export default function NewCourtPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </Field>
 
           {/* Action buttons */}
           <div className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end">

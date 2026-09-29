@@ -4,10 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { FieldError } from "@/components/field-error";
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { type FormErrors } from "@/lib/form-validation";
 
@@ -17,6 +17,9 @@ const HEX_PATTERN = /^#[0-9A-F]{6}$/;
 type FormField = "name" | "color" | "icon";
 
 const FIELD_ORDER: FormField[] = ["name", "color", "icon"];
+
+const LABEL_CLASS = "text-body font-normal text-text-primary leading-tight";
+const ERROR_CLASS = "text-small text-danger";
 
 function asHex(value: string) {
   const trimmed = value.trim().toUpperCase();
@@ -80,13 +83,10 @@ export default function NewSportPage() {
 
           {/* Name & Color */}
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="sport-name"
-              >
+            <Field data-invalid={Boolean(errors.name)}>
+              <FieldLabel className={LABEL_CLASS} htmlFor="sport-name">
                 Name
-              </label>
+              </FieldLabel>
               <Input
                 id="sport-name"
                 value={name}
@@ -99,15 +99,14 @@ export default function NewSportPage() {
                 className="h-10 w-full rounded-[6px] border-border bg-white text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. Futsal"
               />
-              <FieldError id="sport-name-error" message={errors.name} />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="sport-color"
-              >
+              <FieldError id="sport-name-error" className={ERROR_CLASS}>
+                {errors.name}
+              </FieldError>
+            </Field>
+            <Field data-invalid={Boolean(errors.color)}>
+              <FieldLabel className={LABEL_CLASS} htmlFor="sport-color">
                 Color
-              </label>
+              </FieldLabel>
               <div className="relative">
                 <span
                   aria-hidden="true"
@@ -132,23 +131,24 @@ export default function NewSportPage() {
                     }
                   }}
                   aria-invalid={Boolean(errors.color)}
-                  aria-describedby={errors.color ? "sport-color-error" : undefined}
+                  aria-describedby={
+                    errors.color ? "sport-color-error" : undefined
+                  }
                   className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                   placeholder="eg. 285A48"
                 />
               </div>
-              <FieldError id="sport-color-error" message={errors.color} />
-            </div>
+              <FieldError id="sport-color-error" className={ERROR_CLASS}>
+                {errors.color}
+              </FieldError>
+            </Field>
           </div>
 
           {/* Icon (SVG Code) */}
-          <div className="flex flex-col gap-2">
-            <label
-              className="text-body text-text-primary leading-tight"
-              htmlFor="sport-icon"
-            >
+          <Field data-invalid={Boolean(errors.icon)}>
+            <FieldLabel className={LABEL_CLASS} htmlFor="sport-icon">
               Icon (SVG Code)
-            </label>
+            </FieldLabel>
             <Textarea
               id="sport-icon"
               value={iconSvg}
@@ -161,8 +161,10 @@ export default function NewSportPage() {
               className="h-36 w-full resize-none rounded-[6px] border border-border bg-white p-3 text-body md:text-body text-text-primary placeholder:text-text-secondary outline-none transition-colors focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
               placeholder="eg. <svg></svg>"
             />
-            <FieldError id="sport-icon-error" message={errors.icon} />
-          </div>
+            <FieldError id="sport-icon-error" className={ERROR_CLASS}>
+              {errors.icon}
+            </FieldError>
+          </Field>
 
           {/* Action buttons */}
           <div className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end">

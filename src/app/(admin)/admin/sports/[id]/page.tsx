@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { SquarePen, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SPORTS } from "@/data/sports";
@@ -58,27 +59,21 @@ export default function SportDetailPage({ params }: PageProps) {
 
           {/* Name & Color */}
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="sport-name"
-              >
+            <Field>
+              <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="sport-name">
                 Name
-              </label>
+              </FieldLabel>
               <Input
                 id="sport-name"
                 readOnly
                 value={sport.name}
                 className="h-10 w-full rounded-[6px] border-border bg-white px-3 text-body md:text-body text-text-primary focus-visible:ring-0"
               />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="sport-color"
-              >
+            </Field>
+            <Field>
+              <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="sport-color">
                 Color
-              </label>
+              </FieldLabel>
               <div
                 id="sport-color"
                 className="flex h-10 w-full items-center gap-2 rounded-[6px] border border-border bg-white px-3 text-body text-text-primary"
@@ -90,24 +85,21 @@ export default function SportDetailPage({ params }: PageProps) {
                 />
                 {sport.colorHex.replace("#", "")}
               </div>
-            </div>
+            </Field>
           </div>
 
           {/* Icon (SVG Code) */}
-          <div className="flex flex-col gap-2">
-            <label
-              className="text-body text-text-primary leading-tight"
-              htmlFor="sport-icon"
-            >
+          <Field>
+            <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="sport-icon">
               Icon (SVG Code)
-            </label>
+            </FieldLabel>
             <div
               id="sport-icon"
               className="h-36 w-full overflow-y-auto rounded-[6px] border border-border bg-white p-3 text-body text-text-primary break-all whitespace-pre-wrap"
             >
               {sport.iconSvg}
             </div>
-          </div>
+          </Field>
         </CardContent>
       </Card>
 

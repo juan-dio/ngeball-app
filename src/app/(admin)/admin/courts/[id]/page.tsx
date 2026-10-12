@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { SquarePen, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { COURTS } from "@/data/courts";
@@ -61,9 +62,7 @@ export default function CourtDetailPage({ params }: PageProps) {
 
           {/* Picture Gallery */}
           <div className="flex flex-col gap-2">
-            <label className="text-body text-text-primary leading-tight">
-              Picture
-            </label>
+            <label className="text-body text-text-primary leading-tight">Picture</label>
             <div className="w-full flex gap-4 overflow-x-auto pb-2">
               {images.map((image, index) => (
                 <div
@@ -83,27 +82,21 @@ export default function CourtDetailPage({ params }: PageProps) {
 
           {/* Name & Price / hour */}
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="court-name"
-              >
+            <Field>
+              <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="court-name">
                 Name
-              </label>
+              </FieldLabel>
               <Input
                 id="court-name"
                 readOnly
                 value={court.name}
                 className="h-10 w-full rounded-[6px] border-border bg-white px-3 text-body md:text-body text-text-primary focus-visible:ring-0"
               />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="court-price"
-              >
+            </Field>
+            <Field>
+              <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="court-price">
                 Price /hour
-              </label>
+              </FieldLabel>
               <Input
                 id="court-price"
                 type="number"
@@ -111,56 +104,47 @@ export default function CourtDetailPage({ params }: PageProps) {
                 value={court.price.replace(/[^0-9]/g, "")}
                 className="h-10 w-full rounded-[6px] border-border bg-white px-3 text-body md:text-body text-text-primary focus-visible:ring-0"
               />
-            </div>
+            </Field>
           </div>
 
           {/* Sport & Court type */}
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="court-sport"
-              >
+            <Field>
+              <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="court-sport">
                 Sport
-              </label>
+              </FieldLabel>
               <div
                 id="court-sport"
                 className="flex h-10 w-full items-center rounded-[6px] border border-border bg-white px-4 text-body text-text-primary"
               >
                 {court.sport}
               </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-body text-text-primary leading-tight"
-                htmlFor="court-type"
-              >
+            </Field>
+            <Field>
+              <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="court-type">
                 Court type
-              </label>
+              </FieldLabel>
               <div
                 id="court-type"
                 className="flex h-10 w-full items-center rounded-[6px] border border-border bg-white px-4 text-body text-text-primary"
               >
                 {court.type}
               </div>
-            </div>
+            </Field>
           </div>
 
           {/* Description */}
-          <div className="flex flex-col gap-2">
-            <label
-              className="text-body text-text-primary leading-tight"
-              htmlFor="court-description"
-            >
+          <Field>
+            <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="court-description">
               Description
-            </label>
+            </FieldLabel>
             <div
               id="court-description"
               className="h-36 w-full rounded-[6px] border border-border bg-white p-3 text-body text-text-primary overflow-y-auto"
             >
               {court.description}
             </div>
-          </div>
+          </Field>
         </CardContent>
       </Card>
 

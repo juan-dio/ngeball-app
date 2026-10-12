@@ -44,7 +44,15 @@ All data is **mocked** in `src/data/` and imported directly — no backend, data
 - **Bun** exclusively: `bun add <pkg>`, `bunx --bun shadcn@latest add <comp>`, `bun run dev`, `bun run build`. **Do NOT use** `npm`, `yarn`, or `pnpm`.
 - **Verification:** No test suite. Run `bun run lint` and `bunx tsc --noEmit`.
 - **Git Config:** `user.name` and `user.email` are pre-configured globally — do not override per commit.
-- **Git Commits:** Do not commit automatically upon completing tasks. Commit only when explicitly instructed.
+- **Git Commits & Branching Rules:**
+  - **Do NOT commit** automatically unless explicitly instructed.
+  - **Commit Message Convention:** Follow conventional commits format (e.g. `feat(admin): add ...`, `fix(auth): ...`, `refactor(courts): ...`).
+  - **Branch Naming:** Use feature-based names instead of issue numbers (e.g. `feat/login-page`, `refactor/admin-courts`, not `issue-2-login-page`).
+- **Code Consistency:** Always match the existing codebase patterns, formatting, and file structures when writing new code.
+- **Additional Agent Guidelines:**
+  - Keep changes minimal, modular, and directly aligned with existing patterns.
+  - Avoid adding unrequested third-party dependencies when standard library or existing utilities (`src/lib/utils.ts`) can cover the need.
+  - Verify accessibility/ARIA attributes and form validation states on interactive admin components.
 
 ## 2. Color System
 Defined as CSS custom properties in `src/app/globals.css` mapped via `@theme inline`. Selection priority:
@@ -137,3 +145,8 @@ src/
 - Admin sidebar mobile/desktop breakpoint is **`lg:` (1024px)** — sync with `MOBILE_BREAKPOINT = 1024` in `src/hooks/use-mobile.ts`.
 - Page container: `mx-auto flex w-full max-w-300 px-6`.
 - **Tailwind v4 spacing scale gotchas:** `max-w-300` (75rem), `max-w-118` (29.5rem), `max-w-190` (47.5rem), `md:pb-18` (4.5rem), `md:px-26` (6.5rem), `min-w-150` (37.5rem), `h-75` (18.75rem) are valid v4 tokens — do not replace with arbitrary values.
+
+## 9. Form & Component Best Practices
+- **Form Validation & Focus Management:** Use pure validation helpers in `src/lib/form-validation.ts` and `useFormValidation` from `src/hooks/use-form-validation.ts`. Ensure element IDs use `${idPrefix}-${fieldName}` (e.g. `court-name`) so automatic focus on first error works.
+- **Form Element Wrapper:** Always wrap form controls in native semantic `<form onSubmit={handleSubmit}>` tags with `type="submit"` buttons to support Enter-key submissions while preventing default page reloads.
+- **Typography Merge Safety:** Custom typography classes (`text-h1`, `text-h2`, `text-h3`, `text-body`, `text-small`) are registered in `src/lib/utils.ts` via `extendTailwindMerge` so they won't be stripped when merged with color classes inside `cn()`.

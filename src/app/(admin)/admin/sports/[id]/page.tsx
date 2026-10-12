@@ -1,59 +1,122 @@
+"use client";
+
+import { use, useState } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
+import { SquarePen, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SportIcon } from "@/components/icons/sport-icon";
 import { SPORTS } from "@/data/sports";
+import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function SportDetailPage({ params }: PageProps) {
-  const { id } = await params;
+export default function SportDetailPage({ params }: PageProps) {
+  const { id } = use(params);
+  const router = useRouter();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const sport = SPORTS.find((s) => s.id === id);
 
   if (!sport) {
     notFound();
   }
 
+  const handleDeleteConfirm = () => {
+    setIsDeleteModalOpen(false);
+    router.push("/admin/sports");
+  };
+
   return (
     <section className="flex flex-col">
       <Card className="border border-border rounded-[16px] bg-white p-6 shadow-none">
         <CardContent className="flex flex-col gap-6 p-0">
-          <h1 className="text-h2 text-text-primary">Sport Details</h1>
-
-          <div className="flex items-center gap-4 rounded-[12px] border border-border bg-light p-6">
-            <SportIcon sport={sport.sport} iconSvg={sport.iconSvg} colorHex={sport.colorHex} />
-            <div className="flex flex-col gap-1">
-              <span className="text-h3 text-text-primary">{sport.name}</span>
-              <span className="text-small text-text-secondary">ID: {sport.id}</span>
+          {/* Header Card & Action Buttons */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <h1 className="text-h2 text-text-primary">Sport Details</h1>
+            <div className="flex items-center gap-2">
+              <Button
+                nativeButton={false}
+                render={<Link href={`/admin/sports/${sport.id}/edit`} />}
+                className="h-10 px-4 cursor-pointer rounded-[12px] bg-warning text-white! text-small hover:bg-warning/90 gap-2"
+              >
+                <SquarePen />
+                Edit
+              </Button>
+              <Button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(true)}
+                className="h-10 px-4 cursor-pointer rounded-[12px] bg-red text-white! text-small hover:bg-red/90 gap-2"
+              >
+                <Trash2 />
+                Delete
+              </Button>
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 rounded-[12px] border border-border bg-light p-6">
-            <span className="text-small font-semibold text-text-secondary">
-              Coming soon
-            </span>
-            <p className="text-body text-text-primary">
-              Sport management actions (edit, delete, image upload) are not
-              built yet. This route is a placeholder until the admin back
-              office data layer lands.
-            </p>
+          {/* Name & Color */}
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="flex flex-col gap-2">
+              <label
+                className="text-body text-text-primary leading-tight"
+                htmlFor="sport-name"
+              >
+                Name
+              </label>
+              <Input
+                id="sport-name"
+                readOnly
+                value={sport.name}
+                className="h-10 w-full rounded-[6px] border-border bg-white px-3 text-body md:text-body text-text-primary focus-visible:ring-0"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label
+                className="text-body text-text-primary leading-tight"
+                htmlFor="sport-color"
+              >
+                Color
+              </label>
+              <div
+                id="sport-color"
+                className="flex h-10 w-full items-center gap-2 rounded-[6px] border border-border bg-white px-3 text-body text-text-primary"
+              >
+                <span
+                  aria-hidden="true"
+                  className="block size-6 shrink-0 rounded-[8px] border border-border"
+                  style={{ backgroundColor: sport.colorHex }}
+                />
+                {sport.colorHex.replace("#", "")}
+              </div>
+            </div>
           </div>
 
-          <div className="flex justify-end">
-            <Button
-              nativeButton={false}
-              variant="outline"
-              render={<Link href="/admin/sports" />}
-              className="h-14 px-8 cursor-pointer rounded-[12px] border-border bg-white text-primary font-semibold hover:bg-light"
+          {/* Icon (SVG Code) */}
+          <div className="flex flex-col gap-2">
+            <label
+              className="text-body text-text-primary leading-tight"
+              htmlFor="sport-icon"
             >
-              Back to Sports
-            </Button>
+              Icon (SVG Code)
+            </label>
+            <div
+              id="sport-icon"
+              className="h-36 w-full overflow-y-auto rounded-[6px] border border-border bg-white p-3 text-body text-text-primary break-all whitespace-pre-wrap"
+            >
+              {sport.iconSvg}
+            </div>
           </div>
         </CardContent>
       </Card>
+
+      <DeleteConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        entityType="sport"
+      />
     </section>
   );
 }

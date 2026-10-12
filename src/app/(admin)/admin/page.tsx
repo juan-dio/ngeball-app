@@ -75,7 +75,7 @@ export default function AdminDashboardPage() {
         </Card>
 
         {/* Active Bookings */}
-        <Card className="bg-[#E2E8F0] border-0 rounded-[16px] p-0">
+        <Card className="bg-slate-200 border-0 rounded-[16px] p-0">
           <CardContent className="flex md:flex-col justify-start gap-6 p-5">
             <div className="flex h-14 w-14 items-center justify-center rounded-[8px] bg-primary/10">
               <Ticket className="h-6 w-6 text-primary" />
@@ -92,7 +92,7 @@ export default function AdminDashboardPage() {
         </Card>
 
         {/* Total Users */}
-        <Card className="bg-[#E2E8F0] border-0 rounded-[16px] p-0">
+        <Card className="bg-slate-200 border-0 rounded-[16px] p-0">
           <CardContent className="flex md:flex-col justify-start gap-6 p-5">
             <div className="flex h-14 w-14 items-center justify-center rounded-[8px] bg-primary/10">
               <Users className="h-6 w-6 text-primary" />

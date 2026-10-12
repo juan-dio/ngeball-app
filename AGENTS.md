@@ -134,9 +134,10 @@ src/
 
 ## 7. Coding Standards
 - TypeScript: `.tsx` for JSX, `.ts` for utilities.
-- Files/folders: `kebab-case`. Component functions: `PascalCase` with named exports (`export function MyComponent`).
+- Files/folders: `kebab-case`. Component functions: `PascalCase`.
+- **Exports:** Next.js App Router entrypoints (`page.tsx`, `layout.tsx`, `not-found.tsx`, `error.tsx`, ...) MUST use `export default` — the framework requires it. All other components and utilities use named exports (`export function MyComponent`).
 - `"use client"` directive only when component uses React state, effects, or browser APIs.
-- Imports: `@/` path alias. No inline `style` prop.
+- Imports: `@/` path alias. No inline `style` prop, except dynamic runtime values that cannot be expressed as Tailwind classes (e.g. `sport.colorHex` on `<SportIcon />`); prefer CSS custom properties over raw hex when possible.
 - **React Compiler enabled:** do not add manual `useMemo`/`useCallback`.
 - **React 19:** `inert={!open}` for animated hidden disclosure panels.
 

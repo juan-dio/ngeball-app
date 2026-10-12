@@ -31,24 +31,18 @@ export function Calendar({
   onSelectDate,
   className,
 }: CalendarProps) {
-  const today = React.useMemo(() => startOfDay(new Date()), []);
+  const today = startOfDay(new Date());
   const [currentMonth, setCurrentMonth] = React.useState<Date>(() => {
     const d = new Date(today);
     d.setDate(1);
     return d;
   });
 
-  const minMonth = React.useMemo(() => {
-    const d = new Date(today);
-    d.setDate(1);
-    return d;
-  }, [today]);
+  const minMonth = new Date(today);
+  minMonth.setDate(1);
 
-  const maxMonth = React.useMemo(() => {
-    const d = new Date(today);
-    d.setMonth(d.getMonth() + 1, 1);
-    return d;
-  }, [today]);
+  const maxMonth = new Date(today);
+  maxMonth.setMonth(maxMonth.getMonth() + 1, 1);
 
   const canPrevMonth =
     currentMonth.getFullYear() > minMonth.getFullYear() ||
@@ -78,45 +72,43 @@ export function Calendar({
     });
   };
 
-  const calendarDays = React.useMemo(() => {
-    const year = currentMonth.getFullYear();
-    const month = currentMonth.getMonth();
+  const year = currentMonth.getFullYear();
+  const month = currentMonth.getMonth();
 
-    const firstDayIndex = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const daysInPrevMonth = new Date(year, month, 0).getDate();
+  const firstDayIndex = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
 
-    const days: { date: Date; isCurrentMonth: boolean; isDisabled: boolean }[] =
-      [];
+  const days: { date: Date; isCurrentMonth: boolean; isDisabled: boolean }[] =
+    [];
 
-    const maxSelectableDate = new Date(today);
-    maxSelectableDate.setDate(maxSelectableDate.getDate() + 30);
+  const maxSelectableDate = new Date(today);
+  maxSelectableDate.setDate(maxSelectableDate.getDate() + 30);
 
-    for (let i = firstDayIndex - 1; i >= 0; i--) {
-      const d = new Date(year, month - 1, daysInPrevMonth - i);
-      days.push({ date: d, isCurrentMonth: false, isDisabled: true });
-    }
+  for (let i = firstDayIndex - 1; i >= 0; i--) {
+    const d = new Date(year, month - 1, daysInPrevMonth - i);
+    days.push({ date: d, isCurrentMonth: false, isDisabled: true });
+  }
 
-    for (let i = 1; i <= daysInMonth; i++) {
-      const d = new Date(year, month, i);
-      const isPast = d < today;
-      const isTooFar = d > maxSelectableDate;
-      days.push({
-        date: d,
-        isCurrentMonth: true,
-        isDisabled: isPast || isTooFar,
-      });
-    }
+  for (let i = 1; i <= daysInMonth; i++) {
+    const d = new Date(year, month, i);
+    const isPast = d < today;
+    const isTooFar = d > maxSelectableDate;
+    days.push({
+      date: d,
+      isCurrentMonth: true,
+      isDisabled: isPast || isTooFar,
+    });
+  }
 
-    const totalSlots = Math.ceil(days.length / 7) * 7;
-    const remainingSlots = totalSlots - days.length;
-    for (let i = 1; i <= remainingSlots; i++) {
-      const d = new Date(year, month + 1, i);
-      days.push({ date: d, isCurrentMonth: false, isDisabled: true });
-    }
+  const totalSlots = Math.ceil(days.length / 7) * 7;
+  const remainingSlots = totalSlots - days.length;
+  for (let i = 1; i <= remainingSlots; i++) {
+    const d = new Date(year, month + 1, i);
+    days.push({ date: d, isCurrentMonth: false, isDisabled: true });
+  }
 
-    return days;
-  }, [currentMonth, today]);
+  const calendarDays = days;
 
   const monthYearDisplay = currentMonth.toLocaleString("en-US", {
     month: "long",

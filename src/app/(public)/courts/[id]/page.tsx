@@ -69,7 +69,7 @@ export default function CourtDetails({
 
   const numericPrice = parseFloat(court.price.replace(/\./g, "").replace(",", "."));
 
-  const today = React.useMemo(() => startOfDay(new Date()), []);
+  const today = startOfDay(new Date());
   const [selectedDate, setSelectedDate] = React.useState<Date>(today);
   const [selectedDuration, setSelectedDuration] = React.useState<number>(60);
   const [selectedTimeSlot, setSelectedTimeSlot] =
@@ -192,8 +192,8 @@ export default function CourtDetails({
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="absolute left-3 size-7 rounded-full border border-white bg-[#6A7282]/80 text-white cursor-pointer hover:bg-[#6A7282] hover:text-white" />
-              <CarouselNext className="absolute right-3 size-7 rounded-full border border-white bg-[#6A7282]/80 text-white cursor-pointer hover:bg-[#6A7282] hover:text-white" />
+              <CarouselPrevious className="absolute left-3 size-7 rounded-full border border-white bg-text-secondary/80 text-white cursor-pointer hover:bg-text-secondary hover:text-white" />
+              <CarouselNext className="absolute right-3 size-7 rounded-full border border-white bg-text-secondary/80 text-white cursor-pointer hover:bg-text-secondary hover:text-white" />
             </Carousel>
           </div>
 
@@ -334,7 +334,7 @@ export default function CourtDetails({
           <button
             type="button"
             onClick={() => setIsOverlayOpen(false)}
-            className="absolute top-6 right-6 flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-white bg-[#6A7282]/80 text-white hover:bg-[#6A7282] cursor-pointer transition"
+            className="absolute top-6 right-6 flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-white bg-text-secondary/80 text-white hover:bg-text-secondary cursor-pointer transition"
             aria-label="Close modal"
           >
             <X className="size-6" />
@@ -345,7 +345,7 @@ export default function CourtDetails({
               type="button"
               aria-label="Previous image"
               disabled={overlayCurrentIndex === 0}
-              className="flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-white bg-[#6A7282]/80 text-white hover:bg-[#6A7282] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-white bg-text-secondary/80 text-white hover:bg-text-secondary cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => {
                 overlayCarouselApi?.scrollPrev();
               }}
@@ -379,7 +379,7 @@ export default function CourtDetails({
               type="button"
               aria-label="Next image"
               disabled={overlayCurrentIndex >= carouselImages.length - 1}
-              className="flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-white bg-[#6A7282]/80 text-white hover:bg-[#6A7282] cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-white bg-text-secondary/80 text-white hover:bg-text-secondary cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => {
                 overlayCarouselApi?.scrollNext();
               }}

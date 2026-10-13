@@ -1,15 +1,16 @@
 "use client";
 
-import React, { use, useState } from "react";
+import { useState, use } from "react";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { SquarePen, Trash2 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Field, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { COURTS } from "@/data/courts";
+import {
+  CourtFormCard,
+  type CourtFormCardValues,
+} from "@/components/admin/court-form-card";
 import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal";
+import { COURTS } from "@/data/courts";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -25,133 +26,74 @@ export default function CourtDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const handleDeleteConfirm = () => {
-    setIsDeleteModalOpen(false);
-    router.push("/admin/courts");
-  };
-
   const images =
     court.images && court.images.length > 0 ? court.images : [court.image];
 
+  const headerAction = (
+    <div className="flex items-center gap-2">
+      <Button
+        nativeButton={false}
+        render={<Link href={`/admin/courts/${court.id}/edit`} />}
+        className="h-10 px-4 cursor-pointer rounded-[12px] bg-warning text-white! text-small hover:bg-warning/90 gap-2"
+      >
+        <SquarePen /> Edit
+      </Button>
+      <Button
+        type="button"
+        onClick={() => setIsDeleteModalOpen(true)}
+        className="h-10 px-4 cursor-pointer rounded-[12px] bg-red text-white! text-small hover:bg-red/90 gap-2"
+      >
+        <Trash2 /> Delete
+      </Button>
+    </div>
+  );
+
+  const values: CourtFormCardValues = {
+    name: court.name,
+    price: court.price.replace(/[^0-9]/g, ""),
+    sport: court.sport,
+    type: court.type,
+    description: court.description,
+  };
+
+  const actionButtons = (
+    <Button
+      nativeButton={false}
+      variant="outline"
+      render={<Link href="/admin/courts" />}
+      className="h-14 px-8 cursor-pointer rounded-[12px] border-border bg-white text-primary font-semibold hover:bg-light"
+    >
+      Close
+    </Button>
+  );
+
   return (
     <section className="flex flex-col">
-      <Card className="border border-border rounded-[16px] bg-white p-6 shadow-none">
-        <CardContent className="flex flex-col gap-6 p-0">
-          {/* Header Card & Action Buttons */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h1 className="text-h2 text-text-primary">Court Details</h1>
-            <div className="flex items-center gap-2">
-              <Button
-                nativeButton={false}
-                render={<Link href={`/admin/courts/${court.id}/edit`} />}
-                className="h-10 px-4 cursor-pointer rounded-[12px] bg-warning text-white! text-small hover:bg-warning/90 gap-2"
-              >
-                <SquarePen />
-                Edit
-              </Button>
-              <Button
-                type="button"
-                onClick={() => setIsDeleteModalOpen(true)}
-                className="h-10 px-4 cursor-pointer rounded-[12px] bg-red text-white! text-small hover:bg-red/90 gap-2"
-              >
-                <Trash2 />
-                Delete
-              </Button>
-            </div>
-          </div>
-
-          {/* Picture Gallery */}
-          <div className="flex flex-col gap-2">
-            <label className="text-body text-text-primary leading-tight">Picture</label>
-            <div className="w-full flex gap-4 overflow-x-auto pb-2">
-              {images.map((image, index) => (
-                <div
-                  key={`${image}-${index}`}
-                  className="relative h-60 aspect-3/2 shrink-0 overflow-hidden rounded-[8px] border border-border"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={image}
-                    alt={`${court.name} image ${index + 1}`}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Name & Price / hour */}
-          <div className="grid gap-4 md:grid-cols-2">
-            <Field>
-              <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="court-name">
-                Name
-              </FieldLabel>
-              <Input
-                id="court-name"
-                readOnly
-                value={court.name}
-                className="h-10 w-full rounded-[6px] border-border bg-white px-3 text-body md:text-body text-text-primary focus-visible:ring-0"
-              />
-            </Field>
-            <Field>
-              <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="court-price">
-                Price /hour
-              </FieldLabel>
-              <Input
-                id="court-price"
-                type="number"
-                readOnly
-                value={court.price.replace(/[^0-9]/g, "")}
-                className="h-10 w-full rounded-[6px] border-border bg-white px-3 text-body md:text-body text-text-primary focus-visible:ring-0"
-              />
-            </Field>
-          </div>
-
-          {/* Sport & Court type */}
-          <div className="grid gap-4 md:grid-cols-2">
-            <Field>
-              <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="court-sport">
-                Sport
-              </FieldLabel>
-              <div
-                id="court-sport"
-                className="flex h-10 w-full items-center rounded-[6px] border border-border bg-white px-4 text-body text-text-primary"
-              >
-                {court.sport}
-              </div>
-            </Field>
-            <Field>
-              <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="court-type">
-                Court type
-              </FieldLabel>
-              <div
-                id="court-type"
-                className="flex h-10 w-full items-center rounded-[6px] border border-border bg-white px-4 text-body text-text-primary"
-              >
-                {court.type}
-              </div>
-            </Field>
-          </div>
-
-          {/* Description */}
-          <Field>
-            <FieldLabel className="text-body font-normal text-text-primary leading-tight" htmlFor="court-description">
-              Description
-            </FieldLabel>
-            <div
-              id="court-description"
-              className="h-36 w-full rounded-[6px] border border-border bg-white p-3 text-body text-text-primary overflow-y-auto"
-            >
-              {court.description}
-            </div>
-          </Field>
-        </CardContent>
-      </Card>
-
+      <CourtFormCard
+        title="Court Details"
+        mode="detail"
+        values={values}
+        sports={["Futsal", "Basketball", "Tennis", "Padel"] as string[]}
+        courtTypes={
+          [
+            "Synthetic Grass Futsal Court",
+            "Interlock Futsal Court",
+            "Indoor Basketball Court",
+            "Padel Court",
+          ]
+        }
+        images={images}
+        headerAction={headerAction}
+        actionButtons={actionButtons}
+        onSubmit={() => {}}
+      />
       <DeleteConfirmModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleDeleteConfirm}
+        onConfirm={() => {
+          setIsDeleteModalOpen(false);
+          router.push("/admin/courts");
+        }}
         entityType="court"
       />
     </section>

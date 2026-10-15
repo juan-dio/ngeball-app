@@ -83,8 +83,9 @@ export default function EditCourtPage({ params }: PageProps) {
     <div className="flex items-center gap-2">
       <Button
         nativeButton={false}
+        variant="outline"
         render={<Link href={`/admin/courts/${court.id}`} />}
-        className="h-10 px-4 cursor-pointer rounded-[12px] bg-primary text-white text-small hover:bg-primary/90 gap-2"
+        className="h-10 px-4 cursor-pointer rounded-[12px] border-border bg-white text-primary text-small hover:bg-light gap-2"
       >
         Back
       </Button>

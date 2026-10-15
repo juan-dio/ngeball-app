@@ -7,7 +7,7 @@ import { SquarePen, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   CourtFormCard,
-  type CourtFormCardValues,
+  type CourtFormValues,
 } from "@/components/admin/court-form-card";
 import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal";
 import { COURTS } from "@/data/courts";
@@ -48,7 +48,7 @@ export default function CourtDetailPage({ params }: PageProps) {
     </div>
   );
 
-  const values: CourtFormCardValues = {
+  const values: CourtFormValues = {
     name: court.name,
     price: court.price.replace(/[^0-9]/g, ""),
     sport: court.sport,
@@ -74,14 +74,12 @@ export default function CourtDetailPage({ params }: PageProps) {
         mode="detail"
         values={values}
         sports={["Futsal", "Basketball", "Tennis", "Padel"] as string[]}
-        courtTypes={
-          [
-            "Synthetic Grass Futsal Court",
-            "Interlock Futsal Court",
-            "Indoor Basketball Court",
-            "Padel Court",
-          ]
-        }
+        courtTypes={[
+          "Synthetic Grass Futsal Court",
+          "Interlock Futsal Court",
+          "Indoor Basketball Court",
+          "Padel Court",
+        ]}
         images={images}
         headerAction={headerAction}
         actionButtons={actionButtons}

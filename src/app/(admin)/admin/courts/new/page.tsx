@@ -4,7 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { CourtFormCard } from "@/components/admin/court-form-card";
+import {
+  CourtFormCard,
+  type CourtFormValues,
+} from "@/components/admin/court-form-card";
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { type FormErrors } from "@/lib/form-validation";
 import { COURTS, DEFAULT_IMAGES } from "@/data/courts";
@@ -16,13 +19,6 @@ const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.type)));
 type FormField = "name" | "price" | "sport" | "type";
 
 const FIELD_ORDER: FormField[] = ["name", "price", "sport", "type"];
-
-type CourtFormValues = {
-  name: string;
-  price: string;
-  sport: SportKey | "";
-  type: string;
-};
 
 function validateForm({
   name,
@@ -70,7 +66,7 @@ export default function NewCourtPage() {
   );
 
   const handleSave = () => {
-    if (!validate({ name, price, sport, type })) return;
+    if (!validate({ name, price, sport, type, description })) return;
     router.push("/admin/courts");
   };
 
@@ -83,7 +79,7 @@ export default function NewCourtPage() {
     setImages((prev) => prev.filter((img) => img !== image));
   };
 
-  const values = { name, price, sport, type, description };
+  const values: CourtFormValues = { name, price, sport, type, description };
 
   const actionButtons = (
     <>
@@ -95,7 +91,10 @@ export default function NewCourtPage() {
       >
         Cancel
       </Button>
-      <Button type="submit" className="h-14 px-8 cursor-pointer rounded-[12px] bg-primary text-white font-semibold hover:bg-primary/90">
+      <Button
+        type="submit"
+        className="h-14 px-8 cursor-pointer rounded-[12px] bg-primary text-white font-semibold hover:bg-primary/90"
+      >
         Save
       </Button>
     </>

@@ -17,18 +17,18 @@ import { type SportKey } from "@/data/sports";
 const LABEL_CLASS = "text-body font-normal text-text-primary leading-tight";
 const ERROR_CLASS = "text-small text-danger";
 
-export interface CourtFormCardValues {
+export interface CourtFormValues {
   name: string;
   price: string;
   sport: SportKey | "";
   type: string;
-  description: string;
+  description?: string;
 }
 
 export interface CourtFormCardProps {
   title: string;
   mode: "create" | "detail" | "edit";
-  values: CourtFormCardValues;
+  values: CourtFormValues;
   onChange?: {
     name?: (value: string) => void;
     price?: (value: string) => void;
@@ -99,7 +99,9 @@ export function CourtFormCard({
               {!isReadOnly && onImageRemove && (
                 <button
                   type="button"
-                  onClick={() => onImageRemove(mode === "create" ? image : index)}
+                  onClick={() =>
+                    onImageRemove(mode === "create" ? image : index)
+                  }
                   aria-label="Remove image"
                   className="absolute right-2 top-2 flex size-6 cursor-pointer items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70"
                 >
@@ -188,7 +190,9 @@ export function CourtFormCard({
               <DropdownMenuTrigger
                 id="court-sport"
                 aria-invalid={Boolean(errors.sport)}
-                aria-describedby={errors.sport ? "court-sport-error" : undefined}
+                aria-describedby={
+                  errors.sport ? "court-sport-error" : undefined
+                }
                 className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left"
               >
                 <span className="text-body font-normal text-text-primary truncate">

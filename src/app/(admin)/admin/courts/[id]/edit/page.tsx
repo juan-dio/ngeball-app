@@ -5,7 +5,7 @@ import { notFound, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   CourtFormCard,
-  type CourtFormCardValues,
+  type CourtFormValues,
 } from "@/components/admin/court-form-card";
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { type FormErrors } from "@/lib/form-validation";
@@ -18,13 +18,6 @@ const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.type)));
 type FormField = "name" | "price" | "sport" | "type";
 
 const FIELD_ORDER: FormField[] = ["name", "price", "sport", "type"];
-
-type CourtFormValues = {
-  name: string;
-  price: string;
-  sport: SportKey | "";
-  type: string;
-};
 
 function validateForm({
   name,
@@ -110,7 +103,7 @@ export default function EditCourtPage({ params }: PageProps) {
     setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
   };
 
-  const values: CourtFormCardValues = {
+  const values: CourtFormValues = {
     name,
     price,
     sport,
@@ -128,7 +121,10 @@ export default function EditCourtPage({ params }: PageProps) {
       >
         Reset
       </Button>
-      <Button type="submit" className="h-14 px-8 cursor-pointer rounded-[12px] bg-primary text-white font-semibold hover:bg-primary/90">
+      <Button
+        type="submit"
+        className="h-14 px-8 cursor-pointer rounded-[12px] bg-primary text-white font-semibold hover:bg-primary/90"
+      >
         Save
       </Button>
     </>

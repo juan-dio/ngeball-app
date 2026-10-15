@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   SportFormCard,
-  type SportFormCardValues,
+  type SportFormValues,
 } from "@/components/admin/sport-form-card";
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { type FormErrors } from "@/lib/form-validation";
@@ -73,6 +73,18 @@ export default function EditSportPage({ params }: PageProps) {
     validateForm,
   );
 
+  const headerAction = (
+    <div className="flex items-center gap-2">
+      <Button
+        nativeButton={false}
+        render={<Link href={`/admin/sports/${sport.id}`} />}
+        className="h-10 px-4 cursor-pointer rounded-[12px] bg-primary text-white text-small hover:bg-primary/90 gap-2"
+      >
+        Back
+      </Button>
+    </div>
+  );
+
   const handleSave = () => {
     if (!validate({ name, colorHex, iconSvg })) return;
 
@@ -101,17 +113,24 @@ export default function EditSportPage({ params }: PageProps) {
     }
   };
 
-  const values: SportFormCardValues = { name, colorHex, iconSvg };
+  const handleReset = () => {
+    setName(sport.name);
+    setColorHex(sport.colorHex);
+    setIconSvg(sport.iconSvg || "");
+    FIELD_ORDER.forEach(clearError);
+  };
+
+  const values: SportFormValues = { name, colorHex, iconSvg };
 
   const actionButtons = (
     <>
       <Button
-        nativeButton={false}
+        type="button"
         variant="outline"
-        render={<Link href="/admin/sports" />}
+        onClick={handleReset}
         className="h-14 px-8 cursor-pointer rounded-[12px] border-border bg-white text-primary font-semibold hover:bg-light"
       >
-        Cancel
+        Reset
       </Button>
       <Button
         type="submit"
@@ -132,6 +151,7 @@ export default function EditSportPage({ params }: PageProps) {
       errors={errors}
       clearError={clearError}
       onSubmit={handleSubmit}
+      headerAction={headerAction}
       actionButtons={actionButtons}
     />
   );

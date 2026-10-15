@@ -10,7 +10,7 @@ import {
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { type FormErrors } from "@/lib/form-validation";
 import { COURTS } from "@/data/courts";
-import { type SportKey } from "@/data/sports";
+import Link from "next/link";
 
 const SPORTS = Array.from(new Set(COURTS.map((c) => c.sport)));
 const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.type)));
@@ -68,7 +68,7 @@ export default function EditCourtPage({ params }: PageProps) {
 
   const [name, setName] = useState(court.name);
   const [price, setPrice] = useState(initialPrice);
-  const [sport, setSport] = useState<SportKey | "">(court.sport);
+  const [sport, setSport] = useState<CourtFormValues["sport"]>(court.sport);
   const [type, setType] = useState(court.type);
   const [description, setDescription] = useState(court.description);
   const [images, setImages] = useState<string[]>(initialImages);
@@ -77,6 +77,18 @@ export default function EditCourtPage({ params }: PageProps) {
     FIELD_ORDER,
     "court",
     validateForm,
+  );
+
+  const headerAction = (
+    <div className="flex items-center gap-2">
+      <Button
+        nativeButton={false}
+        render={<Link href={`/admin/courts/${court.id}`} />}
+        className="h-10 px-4 cursor-pointer rounded-[12px] bg-primary text-white text-small hover:bg-primary/90 gap-2"
+      >
+        Back
+      </Button>
+    </div>
   );
 
   const handleSave = () => {
@@ -150,6 +162,7 @@ export default function EditCourtPage({ params }: PageProps) {
         images={images}
         onImageRemove={(index) => removeImage(index as number)}
         onSubmit={handleSubmit}
+        headerAction={headerAction}
         actionButtons={actionButtons}
       />
     </section>

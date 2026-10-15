@@ -11,7 +11,6 @@ import {
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { type FormErrors } from "@/lib/form-validation";
 import { COURTS, DEFAULT_IMAGES } from "@/data/courts";
-import { type SportKey } from "@/data/sports";
 
 const SPORTS = Array.from(new Set(COURTS.map((c) => c.sport)));
 const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.type)));
@@ -54,7 +53,7 @@ export default function NewCourtPage() {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [sport, setSport] = useState<SportKey | "">("");
+  const [sport, setSport] = useState<CourtFormValues["sport"]>("");
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState<string[]>([...DEFAULT_IMAGES]);

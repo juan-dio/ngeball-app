@@ -9,7 +9,6 @@ import {
   type CourtTypeFormValues,
 } from "@/components/admin/court-type-form-card";
 import { COURT_TYPES } from "@/data/court-types";
-import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal";
 import { type SportKey } from "@/data/sports";
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { type FormErrors } from "@/lib/form-validation";
@@ -42,28 +41,22 @@ interface PageProps {
 export default function CourtTypeEditPage({ params }: PageProps) {
   const { id } = use(params);
   const router = useRouter();
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const courtType = COURT_TYPES.find((ct) => ct.id === id);
 
   if (!courtType) {
     notFound();
   }
 
-  const { errors, clearError, validate } = useFormValidation(
-    FIELD_ORDER,
-    "court-type",
-    validateForm,
-  );
-
   const [name, setName] = useState(courtType.name);
   const [sport, setSport] = useState<CourtTypeFormValues["sport"]>(
     courtType.sport,
   );
 
-  const handleDeleteConfirm = () => {
-    setIsDeleteModalOpen(false);
-    router.push("/admin/court-types");
-  };
+  const { errors, clearError, validate } = useFormValidation(
+    FIELD_ORDER,
+    "court-type",
+    validateForm,
+  );
 
   const headerAction = (
     <div className="flex items-center gap-2">
@@ -128,18 +121,11 @@ export default function CourtTypeEditPage({ params }: PageProps) {
         mode="edit"
         values={values}
         onChange={{ name: setName, sport: setSport }}
-        headerAction={headerAction}
-        actionButtons={actionButtons}
-        onSubmit={handleSubmit}
         errors={errors}
         clearError={clearError}
-      />
-      <DeleteConfirmModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleDeleteConfirm}
-        entityType="court type"
-        itemName={courtType.name}
+        onSubmit={handleSubmit}
+        headerAction={headerAction}
+        actionButtons={actionButtons}
       />
     </section>
   );

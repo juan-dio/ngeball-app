@@ -81,10 +81,10 @@ export default function NewCourtTypePage() {
       mode="create"
       values={values}
       onChange={{ name: setName, sport: setSport }}
-      onSubmit={handleSubmit}
-      actionButtons={actionButtons}
       errors={errors}
       clearError={clearError}
+      onSubmit={handleSubmit}
+      actionButtons={actionButtons}
     />
   );
 }

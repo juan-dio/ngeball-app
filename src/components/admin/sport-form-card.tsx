@@ -17,7 +17,7 @@ function asHex(value: string) {
   return trimmed.startsWith("#") ? trimmed : `#${trimmed}`;
 }
 
-export interface SportFormCardValues {
+export interface SportFormValues {
   name: string;
   colorHex: string;
   iconSvg: string;
@@ -26,7 +26,7 @@ export interface SportFormCardValues {
 export interface SportFormCardProps {
   title: string;
   mode: "create" | "detail" | "edit";
-  values: SportFormCardValues;
+  values: SportFormValues;
   onChange?: {
     name?: (value: string) => void;
     colorHex?: (value: string) => void;
@@ -100,16 +100,25 @@ export function SportFormCard({
             Color
           </FieldLabel>
           {isReadOnly ? (
-            <div
-              id="sport-color"
-              className="flex h-10 w-full items-center gap-2 rounded-[6px] border border-border bg-white px-3 text-body text-text-primary"
-            >
+            <div className="relative">
               <span
                 aria-hidden="true"
-                className="block size-6 shrink-0 rounded-[8px] border border-border"
-                style={{ backgroundColor: swatchColor }}
+                className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-1.5"
+              >
+                <span
+                  className="block size-6 rounded-[6px] border border-border"
+                  style={{ backgroundColor: swatchColor }}
+                />
+              </span>
+              <Input
+                id="sport-color"
+                value={values.colorHex}
+                readOnly
+                aria-describedby={
+                  errors.color ? "sport-color-error" : undefined
+                }
+                className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
               />
-              {rawHex.replace("#", "")}
             </div>
           ) : (
             <div className="relative">
@@ -131,7 +140,9 @@ export function SportFormCard({
                 }}
                 onBlur={onColorBlur}
                 aria-invalid={Boolean(errors.color)}
-                aria-describedby={errors.color ? "sport-color-error" : undefined}
+                aria-describedby={
+                  errors.color ? "sport-color-error" : undefined
+                }
                 className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 placeholder="eg. 285A48"
               />

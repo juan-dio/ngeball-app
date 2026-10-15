@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   SportFormCard,
-  type SportFormCardValues,
+  type SportFormValues,
 } from "@/components/admin/sport-form-card";
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { type FormErrors } from "@/lib/form-validation";
@@ -78,7 +78,7 @@ export default function NewSportPage() {
     }
   };
 
-  const values: SportFormCardValues = { name, colorHex, iconSvg };
+  const values: SportFormValues = { name, colorHex, iconSvg };
 
   const actionButtons = (
     <>

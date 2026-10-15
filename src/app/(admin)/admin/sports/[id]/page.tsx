@@ -7,7 +7,7 @@ import { SquarePen, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   SportFormCard,
-  type SportFormCardValues,
+  type SportFormValues,
 } from "@/components/admin/sport-form-card";
 import { SPORTS } from "@/data/sports";
 import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal";
@@ -50,7 +50,7 @@ export default function SportDetailPage({ params }: PageProps) {
     </div>
   );
 
-  const values: SportFormCardValues = {
+  const values: SportFormValues = {
     name: sport.name,
     colorHex: sport.colorHex,
     iconSvg: sport.iconSvg || "",

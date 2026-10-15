@@ -95,15 +95,21 @@ export default function CourtTypeEditPage({ params }: PageProps) {
     handleSave();
   };
 
+  const handleReset = () => {
+    setName(courtType.name);
+    setSport(courtType.sport);
+    FIELD_ORDER.forEach(clearError);
+  };
+
   const actionButtons = (
     <>
       <Button
-        nativeButton={false}
+        type="button"
         variant="outline"
-        render={<Link href={`/admin/court-types/${courtType.id}`} />}
+        onClick={handleReset}
         className="h-14 px-8 cursor-pointer rounded-[12px] border-border bg-white text-primary font-semibold hover:bg-light"
       >
-        Cancel
+        Reset
       </Button>
       <Button
         type="submit"

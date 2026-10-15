@@ -99,55 +99,41 @@ export function SportFormCard({
           <FieldLabel className={LABEL_CLASS} htmlFor="sport-color">
             Color
           </FieldLabel>
-          {isReadOnly ? (
-            <div className="relative">
+          <div className="relative">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-1.5"
+            >
               <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-1.5"
-              >
-                <span
-                  className="block size-6 rounded-[6px] border border-border"
-                  style={{ backgroundColor: swatchColor }}
-                />
-              </span>
-              <Input
-                id="sport-color"
-                value={values.colorHex}
-                readOnly
-                aria-describedby={
-                  errors.color ? "sport-color-error" : undefined
-                }
-                className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+                className="block size-6 rounded-[6px] border border-border"
+                style={{ backgroundColor: swatchColor }}
               />
-            </div>
-          ) : (
-            <div className="relative">
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-1.5"
-              >
-                <span
-                  className="block size-6 rounded-[6px] border border-border"
-                  style={{ backgroundColor: swatchColor }}
-                />
-              </span>
-              <Input
-                id="sport-color"
-                value={values.colorHex}
-                onChange={(e) => {
-                  onChange?.colorHex?.(e.target.value);
-                  clearError?.("color");
-                }}
-                onBlur={onColorBlur}
-                aria-invalid={Boolean(errors.color)}
-                aria-describedby={
-                  errors.color ? "sport-color-error" : undefined
-                }
-                className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body md:text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
-                placeholder="eg. 285A48"
-              />
-            </div>
-          )}
+            </span>
+            <Input
+              id="sport-color"
+              readOnly={isReadOnly}
+              value={values.colorHex}
+              onChange={
+                isReadOnly
+                  ? undefined
+                  : (e) => {
+                      onChange?.colorHex?.(e.target.value);
+                      clearError?.("color");
+                    }
+              }
+              onBlur={isReadOnly ? undefined : onColorBlur}
+              aria-invalid={!isReadOnly && Boolean(errors.color)}
+              aria-describedby={
+                errors.color ? "sport-color-error" : undefined
+              }
+              className={`h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body md:text-body ${
+                isReadOnly
+                  ? "focus-visible:ring-0"
+                  : "placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+              }`}
+              placeholder={isReadOnly ? undefined : "eg. 285A48"}
+            />
+          </div>
           {!isReadOnly && (
             <FieldError id="sport-color-error" className={ERROR_CLASS}>
               {errors.color}

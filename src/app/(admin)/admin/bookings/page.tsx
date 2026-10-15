@@ -182,54 +182,54 @@ export default function BookingsPage() {
                   </TableRow>
                 ) : (
                   paginatedBookings.map((booking, index) => {
-                  const isEven = index % 2 === 1;
-                  return (
-                    <TableRow
-                      key={`${booking.id}-${index}`}
-                      className={`border-0 ${
-                        isEven
-                          ? "bg-white hover:bg-white/80"
-                          : "bg-background hover:bg-background/80"
-                      }`}
-                    >
-                      <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                        {booking.id}
-                      </TableCell>
-                      <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                        {booking.userName}
-                      </TableCell>
-                      <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                        {booking.courtName}
-                      </TableCell>
-                      <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                        {booking.date}
-                      </TableCell>
-                      <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                        {booking.time}
-                      </TableCell>
-                      <TableCell className="p-2 text-center">
-                        <div className="flex justify-center">
-                          <BookingStatus status={booking.status} />
-                        </div>
-                      </TableCell>
-                      <TableCell className="p-2 text-center">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger className="inline-flex size-8 cursor-pointer items-center justify-center rounded-md hover:bg-light">
-                            <MoreVertical className="size-4 text-text-secondary" />
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent
-                            align="end"
-                            className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow"
-                          >
-                            <DropdownMenuItem className="cursor-pointer text-body text-danger focus:bg-danger/10 focus:text-danger">
-                              Reject Booking
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
+                    const isEven = index % 2 === 1;
+                    return (
+                      <TableRow
+                        key={`${booking.id}-${index}`}
+                        className={`border-0 ${
+                          isEven
+                            ? "bg-white hover:bg-white/80"
+                            : "bg-background hover:bg-background/80"
+                        }`}
+                      >
+                        <TableCell className="p-2 text-center text-small text-text-primary font-light">
+                          {booking.id}
+                        </TableCell>
+                        <TableCell className="p-2 text-center text-small text-text-primary font-light">
+                          {booking.userName}
+                        </TableCell>
+                        <TableCell className="p-2 text-center text-small text-text-primary font-light">
+                          {booking.courtName}
+                        </TableCell>
+                        <TableCell className="p-2 text-center text-small text-text-primary font-light">
+                          {booking.date}
+                        </TableCell>
+                        <TableCell className="p-2 text-center text-small text-text-primary font-light">
+                          {booking.time}
+                        </TableCell>
+                        <TableCell className="p-2 text-center">
+                          <div className="flex justify-center">
+                            <BookingStatus status={booking.status} />
+                          </div>
+                        </TableCell>
+                        <TableCell className="p-2 text-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger className="inline-flex size-8 cursor-pointer items-center justify-center rounded-md hover:bg-light">
+                              <MoreVertical className="size-4 text-text-secondary" />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                              align="end"
+                              className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow"
+                            >
+                              <DropdownMenuItem className="cursor-pointer text-danger focus:bg-danger/10 focus:text-danger">
+                                Reject
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 )}
               </TableBody>
             </Table>

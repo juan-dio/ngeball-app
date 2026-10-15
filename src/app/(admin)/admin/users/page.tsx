@@ -16,6 +16,12 @@ import {
 import { USERS } from "@/data/users";
 import { usePagination } from "@/hooks/use-pagination";
 import { VerifiedBadge } from "@/components/verified-badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -121,7 +127,19 @@ export default function UsersPage() {
                           <VerifiedBadge verified={user.verified} />
                         </TableCell>
                         <TableCell className="p-2 text-center">
-                          <MoreVertical className="size-5 mx-auto text-text-secondary" />
+                          <DropdownMenu>
+                            <DropdownMenuTrigger className="inline-flex size-8 cursor-pointer items-center justify-center rounded-md hover:bg-light">
+                              <MoreVertical className="size-4 text-text-secondary" />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                              align="end"
+                              className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow"
+                            >
+                              <DropdownMenuItem className="cursor-pointer text-danger focus:bg-danger/10 focus:text-danger">
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     );

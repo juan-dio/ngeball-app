@@ -10,6 +10,30 @@ import {
 } from "@/components/admin/court-type-form-card";
 import { COURT_TYPES } from "@/data/court-types";
 import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal";
+import { type SportKey } from "@/data/sports";
+import { useFormValidation } from "@/hooks/use-form-validation";
+import { type FormErrors } from "@/lib/form-validation";
+
+type FormField = "name" | "sport";
+
+const FIELD_ORDER: FormField[] = ["name", "sport"];
+
+function validateForm({
+  name,
+  sport,
+}: CourtTypeFormValues): FormErrors<FormField> {
+  const errors: FormErrors<FormField> = {};
+
+  if (!name.trim()) {
+    errors.name = "Name is required";
+  }
+
+  if (!sport) {
+    errors.sport = "Sport is required";
+  }
+
+  return errors;
+}
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -24,6 +48,17 @@ export default function CourtTypeEditPage({ params }: PageProps) {
   if (!courtType) {
     notFound();
   }
+
+  const { errors, clearError, validate } = useFormValidation(
+    FIELD_ORDER,
+    "court-type",
+    validateForm,
+  );
+
+  const [name, setName] = useState(courtType.name);
+  const [sport, setSport] = useState<CourtTypeFormValues["sport"]>(
+    courtType.sport,
+  );
 
   const handleDeleteConfirm = () => {
     setIsDeleteModalOpen(false);
@@ -43,12 +78,22 @@ export default function CourtTypeEditPage({ params }: PageProps) {
   );
 
   const values: CourtTypeFormValues = {
-    name: courtType.name,
-    sport: courtType.sport,
+    name,
+    sport,
   };
 
   const handleSave = () => {
-    // In a real app, we would update the court type in the database
+    if (!validate({ name, sport })) return;
+
+    const index = COURT_TYPES.findIndex((ct) => ct.id === id);
+    if (index !== -1) {
+      COURT_TYPES[index] = {
+        ...COURT_TYPES[index],
+        name,
+        sport: sport as SportKey,
+      };
+    }
+
     router.push("/admin/court-types");
   };
 
@@ -82,9 +127,12 @@ export default function CourtTypeEditPage({ params }: PageProps) {
         title="Edit Court Type"
         mode="edit"
         values={values}
+        onChange={{ name: setName, sport: setSport }}
         headerAction={headerAction}
         actionButtons={actionButtons}
         onSubmit={handleSubmit}
+        errors={errors}
+        clearError={clearError}
       />
       <DeleteConfirmModal
         isOpen={isDeleteModalOpen}

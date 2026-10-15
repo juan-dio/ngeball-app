@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import { USERS } from "@/data/users";
 import { usePagination } from "@/hooks/use-pagination";
-import { VerifiedBadge } from "@/components/ui/verified-badge";
+import { VerifiedBadge } from "@/components/verified-badge";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -117,7 +117,7 @@ export default function UsersPage() {
                         <TableCell className="p-2 text-center text-small text-text-primary font-light">
                           {user.lastName}
                         </TableCell>
-                        <TableCell className="p-2 text-center">
+                        <TableCell className="p-2 text-center flex justify-center">
                           <VerifiedBadge verified={user.verified} />
                         </TableCell>
                         <TableCell className="p-2 text-center">

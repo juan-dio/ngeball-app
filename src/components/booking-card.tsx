@@ -5,6 +5,7 @@ import { Calendar, ChevronDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { SportIcon } from "@/components/icons/sport-icon";
 import { type Booking } from "@/data/bookings";
+import { formatPrice } from "@/lib/formatter";
 import { BookingStatus } from "@/components/booking-status";
 
 type BookingCardProps = {
@@ -31,7 +32,7 @@ export function BookingCard({
           <div className="flex items-center gap-2">
             <p className="text-body text-text-secondary">
               <span>Rp </span>
-              <span className="text-h3 text-primary">{court.price}</span>
+              <span className="text-h3 text-primary">{formatPrice(court.price)}</span>
             </p>
             <BookingStatus status={status} />
           </div>

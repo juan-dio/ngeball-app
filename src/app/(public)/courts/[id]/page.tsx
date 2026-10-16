@@ -5,6 +5,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { AppNavbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { formatPrice } from "@/lib/formatter";
 import { Button } from "@/components/ui/button";
 import { SelectButton } from "@/components/select-button";
 import { Calendar } from "@/components/calendar";
@@ -216,7 +217,7 @@ export default function CourtDetails({
             </div>
             <p className="text-h2 text-text-secondary leading-tight">
               <span>Rp </span>
-              <span className="text-primary">{court.price}</span>
+              <span className="text-primary">{formatPrice(court.price)}</span>
               <span className="text-h3"> /hour</span>
             </p>
             <div className="flex flex-col gap-1.5">
@@ -314,7 +315,7 @@ export default function CourtDetails({
               </span>
               <span className="text-h2 text-primary leading-tight">
                 <span className="text-text-secondary">Rp </span>
-                {totalPrice.toLocaleString("id-ID")}
+                {formatPrice(totalPrice)}
               </span>
               <span className="text-small text-text-secondary">
                 Tax included

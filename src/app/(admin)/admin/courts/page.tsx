@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SportIconWithText } from "@/components/icons/sport-icon";
 import { TablePagination } from "@/components/table-pagination";
+import { formatPrice } from "@/lib/formatter";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -213,7 +214,7 @@ export default function CourtsPage() {
                         {court.courtType.name}
                       </TableCell>
                       <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                        Rp {court.price}
+                        Rp {formatPrice(court.price)}
                       </TableCell>
                       <TableCell className="p-2 text-center">
                         <Link

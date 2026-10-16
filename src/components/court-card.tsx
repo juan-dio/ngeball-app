@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SportIcon } from "@/components/icons/sport-icon";
+import { formatPrice } from "@/lib/formatter";
 import { type Court } from "@/data/courts";
 
 type CourtCardProps = {
@@ -36,7 +37,7 @@ export function CourtCard({ court, priority }: CourtCardProps) {
 
         <p className="text-body text-text-secondary">
           <span>Rp </span>
-          <span className="text-h3 text-primary">{court.price}</span>
+          <span className="text-h3 text-primary">{formatPrice(court.price)}</span>
           <span> /hour</span>
         </p>
       </div>

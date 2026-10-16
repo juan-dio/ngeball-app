@@ -50,9 +50,9 @@ export default function CourtDetailPage({ params }: PageProps) {
 
   const values: CourtFormValues = {
     name: court.name,
-    price: court.price.replace(/[^0-9]/g, ""),
-    sport: court.sport,
-    type: court.type,
+    price: court.price.toString(),
+    sport: court.sport.sport,
+    type: court.courtType.name,
     description: court.description,
   };
 

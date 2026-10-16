@@ -29,10 +29,10 @@ export function CourtCard({ court, priority }: CourtCardProps) {
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="flex items-center justify-between gap-2">
           <h3 className="text-h2 text-text-primary">{court.name}</h3>
-          <SportIcon sport={court.sport} />
+          <SportIcon sport={court.sport.sport} />
         </div>
 
-        <p className="text-body text-text-secondary">{court.type}</p>
+        <p className="text-body text-text-secondary">{court.courtType.name}</p>
 
         <p className="text-body text-text-secondary">
           <span>Rp </span>

@@ -65,10 +65,10 @@ export default function CourtsPage() {
       .toLowerCase()
       .includes(search.trim().toLowerCase());
     const matchSport =
-      selectedSport === "All Sports" || court.sport === selectedSport;
+      selectedSport === "All Sports" || court.sport.sport === selectedSport;
     const matchType =
       selectedType === "All Types" ||
-      court.type.toLowerCase().includes(selectedType.toLowerCase());
+      court.courtType.name.toLowerCase().includes(selectedType.toLowerCase());
     return matchSearch && matchSport && matchType;
   });
 

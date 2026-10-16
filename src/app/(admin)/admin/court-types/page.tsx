@@ -117,7 +117,11 @@ export default function CourtTypesPage() {
                         </TableCell>
                         <TableCell className="p-2 text-center text-small text-text-primary">
                           <div className="flex justify-center">
-                            <SportIconWithText sport={courtType.sport} />
+                            <SportIconWithText
+                              sport={courtType.sport.sport}
+                              iconSvg={courtType.sport.iconSvg}
+                              colorHex={courtType.sport.colorHex}
+                            />
                           </div>
                         </TableCell>
                         <TableCell className="p-2 text-center">

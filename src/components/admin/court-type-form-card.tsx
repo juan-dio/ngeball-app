@@ -12,14 +12,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { type FormErrors } from "@/lib/form-validation";
 import { SPORTS } from "@/data/sports";
-import { type SportKey } from "@/data/sports";
 
 const LABEL_CLASS = "text-body font-normal text-text-primary leading-tight";
 const ERROR_CLASS = "text-small text-danger";
 
 export interface CourtTypeFormValues {
   name: string;
-  sport: SportKey | "";
+  sport: string;
 }
 
 export interface CourtTypeFormCardProps {
@@ -28,7 +27,7 @@ export interface CourtTypeFormCardProps {
   values: CourtTypeFormValues;
   onChange?: {
     name?: (value: string) => void;
-    sport?: (value: SportKey) => void;
+    sport?: (value: string) => void;
   };
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   headerAction?: React.ReactNode;
@@ -111,7 +110,7 @@ export function CourtTypeFormCard({
               >
                 <span className="text-body font-normal text-text-primary truncate">
                   {values.sport
-                    ? SPORTS.find((s) => s.sport === values.sport)?.name
+                    ? SPORTS.find((s) => s.name === values.sport)?.name
                     : "Select sport"}
                 </span>
                 <ChevronDown className="size-4 shrink-0 text-text-secondary" />
@@ -119,9 +118,9 @@ export function CourtTypeFormCard({
               <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
                 {SPORTS.map((sport) => (
                   <DropdownMenuItem
-                    key={sport.sport}
+                    key={sport.id}
                     onClick={() => {
-                      onChange?.sport?.(sport.sport);
+                      onChange?.sport?.(sport.name);
                       clearError?.("sport");
                     }}
                     className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"

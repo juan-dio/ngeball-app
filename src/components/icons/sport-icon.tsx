@@ -1,11 +1,10 @@
 import {
   SPORT_COLOR_HEX,
   SPORT_ICONS,
-  type SportKey,
 } from "@/data/sports";
 
 type SportIconProps = {
-  sport: SportKey;
+  sport: string;
   iconSvg?: string;
   colorHex?: string;
 };
@@ -29,8 +28,8 @@ function SportGlyph({
 }
 
 export function SportIcon({ sport, iconSvg, colorHex }: SportIconProps) {
-  const svg = iconSvg ?? SPORT_ICONS[sport];
-  const hex = colorHex ?? SPORT_COLOR_HEX[sport];
+  const svg = iconSvg ?? SPORT_ICONS[sport] ?? "";
+  const hex = colorHex ?? SPORT_COLOR_HEX[sport] ?? "#000000";
 
   return (
     <span
@@ -43,8 +42,8 @@ export function SportIcon({ sport, iconSvg, colorHex }: SportIconProps) {
 }
 
 export function SportIconWithText({ sport, iconSvg, colorHex }: SportIconProps) {
-  const svg = iconSvg ?? SPORT_ICONS[sport];
-  const hex = colorHex ?? SPORT_COLOR_HEX[sport];
+  const svg = iconSvg ?? SPORT_ICONS[sport] ?? "";
+  const hex = colorHex ?? SPORT_COLOR_HEX[sport] ?? "#000000";
 
   return (
     <span

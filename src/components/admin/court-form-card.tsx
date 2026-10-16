@@ -12,7 +12,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { type FormErrors } from "@/lib/form-validation";
-import { type SportKey } from "@/data/sports";
 
 const LABEL_CLASS = "text-body font-normal text-text-primary leading-tight";
 const ERROR_CLASS = "text-small text-danger";
@@ -20,7 +19,7 @@ const ERROR_CLASS = "text-small text-danger";
 export interface CourtFormValues {
   name: string;
   price: string;
-  sport: SportKey | "";
+  sport: string;
   type: string;
   description?: string;
 }
@@ -32,7 +31,7 @@ export interface CourtFormCardProps {
   onChange?: {
     name?: (value: string) => void;
     price?: (value: string) => void;
-    sport?: (sport: SportKey) => void;
+    sport?: (sport: string) => void;
     type?: (type: string) => void;
     description?: (desc: string) => void;
   };
@@ -205,7 +204,7 @@ export function CourtFormCard({
                   <DropdownMenuItem
                     key={option}
                     onClick={() => {
-                      onChange?.sport?.(option as SportKey);
+                      onChange?.sport?.(option);
                       clearError?.("sport");
                     }}
                     className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"

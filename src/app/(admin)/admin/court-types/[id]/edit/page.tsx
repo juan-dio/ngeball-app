@@ -9,7 +9,7 @@ import {
   type CourtTypeFormValues,
 } from "@/components/admin/court-type-form-card";
 import { COURT_TYPES } from "@/data/court-types";
-import { type SportKey } from "@/data/sports";
+import { SPORTS } from "@/data/sports";
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { type FormErrors } from "@/lib/form-validation";
 
@@ -49,7 +49,7 @@ export default function CourtTypeEditPage({ params }: PageProps) {
 
   const [name, setName] = useState(courtType.name);
   const [sport, setSport] = useState<CourtTypeFormValues["sport"]>(
-    courtType.sport,
+    courtType.sport.name,
   );
 
   const { errors, clearError, validate } = useFormValidation(
@@ -84,7 +84,8 @@ export default function CourtTypeEditPage({ params }: PageProps) {
       COURT_TYPES[index] = {
         ...COURT_TYPES[index],
         name,
-        sport: sport as SportKey,
+        sport: SPORTS.find((s) => s.name === sport)!,
+        sportId: SPORTS.find((s) => s.name === sport)!.id,
       };
     }
 
@@ -98,7 +99,7 @@ export default function CourtTypeEditPage({ params }: PageProps) {
 
   const handleReset = () => {
     setName(courtType.name);
-    setSport(courtType.sport);
+    setSport(courtType.sport.name);
     FIELD_ORDER.forEach(clearError);
   };
 

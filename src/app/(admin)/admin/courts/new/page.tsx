@@ -12,8 +12,8 @@ import { useFormValidation } from "@/hooks/use-form-validation";
 import { type FormErrors } from "@/lib/form-validation";
 import { COURTS, DEFAULT_IMAGES } from "@/data/courts";
 
-const SPORTS = Array.from(new Set(COURTS.map((c) => c.sport)));
-const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.type)));
+const SPORTS = Array.from(new Set(COURTS.map((c) => c.sport.sport)));
+const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.courtType.name)));
 
 type FormField = "name" | "price" | "sport" | "type";
 

@@ -12,8 +12,8 @@ import { type FormErrors } from "@/lib/form-validation";
 import { COURTS } from "@/data/courts";
 import Link from "next/link";
 
-const SPORTS = Array.from(new Set(COURTS.map((c) => c.sport)));
-const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.type)));
+const SPORTS = Array.from(new Set(COURTS.map((c) => c.sport.sport)));
+const COURT_TYPES = Array.from(new Set(COURTS.map((c) => c.courtType.name)));
 
 type FormField = "name" | "price" | "sport" | "type";
 
@@ -64,12 +64,12 @@ export default function EditCourtPage({ params }: PageProps) {
 
   const initialImages =
     court.images && court.images.length > 0 ? court.images : [court.image];
-  const initialPrice = court.price.replace(/[^0-9]/g, "");
+  const initialPrice = court.price.toString();
 
   const [name, setName] = useState(court.name);
   const [price, setPrice] = useState(initialPrice);
-  const [sport, setSport] = useState<CourtFormValues["sport"]>(court.sport);
-  const [type, setType] = useState(court.type);
+  const [sport, setSport] = useState<CourtFormValues["sport"]>(court.sport.sport);
+  const [type, setType] = useState(court.courtType.name);
   const [description, setDescription] = useState(court.description);
   const [images, setImages] = useState<string[]>(initialImages);
 
@@ -105,8 +105,8 @@ export default function EditCourtPage({ params }: PageProps) {
   const handleReset = () => {
     setName(court.name);
     setPrice(initialPrice);
-    setSport(court.sport);
-    setType(court.type);
+    setSport(court.sport.sport);
+    setType(court.courtType.name);
     setDescription(court.description);
     setImages(initialImages);
     FIELD_ORDER.forEach(clearError);

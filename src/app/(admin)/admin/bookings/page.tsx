@@ -52,8 +52,10 @@ export default function BookingsPage() {
 
   const filteredBookings = BOOKINGS.filter((booking) => {
     const matchSearch =
-      booking.userName.toLowerCase().includes(search.trim().toLowerCase()) ||
-      booking.courtName.toLowerCase().includes(search.trim().toLowerCase()) ||
+      `${booking.user.firstName} ${booking.user.lastName}`
+        .toLowerCase()
+        .includes(search.trim().toLowerCase()) ||
+      booking.court.name.toLowerCase().includes(search.trim().toLowerCase()) ||
       booking.id.toLowerCase().includes(search.trim().toLowerCase());
     const matchPayment =
       selectedPayment === "All Payment" ||
@@ -196,10 +198,10 @@ export default function BookingsPage() {
                           {booking.id}
                         </TableCell>
                         <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                          {booking.userName}
+                          {booking.user.firstName} {booking.user.lastName}
                         </TableCell>
                         <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                          {booking.courtName}
+                          {booking.court.name}
                         </TableCell>
                         <TableCell className="p-2 text-center text-small text-text-primary font-light">
                           {booking.date}

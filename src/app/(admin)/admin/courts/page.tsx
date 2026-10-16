@@ -37,9 +37,9 @@ export default function CourtsPage() {
       .toLowerCase()
       .includes(search.trim().toLowerCase());
     const matchSport =
-      selectedSport === "All Sports" || court.sport === selectedSport;
+      selectedSport === "All Sports" || court.sport.sport === selectedSport;
     const matchType =
-      selectedType === "All Types" || court.type.includes(selectedType);
+      selectedType === "All Types" || court.courtType.name.includes(selectedType);
     return matchSearch && matchSport && matchType;
   });
 
@@ -89,7 +89,7 @@ export default function CourtsPage() {
                   >
                     All Sports
                   </DropdownMenuItem>
-                  {Array.from(new Set(COURTS.map((c) => c.sport))).map(
+                  {Array.from(new Set(COURTS.map((c) => c.sport.sport))).map(
                     (sport) => (
                       <DropdownMenuItem
                         key={sport}
@@ -123,7 +123,7 @@ export default function CourtsPage() {
                   >
                     All Types
                   </DropdownMenuItem>
-                  {Array.from(new Set(COURTS.map((c) => c.type))).map(
+                  {Array.from(new Set(COURTS.map((c) => c.courtType.name))).map(
                     (type) => (
                       <DropdownMenuItem
                         key={type}
@@ -206,11 +206,11 @@ export default function CourtsPage() {
                       </TableCell>
                       <TableCell className="p-2 text-center">
                         <div className="flex justify-center">
-                          <SportIconWithText sport={court.sport} />
+                          <SportIconWithText sport={court.sport.sport} />
                         </div>
                       </TableCell>
                       <TableCell className="p-2 text-center text-small text-text-primary font-light">
-                        {court.type}
+                        {court.courtType.name}
                       </TableCell>
                       <TableCell className="p-2 text-center text-small text-text-primary font-light">
                         Rp {court.price}

@@ -52,7 +52,7 @@ export default function CourtTypeDetailPage({ params }: PageProps) {
 
   const values: CourtTypeFormValues = {
     name: courtType.name,
-    sport: courtType.sport,
+    sport: courtType.sport.name,
   };
 
   const actionButtons = (

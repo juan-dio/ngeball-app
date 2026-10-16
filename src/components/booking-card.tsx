@@ -17,7 +17,7 @@ export function BookingCard({
   defaultExpanded = false,
 }: BookingCardProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
-  const { id, sport, courtName, price, status, date, duration, time, timeline } = booking;
+  const { id, court, status, date, duration, time, timeline } = booking;
 
   return (
     <Card className="border border-border rounded-[16px] py-0 gap-0 bg-white w-full max-w-200 overflow-hidden shadow-none">
@@ -25,13 +25,13 @@ export function BookingCard({
         {/* Top Row */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <SportIcon sport={sport} />
+            <SportIcon sport={court.sport.sport} />
             <span className="text-h2 text-text-primary">{id}</span>
           </div>
           <div className="flex items-center gap-2">
             <p className="text-body text-text-secondary">
               <span>Rp </span>
-              <span className="text-h3 text-primary">{price}</span>
+              <span className="text-h3 text-primary">{court.price}</span>
             </p>
             <BookingStatus status={status} />
           </div>
@@ -39,7 +39,7 @@ export function BookingCard({
 
         {/* Bottom Row */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 text-text-secondary text-body">
-          <span className="text-h3 text-text-secondary">{courtName}</span>
+          <span className="text-h3 text-text-secondary">{court.name}</span>
 
           <div className="flex items-center gap-2 flex-wrap text-body text-text-secondary">
             <div className="flex items-center gap-1">
@@ -86,13 +86,13 @@ export function BookingCard({
           <h3 className="text-h3 text-text-primary">Details</h3>
 
           <div className="flex flex-col gap-3">
-            {timeline.map((item, index) => (
+            {timeline.map((item) => (
               <div
-                key={index}
+                key={item.id}
                 className="flex justify-between text-body text-text-secondary leading-tight"
               >
-                <span>{item.label}</span>
-                <span>{item.date}</span>
+                <span>{item.status}</span>
+                <span>{item.created_at}</span>
               </div>
             ))}
           </div>

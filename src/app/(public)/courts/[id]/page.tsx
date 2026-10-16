@@ -67,7 +67,7 @@ export default function CourtDetails({
     "/images/carousel3.jpg",
   ];
 
-  const numericPrice = parseFloat(court.price.replace(/\./g, "").replace(",", "."));
+  const numericPrice = court.price;
 
   const today = startOfDay(new Date());
   const [selectedDate, setSelectedDate] = React.useState<Date>(today);
@@ -204,9 +204,13 @@ export default function CourtDetails({
                 {court.name}
               </h1>
               <div className="flex items-center gap-4">
-                <SportIconWithText sport={court.sport} />
+                <SportIconWithText
+                  sport={court.sport.sport}
+                  iconSvg={court.sport.iconSvg}
+                  colorHex={court.sport.colorHex}
+                />
                 <p className="text-h3 font-normal text-text-secondary">
-                  {court.type}
+                  {court.courtType.name}
                 </p>
               </div>
             </div>
@@ -310,7 +314,7 @@ export default function CourtDetails({
               </span>
               <span className="text-h2 text-primary leading-tight">
                 <span className="text-text-secondary">Rp </span>
-                {totalPrice.toLocaleString("id-ID")},00
+                {totalPrice.toLocaleString("id-ID")}
               </span>
               <span className="text-small text-text-secondary">
                 Tax included

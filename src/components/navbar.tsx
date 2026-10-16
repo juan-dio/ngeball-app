@@ -98,53 +98,54 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
     <MenuContext.Provider value={menuContext}>
       <div ref={containerRef}>
         <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-border bg-white">
-        <div className="mx-auto flex h-full w-full max-w-300 items-center justify-between px-6">
-          <div className="flex items-center gap-20">
-            <Link href="/" className="shrink-0">
-              <Logo />
-            </Link>
+          <div className="mx-auto flex h-full w-full max-w-300 items-center justify-between px-6">
+            <div className="flex items-center gap-20">
+              <Link href="/" className="shrink-0">
+                <Logo />
+              </Link>
 
-            <nav className="hidden items-center gap-8 md:flex">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="text-body text-text-primary transition-colors hover:text-primary"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
+              <nav className="hidden items-center gap-8 md:flex">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className="text-body text-text-primary transition-colors hover:text-primary"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
 
-          <div className="flex items-center gap-4">
-            {right && (
-              <div className="hidden items-center gap-4 md:flex">{right}</div>
-            )}
-            {icon}
-            <button
-              type="button"
-              aria-label={openMenu === "drawer" ? "Close menu" : "Open menu"}
-              aria-expanded={openMenu === "drawer"}
-              aria-controls="mobile-drawer"
-              onClick={() => toggleMenu("drawer")}
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-text-primary transition-colors hover:bg-light md:hidden"
-            >
-              {openMenu === "drawer" ? (
-                <X className="size-5" />
-              ) : (
-                <Menu className="size-5" />
+            <div className="flex items-center gap-4">
+              {right && (
+                <div className="hidden items-center gap-4 md:flex">{right}</div>
               )}
-            </button>
+              {icon}
+              <button
+                type="button"
+                aria-label={openMenu === "drawer" ? "Close menu" : "Open menu"}
+                aria-expanded={openMenu === "drawer"}
+                aria-controls="mobile-drawer"
+                onClick={() => toggleMenu("drawer")}
+                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-text-primary transition-colors hover:bg-light md:hidden"
+              >
+                {openMenu === "drawer" ? (
+                  <X className="size-5" />
+                ) : (
+                  <Menu className="size-5" />
+                )}
+              </button>
+            </div>
           </div>
-        </div>
-
         </header>
 
         <div
           className={cn(
             "fixed inset-x-0 top-16 z-40 h-[calc(100vh-4rem)] overflow-hidden md:hidden transition-all duration-300",
-            openMenu === "drawer" ? "pointer-events-auto" : "pointer-events-none delay-300",
+            openMenu === "drawer"
+              ? "pointer-events-auto"
+              : "pointer-events-none delay-300",
           )}
           aria-hidden={openMenu !== "drawer"}
         >
@@ -159,7 +160,7 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
             id="mobile-drawer"
             inert={openMenu !== "drawer"}
             className={cn(
-              "absolute inset-x-0 top-0 bg-white transition-transform duration-300 ease-in-out shadow-lg",
+              "absolute inset-x-0 top-0 bg-white transition-transform duration-300 ease-in-out",
               openMenu === "drawer" ? "translate-y-0" : "-translate-y-full",
             )}
           >
@@ -177,7 +178,10 @@ function Navbar({ navLinks, right, icon, drawer }: NavbarProps) {
                 ))}
               </nav>
               {drawer && (
-                <div className="flex flex-col gap-3 px-6 pb-6" onClick={() => setOpenMenu(null)}>
+                <div
+                  className="flex flex-col gap-3 px-6 pb-6"
+                  onClick={() => setOpenMenu(null)}
+                >
                   {drawer}
                 </div>
               )}

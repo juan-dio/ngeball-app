@@ -21,20 +21,25 @@ Read `README.md` for the full project description, feature list, and getting sta
 ### Domain Model
 | Type | File | Notes |
 |---|---|---|
-| `Court` | `src/data/courts.ts` | `id`, `name`, `image`, `images?`, `type` (free-text court type), `price` (formatted string, e.g. `"200.000,00"`), `sport: SportKey`, `description` |
-| `SportKey` / `Sport` | `src/data/sports.ts` | `SportKey = "Futsal" \| "Basketball" \| "Tennis" \| "Padel"`. Also exports `SPORT_ICONS` (SVG markup) and `SPORT_COLOR_HEX` |
+| `Court` | `src/data/courts.ts` | `id`, `name`, `image`, `images?`, `courtTypeId`, `courtType`, `sportId`, `sport`, `price` (number, formatted via `formatPrice`), `description` |
+| `Sport` | `src/data/sports.ts` | `Sport = { id, name, iconSvg, colorHex }`. Also exports `SPORTS`, `SPORT_ICONS`, `SPORT_COLOR_HEX` |
+| `CourtType` | `src/data/court-types.ts` | `id`, `name`, `sportId`, `sport` |
+| `User` | `src/data/users.ts` | `id`, `email`, `firstName`, `lastName`, `verified` |
 | `Booking` / `TimelineItem` | `src/data/bookings.ts` | `userId` + `userName` identify the customer. Public booking page filters by user; admin bookings page shows all |
 
 ### Route Groups
 - `src/app/(public)/` — `page.tsx` (landing), `courts/`, `courts/[id]/`, `booking/`, `login/`, `register/`
-- `src/app/(admin)/admin/` — `page.tsx` (dashboard), `bookings/`, `courts/` (+ `new/`, `[id]/`, `[id]/edit/`), `sports/`, `court-types/`, `users/`. All wrapped by `<AdminShell />`
+- `src/app/(admin)/admin/` — `page.tsx` (dashboard), `bookings/`, `courts/` (`new/`, `[id]/`, `[id]/edit/`), `sports/` (`new/`, `[id]/`, `[id]/edit/`), `court-types/` (`new/`, `[id]/`, `[id]/edit/`), `users/`. All wrapped by `<AdminShell />`
 
 ### Data Layer
-All data is **mocked** in `src/data/` and imported directly — no backend, database, or API layer exists yet. Adding a new entity means adding its type + array to `src/data/`, not creating a fetch layer. `price` fields are pre-formatted strings, not numbers.
+All data is **mocked** in `src/data/` and imported directly — no backend, database, or API layer exists yet. Adding a new entity means adding its type + array to `src/data/`, not creating a fetch layer.
+
+**Relational mock data:** entities carry both the raw FK (`sportId`, `courtTypeId`) and the resolved object (`sport`, `courtType`) so consumers don't re-look-up. Follow this pattern for new relations.
+
+**Prices are numbers** (e.g. `200000`). Format at render via `formatPrice` from `src/lib/formatter.ts` (uses `toLocaleString("id-ID")`). Prefix `Rp ` at call site where needed.
 
 ### Current Limits
 - `useAuth()` in `src/hooks/use-auth.ts` is a stub returning `{ isAuthenticated: false }` — no sessions, no route protection.
-- Court types have an admin page but no dedicated data file; `Court.type` is a free-text string.
 
 ---
 
@@ -102,7 +107,7 @@ Defined in `src/app/globals.css` via Tailwind v4 `@utility`. Font is **Inter**. 
 - **Never modify** files in `src/components/ui/`. Override styles via `className` at the call site.
 - **Base UI preset (shadcn v4):** Built on `@base-ui/react`, **not Radix**. `Button` uses `nativeButton={false}` + `render={<Link href="..." />}` instead of `asChild`.
 - Install components: `bunx --bun shadcn@latest add <component>`.
-- Installed: badge, button, calendar, card, carousel, chart, dropdown-menu, input, label, pagination, popover, separator, sheet, sidebar, skeleton, table, tooltip.
+- Installed: badge, button, calendar, card, carousel, chart, dropdown-menu, input, label, pagination, popover, separator, sheet, sidebar, skeleton, table, textarea, tooltip.
 - Use `ChartContainer`/`ChartTooltip` from `@/components/ui/chart` (wraps Recharts).
 
 ## 5. Reusable Components & Structure
@@ -111,19 +116,32 @@ Check `src/components/` before creating new ones:
 - `<AccountDropdown />` + `useMenu()` / `MenuContext`
 - `<Calendar />` (interactive date picker with 30-day window)
 - `<CourtCard />`, `<SelectButton />`, `<BookingCard />`, `<BookingStatus />`
+- `<TablePagination />` — standard admin table pagination component (uses `@/hooks/use-pagination` + `@/lib/pagination`)
+- `<VerifiedBadge />` — user verification badge (`src/components/verified-badge.tsx`)
 - `<AdminShell />` (admin layout shell with sidebar) — nav: Dashboard, Bookings, Courts, Sports, Court Types, Users
+- `<CourtFormCard />`, `<SportFormCard />`, `<CourtTypeFormCard />` (`src/components/admin/`) — shared form card components for view, create, edit pages
+- `<DeleteConfirmModal />` (`src/components/admin/delete-confirm-modal.tsx`) — modal for admin delete confirmations
 - `<Logo />`, custom icons in `src/components/icons/` (`currentColor` fill/stroke)
-- `<SportIcon />` / `<SportIconWithText />` — sport badge system, fully data-driven (`src/components/icons/sport-icon.tsx`). `SportKey = "Futsal" | "Basketball" | "Tennis" | "Padel"` is defined in `src/data/sports.ts`; SVG markup lives in `SPORT_ICONS`, hex colors in `SPORT_COLOR_HEX`. Props: `sport` (required), plus optional `iconSvg` / `colorHex` overrides. Icons render via `dangerouslySetInnerHTML` — only feed them trusted, project-owned strings.
-- Hooks: `useAuth()` in `src/hooks/use-auth.ts` (stub — returns `{ isAuthenticated: false }`)
+- `<SportIcon />` / `<SportIconWithText />` — sport badge system, fully data-driven (`src/components/icons/sport-icon.tsx`). `Sport` type (`{ id, name, iconSvg, colorHex }`) is defined in `src/data/sports.ts` alongside `SPORTS`, `SPORT_ICONS`, and `SPORT_COLOR_HEX`. Props: `sport` (required), plus optional `iconSvg` / `colorHex` overrides. Icons render via `dangerouslySetInnerHTML` — only feed them trusted, project-owned strings.
+- Hooks:
+  - `useAuth()` in `src/hooks/use-auth.ts` (stub — returns `{ isAuthenticated: false }`)
+  - `useMobile()` in `src/hooks/use-mobile.ts`
+  - `usePagination()` in `src/hooks/use-pagination.ts`
+  - `useFormValidation()` in `src/hooks/use-form-validation.ts`
+- Utilities:
+  - `src/lib/formatter.ts` (`formatPrice`)
+  - `src/lib/pagination.ts` (`getTotalPages`, `clampPage`, `getVisiblePages`)
+  - `src/lib/form-validation.ts` (`FormErrors`, `findFirstInvalid`, `clearFieldError`)
+  - `src/lib/utils.ts` (`cn` helper with tailwind-merge configuration)
 
 ### File Structure & Data Layer
 ```
 src/
 ├── app/          # Next.js App Router (public and admin route groups)
 ├── components/   # UI components (ui/, admin/, icons/, etc.)
-├── data/         # Mock data files (bookings.ts, courts.ts)
-├── hooks/        # Custom hooks (use-mobile.ts, use-auth.ts)
-└── lib/          # Utility functions (cn helper in utils.ts)
+├── data/         # Mock data files (bookings.ts, courts.ts, sports.ts, court-types.ts, users.ts)
+├── hooks/        # Custom hooks (use-mobile.ts, use-auth.ts, use-pagination.ts, use-form-validation.ts)
+└── lib/          # Utility functions (cn, formatter, pagination, form-validation)
 ```
 - `BOOKINGS` in `src/data/bookings.ts` contains shared items with `userId` and `userName`. Public booking page (`src/app/(public)/booking/page.tsx`) filters by a specific user, while admin bookings page (`src/app/(admin)/admin/bookings/page.tsx`) consumes all items.
 

@@ -756,6 +756,91 @@ Spesifikasi lengkap kontrak API untuk backend ngeBall (Sports Venue Booking & Ad
 
 ---
 
+## 8. Payments (`/api/payments`)
+
+### `POST /api/bookings/{id}/payments`
+Membuat invoice / payment link via Xendit untuk booking tertentu.
+
+- **Header:** `Authorization: Bearer <token>`
+- **Body:**
+  ```json
+  {
+    "channel": "XENDIT_INVOICE"
+  }
+  ```
+- **Response (201 Created):**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "paymentId": "pay-001",
+      "bookingId": "123123123",
+      "provider": "XENDIT",
+      "providerInvoiceId": "inv-xendit-12345",
+      "paymentUrl": "https://checkout-staging.xendit.co/v2/invoices/...",
+      "amount": 200000,
+      "currency": "IDR",
+      "status": "PENDING",
+      "expiresAt": "2026-01-24T20:00:00Z"
+    }
+  }
+  ```
+
+### `GET /api/payments/{id}`
+Mengecek status pembayaran (biasanya untuk polling oleh frontend setelah redirect).
+
+- **Header:** `Authorization: Bearer <token>`
+- **Body:** None
+- **Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "paymentId": "pay-001",
+      "bookingId": "123123123",
+      "provider": "XENDIT",
+      "providerInvoiceId": "inv-xendit-12345",
+      "amount": 200000,
+      "currency": "IDR",
+      "status": "PAID",
+      "paymentMethod": "BCA_VA",
+      "paidAt": "2026-01-24T18:30:00Z"
+    }
+  }
+  ```
+
+### `POST /api/webhooks/xendit`
+Webhook endpoint yang dipanggil oleh Xendit server-to-server. **Tidak menggunakan JWT**, verifikasi dilakukan lewat Xendit Verification Token.
+
+- **Header:** 
+  - `x-callback-token`: `<Xendit Verification Token>`
+- **Body (Contoh Xendit Invoice Paid Webhook):**
+  ```json
+  {
+    "id": "inv-xendit-12345",
+    "external_id": "pay-001",
+    "user_id": "usr-merchant",
+    "is_paid": true,
+    "status": "PAID",
+    "merchant_name": "ngeBall",
+    "amount": 200000,
+    "paid_amount": 200000,
+    "bank_code": "BCA",
+    "payment_method": "VIRTUAL_ACCOUNT",
+    "payment_channel": "BCA",
+    "paid_at": "2026-01-24T18:30:00Z"
+  }
+  ```
+- **Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "message": "Webhook processed successfully"
+  }
+  ```
+
+---
+
 ## Error Codes Reference
 
 | HTTP Status | Error Code | Keterangan |

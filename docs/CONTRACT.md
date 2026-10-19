@@ -167,17 +167,17 @@ Seluruh aturan berikut wajib divalidasi di backend. Jika dilanggar, kembalikan H
 5. **Batas Maksimal Pemesanan ke Depan:** Maksimal 30 hari dari tanggal hari ini (dapat dijadikan konfigurasi env, lihat Section 9).
 
 ### A.2 Availability / Slot Query Logic
-Digunakan oleh frontend untuk menampilkan slot jam mana yang masih kosong saat user memilih tanggal di kalender dan durasi bermain.
+Digunakan oleh frontend untuk menampilkan seluruh slot jam di kalender/grid booking. Frontend akan men-disable slot yang berstatus `BOOKED`.
 
 - **Endpoint:** `GET /api/courts/{id}/availability?date=YYYY-MM-DD&duration=N` (lihat `docs/api-contract.md` section 4).
-- **Algoritma Validasi Slot Kontinu:**
-  1. Parameter `duration` (dalam menit, kelipatan 60) menentukan panjang blok waktu yang dibutuhkan user.
-  2. Backend mengambil semua booking aktif (`PENDING`, `PAID`, `CONFIRMED`, `deletedAt IS NULL`) pada tanggal tersebut.
-  3. Backend mengevaluasi setiap kemungkinan `startTime` (jam bulat dari `08:00` hingga `23:00 - (duration / 60)`).
-  4. Sebuah slot dianggap **Tersedia (Available)** HANYA jika rentang `[startTime, startTime + duration]` **bebas seluruhnya** dari bertampalan dengan booking aktif mana pun. Contoh: jika pukul `09:00 - 10:00` sudah dibooking, maka untuk `duration = 120`:
-     - Slot `08:00 - 10:00` **TIDAK TERSEDIA** (karena menabrak jam `09:00`).
-     - Slot `10:00 - 12:00` **TERSEDIA**.
-  5. Format output `availableSlots` mengembalikan array objek `{ startTime, endTime }` (misal `[{ "startTime": "08:00", "endTime": "09:00" }, { "startTime": "10:00", "endTime": "11:00" }]` untuk durasi 60, atau `[{ "startTime": "10:00", "endTime": "12:00" }]` untuk durasi 120) sehingga frontend dapat langsung menggunakan `startTime` tanpa perlu string parsing.
+- **Algoritma Evaluasi Status Slot:**
+  1. Parameter `duration` (dalam menit, kelipatan 60) menentukan panjang blok waktu tiap slot.
+  2. Backend mengambil semua booking aktif (`PENDING`, `PAID`, `CONFIRMED`, `deletedAt IS NULL`) pada tanggal tersebut (termasuk booking durasi panjang seperti 120 menit misal `14:00–16:00`).
+  3. Backend menyusun seluruh slot jam operasional (`08:00` s.d. `23:00 - duration/60`).
+  4. Setiap slot `{ startTime, endTime }` dievaluasi statusnya:
+     - **`AVAILABLE`**: jika rentang `[startTime, endTime]` bebas sepenuhnya dari semua booking aktif.
+     - **`BOOKED`**: jika rentang `[startTime, endTime]` bertabrakan / beririsan dengan minimal satu booking aktif (misal booking 120 menit `14:00–16:00` menyebabkan slot 60m `14:00–15:00` & `15:00–16:00` berstatus `BOOKED`).
+  5. Response dikembalikan pada atribut **`slots`** berupa array objek: `[{ "startTime": "08:00", "endTime": "09:00", "status": "AVAILABLE" }, ...]`. Objek `occupiedSlots` juga disertakan sebagai referensi detail booking aktif.
 
 ### B. Xendit Payment Integration Flow
 

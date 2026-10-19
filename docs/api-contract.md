@@ -478,13 +478,14 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
   ```
 
 ### `GET /api/courts/{id}/availability?date={YYYY-MM-DD}&duration={minutes}`
-Mendapatkan slot waktu yang tersedia dan terisi pada tanggal tertentu untuk durasi tertentu. 
+Mendapatkan seluruh daftar slot bermain pada tanggal dan durasi tertentu, lengkap dengan status `AVAILABLE` (kosong) atau `BOOKED` (sudah terisi). Frontend menampilkan semua slot dan men-disable slot berstatus `BOOKED`.
 
 - **Header:** None
 - **Query Parameters:**
   - `date`: `YYYY-MM-DD` (Wajib)
   - `duration`: `Integer` (Wajib, kelipatan 60 menit, misal `60`, `120`)
 - **Response (200 OK):**
+  Slot ditentukan oleh `duration` request. Contoh `duration = 60` dengan booking `09:00–10:00` (60 menit) dan `14:00–16:00` (120 menit) — slot `09:00`, `14:00`, dan `15:00` berstatus `BOOKED`:
   ```json
   {
     "success": true,
@@ -493,27 +494,33 @@ Mendapatkan slot waktu yang tersedia dan terisi pada tanggal tertentu untuk dura
       "date": "2026-01-24",
       "duration": 60,
       "occupiedSlots": [
-        { "startTime": "09:00", "endTime": "10:00", "duration": 60 }
+        { "startTime": "09:00", "endTime": "10:00", "duration": 60 },
+        { "startTime": "14:00", "endTime": "16:00", "duration": 120 }
       ],
-      "availableSlots": [
-        { "startTime": "08:00", "endTime": "09:00" },
-        { "startTime": "10:00", "endTime": "11:00" },
-        { "startTime": "11:00", "endTime": "12:00" },
-        { "startTime": "12:00", "endTime": "13:00" },
-        { "startTime": "13:00", "endTime": "14:00" },
-        { "startTime": "14:00", "endTime": "15:00" },
-        { "startTime": "15:00", "endTime": "16:00" },
-        { "startTime": "16:00", "endTime": "17:00" },
-        { "startTime": "17:00", "endTime": "18:00" },
-        { "startTime": "18:00", "endTime": "19:00" },
-        { "startTime": "19:00", "endTime": "20:00" },
-        { "startTime": "20:00", "endTime": "21:00" },
-        { "startTime": "21:00", "endTime": "22:00" },
-        { "startTime": "22:00", "endTime": "23:00" }
+      "slots": [
+        { "startTime": "08:00", "endTime": "09:00", "status": "AVAILABLE" },
+        { "startTime": "09:00", "endTime": "10:00", "status": "BOOKED" },
+        { "startTime": "10:00", "endTime": "11:00", "status": "AVAILABLE" },
+        { "startTime": "11:00", "endTime": "12:00", "status": "AVAILABLE" },
+        { "startTime": "12:00", "endTime": "13:00", "status": "AVAILABLE" },
+        { "startTime": "13:00", "endTime": "14:00", "status": "AVAILABLE" },
+        { "startTime": "14:00", "endTime": "15:00", "status": "BOOKED" },
+        { "startTime": "15:00", "endTime": "16:00", "status": "BOOKED" },
+        { "startTime": "16:00", "endTime": "17:00", "status": "AVAILABLE" },
+        { "startTime": "17:00", "endTime": "18:00", "status": "AVAILABLE" },
+        { "startTime": "18:00", "endTime": "19:00", "status": "AVAILABLE" },
+        { "startTime": "19:00", "endTime": "20:00", "status": "AVAILABLE" },
+        { "startTime": "20:00", "endTime": "21:00", "status": "AVAILABLE" },
+        { "startTime": "21:00", "endTime": "22:00", "status": "AVAILABLE" },
+        { "startTime": "22:00", "endTime": "23:00", "status": "AVAILABLE" }
       ]
     }
   }
   ```
+- **Aturan Status Slot:**
+  - `AVAILABLE`: rentang `[startTime, endTime]` bebas dari semua booking aktif (`PENDING`, `PAID`, `CONFIRMED`).
+  - `BOOKED`: rentang bertabrakan dengan minimal satu booking aktif.
+  - Contoh `duration = 120` (dengan booking yang sama): slot `12:00-14:00` dan `16:00-18:00` tersedia, sedangkan `13:00-15:00`, `14:00-16:00`, dan `15:00-17:00` berstatus `BOOKED` karena menabrak booking `14:00–16:00`.
 
 ### `POST /api/courts` — Admin
 - **Header:** `Authorization: Bearer <token>`

@@ -157,6 +157,9 @@ Pencatatan transaksi pembayaran via Xendit.
 3. Otomatis buat entri pertama di `booking_timelines` dengan status `BOOKING_PLACED`.
 
 ### B. Xendit Payment Integration Flow
+
+> **Prioritas pengerjaan:** Dikerjakan **paling akhir**, setelah seluruh fitur dasar (auth, sports, court types, courts, bookings, users, dashboard) berjalan stabil. Tabel `payments` dan endpoint payment/webhook boleh di-scaffold belakangan. Detail ada di `docs/api-contract.md` section 8.
+
 1. Setelah booking berhasil dibuat, player dapat memicu `POST /api/bookings/{id}/payments`.
 2. Backend memanggil Xendit Invoice API (`https://api.xendit.co/v2/invoices`) dengan nominal `totalPrice` booking.
 3. Simpan response Xendit ke tabel `payments` (`providerInvoiceId`, `paymentUrl`, `status = PENDING`).

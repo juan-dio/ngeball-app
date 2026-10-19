@@ -15,7 +15,7 @@ Proyek ini dirancang agar dapat diimplementasikan menggunakan berbagai teknologi
   - **PHP:** Laravel 11+ (Eloquent ORM, Sanctum / JWT Auth).
   - **Python:** FastAPI / Django REST Framework.
 - **Database:** PostgreSQL (atau MySQL / MariaDB).
-- **Authentication:** JWT (JSON Web Token) dengan Access Token & Refresh Token (opsional).
+- **Authentication:** JWT (JSON Web Token) dengan Access Token (short-lived) & Refresh Token (long-lived, disimpan di DB dan dapat di-revoke saat logout).
 - **Payment Gateway:** Xendit (Invoice API & Webhook).
 - **Soft Deletes:** Seluruh tabel menggunakan fitur Soft Delete (`deletedAt` timestamp). Data yang dihapus tidak benar-benar dihapus dari database, melainkan diset nilai `deletedAt`-nya.
 - **Audit Timestamps:** Seluruh tabel wajib memiliki `createdAt`, `updatedAt`, dan `deletedAt`.
@@ -49,7 +49,20 @@ Menyimpan akun player dan admin.
 | `updatedAt` | TIMESTAMP | DEFAULT NOW(), NOT NULL | |
 | `deletedAt` | TIMESTAMP | NULL | Soft delete timestamp |
 
-### B. `sports`
+### B. `refresh_tokens`
+Menyimpan refresh token yang valid untuk tiap sesi user, memungkinkan revocation saat logout atau refresh token rotation.
+| Field | Type | Constraints | Description |
+|---|---|---|---|
+| `id` | UUID / String | PK | |
+| `userId` | VARCHAR(50) | FK (`users.id`, ON DELETE CASCADE), NOT NULL | User pemilik token |
+| `token` | VARCHAR(255) | UNIQUE, NOT NULL | Hashed refresh token |
+| `revoked` | BOOLEAN | DEFAULT FALSE, NOT NULL | Status pencabutan token |
+| `expiresAt` | TIMESTAMP | NOT NULL | Waktu kadaluarsa token |
+| `createdAt` | TIMESTAMP | DEFAULT NOW(), NOT NULL | |
+| `updatedAt` | TIMESTAMP | DEFAULT NOW(), NOT NULL | |
+| `deletedAt` | TIMESTAMP | NULL | Soft delete timestamp |
+
+### C. `sports`
 Kategori olahraga yang didukung (Futsal, Basketball, Tennis, Padel, dll).
 | Field | Type | Constraints | Description |
 |---|---|---|---|
@@ -61,7 +74,7 @@ Kategori olahraga yang didukung (Futsal, Basketball, Tennis, Padel, dll).
 | `updatedAt` | TIMESTAMP | DEFAULT NOW(), NOT NULL | |
 | `deletedAt` | TIMESTAMP | NULL | Soft delete timestamp |
 
-### C. `court_types`
+### D. `court_types`
 Klasifikasi tipe lapangan per olahraga (Indoor, Outdoor, Interlock, etc).
 | Field | Type | Constraints | Description |
 |---|---|---|---|
@@ -72,7 +85,7 @@ Klasifikasi tipe lapangan per olahraga (Indoor, Outdoor, Interlock, etc).
 | `updatedAt` | TIMESTAMP | DEFAULT NOW(), NOT NULL | |
 | `deletedAt` | TIMESTAMP | NULL | Soft delete timestamp |
 
-### D. `courts`
+### E. `courts`
 Fasilitas lapangan olahraga yang disewakan.
 | Field | Type | Constraints | Description |
 |---|---|---|---|
@@ -88,7 +101,7 @@ Fasilitas lapangan olahraga yang disewakan.
 | `updatedAt` | TIMESTAMP | DEFAULT NOW(), NOT NULL | |
 | `deletedAt` | TIMESTAMP | NULL | Soft delete timestamp |
 
-### E. `bookings`
+### F. `bookings`
 Reservasi lapangan oleh player.
 | Field | Type | Constraints | Description |
 |---|---|---|---|
@@ -104,7 +117,7 @@ Reservasi lapangan oleh player.
 | `updatedAt` | TIMESTAMP | DEFAULT NOW(), NOT NULL | |
 | `deletedAt` | TIMESTAMP | NULL | Soft delete timestamp |
 
-### F. `booking_timelines`
+### G. `booking_timelines`
 Riwayat perubahan status booking untuk ditampilkan di UI timeline player.
 | Field | Type | Constraints | Description |
 |---|---|---|---|
@@ -115,7 +128,7 @@ Riwayat perubahan status booking untuk ditampilkan di UI timeline player.
 | `updatedAt` | TIMESTAMP | DEFAULT NOW(), NOT NULL | |
 | `deletedAt` | TIMESTAMP | NULL | Soft delete timestamp |
 
-### G. `payments`
+### H. `payments`
 Pencatatan transaksi pembayaran via Xendit.
 | Field | Type | Constraints | Description |
 |---|---|---|---|

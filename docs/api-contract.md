@@ -4,9 +4,11 @@ Spesifikasi lengkap kontrak API untuk backend ngeBall (Sports Venue Booking & Ad
 
 ## Format Autentikasi
 
-- **Metode:** JWT Bearer Token
-- **Header:** `Authorization: Bearer <jwt-token>`
+- **Metode:** JWT Bearer Token dengan Refresh Token Rotation.
+- **Header:** `Authorization: Bearer <accessToken>`
 - **User context:** `userId` diambil dari payload JWT, bukan dari request body.
+- **Access Token:** umur pendek (5–15 menit), dipakai di setiap request terproteksi.
+- **Refresh Token:** umur panjang (7–30 hari), hanya dipakai di `POST /api/auth/refresh`. Disimpan server-side (tabel `refresh_tokens`) sehingga dapat di-revoke saat logout.
 
 ### Roles
 
@@ -73,7 +75,8 @@ Spesifikasi lengkap kontrak API untuk backend ngeBall (Sports Venue Booking & Ad
   {
     "success": true,
     "data": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "refreshToken": "d8f1e4b2a3c74e...",
       "user": {
         "id": "USR-001",
         "email": "john@example.com",
@@ -99,7 +102,8 @@ Spesifikasi lengkap kontrak API untuk backend ngeBall (Sports Venue Booking & Ad
   {
     "success": true,
     "data": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "refreshToken": "d8f1e4b2a3c74e...",
       "user": {
         "id": "USR-001",
         "email": "john@example.com",
@@ -108,6 +112,45 @@ Spesifikasi lengkap kontrak API untuk backend ngeBall (Sports Venue Booking & Ad
         "verified": true
       }
     }
+  }
+  ```
+
+### `POST /api/auth/refresh`
+Memperbarui access token yang telah expired menggunakan refresh token yang masih valid.
+
+- **Header:** None
+- **Body:**
+  ```json
+  {
+    "refreshToken": "d8f1e4b2a3c74e..."
+  }
+  ```
+- **Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "refreshToken": "e9a2f5c3b4d85f..."
+    }
+  }
+  ```
+
+### `POST /api/auth/logout`
+Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
+
+- **Header:** `Authorization: Bearer <token>`
+- **Body:**
+  ```json
+  {
+    "refreshToken": "d8f1e4b2a3c74e..."
+  }
+  ```
+- **Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "message": "Logged out successfully"
   }
   ```
 

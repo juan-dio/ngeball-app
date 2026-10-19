@@ -197,3 +197,45 @@ Pencatatan transaksi pembayaran via Xendit.
   ```
 - Unauthorized (missing/invalid JWT) mengembalikan HTTP `401` dengan code `UNAUTHORIZED`.
 - Forbidden (bukan admin / akses booking milik orang lain) mengembalikan HTTP `403` dengan code `FORBIDDEN`.
+
+---
+
+## 5. Development Roadmap / Priorities
+
+Kerjakan backend secara bertahap. Setiap fase harus selesai & stabil sebelum lanjut ke fase berikutnya.
+
+### Phase 1 — Foundation & Auth
+- Setup project, database migration (semua tabel terdefinisi sejak awal, termasuk `payments` & `refresh_tokens`).
+- Seed data awal (sports, court_types, courts, users).
+- Auth: register, login, refresh, logout, `GET /api/auth/me`.
+- Middleware: JWT guard + role guard (PLAYER vs ADMIN).
+- Standard response envelope & error handler.
+- Soft delete + audit timestamps di semua model.
+
+### Phase 2 — Master Data CRUD
+- Sports: CRUD lengkap + pagination.
+- Court Types: CRUD lengkap + filter by `sportId` + pagination.
+- Courts: CRUD lengkap + filter (`sportId`, `courtTypeId`), search, pagination.
+- Endpoint publik (read-only) dapat diakses tanpa auth.
+
+### Phase 3 — Bookings Core
+- `POST /api/bookings` + collision prevention.
+- `GET /api/bookings` (filter `userId`/`date`/`status` + pagination) & `GET /api/bookings/{id}`.
+- `PATCH /api/bookings/{id}/status`.
+- Auto-create `booking_timelines` di tiap perubahan status.
+- **Tanpa** payment gateway dulu — booking berstatus `PENDING`/`CONFIRMED` manual oleh admin.
+
+### Phase 4 — Users & Dashboard
+- `GET /api/users` (search + pagination), `GET /api/users/{id}`, `PATCH /api/users/{id}/verify`.
+- `GET /api/admin/dashboard` (agregat `totalBookings`, `totalRevenue`, `totalUsers`, `totalCourts`, `recentBookings`).
+
+### Phase 5 — Payment Gateway (Terakhir)
+- Integrasi Xendit: `POST /api/bookings/{id}/payments`, `GET /api/payments/{id}`, webhook `POST /api/webhooks/xendit`.
+- Validasi signature, idempotency, auto-confirm booking saat `PAID`.
+- Uji di Xendit sandbox sebelum go-live.
+- Detail: `docs/api-contract.md` section 8 & `docs/CONTRACT.md` section 3.B.
+
+### Cross-Cutting (seluruh fase)
+- Unit/integration test untuk logic kritis (collision, auth, webhook).
+- Dokumentasi API tooling (OpenAPI/Swagger opsional) sinkron dengan `docs/api-contract.md`.
+- Rate limiting & CORS aktif sejak Phase 1.

@@ -187,7 +187,7 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
         "id": "sport-futsal",
         "name": "Futsal",
         "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
-        "colorHex": "#285A48"
+        "colorHex": "#008236"
       },
       {
         "id": "sport-basketball",
@@ -216,7 +216,7 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
       "id": "sport-futsal",
       "name": "Futsal",
       "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
-      "colorHex": "#285A48"
+      "colorHex": "#008236"
     }
   }
   ```
@@ -284,21 +284,34 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
     "success": true,
     "data": [
       {
-        "id": "123123123",
-        "name": "Interlock Vinyl",
+        "id": "court-type-synthetic-grass-futsal",
+        "name": "Synthetic Grass Futsal Court",
+        "description": "This court features high-quality artificial turf with rubber infill, providing a soft cushioned surface that reduces impact on joints and minimizes skin abrasions during hard falls.",
         "sportId": "sport-futsal",
         "sport": {
           "id": "sport-futsal",
           "name": "Futsal",
           "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
-          "colorHex": "#285A48"
+          "colorHex": "#008236"
+        }
+      },
+      {
+        "id": "court-type-interlock-futsal",
+        "name": "Interlock Futsal Court",
+        "description": "Constructed from modular polypropylene tiles, this surface offers durable shock absorption and resistance, while its highly perforated design ensures a non-slip grip and consistent ball bounce.",
+        "sportId": "sport-futsal",
+        "sport": {
+          "id": "sport-futsal",
+          "name": "Futsal",
+          "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
+          "colorHex": "#008236"
         }
       }
     ],
     "meta": {
       "page": 1,
       "limit": 10,
-      "total": 8,
+      "total": 6,
       "totalPages": 1
     }
   }
@@ -312,14 +325,15 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
   {
     "success": true,
     "data": {
-      "id": "123123123",
-      "name": "Interlock Vinyl",
+      "id": "court-type-synthetic-grass-futsal",
+      "name": "Synthetic Grass Futsal Court",
+      "description": "This court features high-quality artificial turf with rubber infill, providing a soft cushioned surface that reduces impact on joints and minimizes skin abrasions during hard falls.",
       "sportId": "sport-futsal",
       "sport": {
         "id": "sport-futsal",
         "name": "Futsal",
         "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
-        "colorHex": "#285A48"
+        "colorHex": "#008236"
       }
     }
   }
@@ -330,7 +344,8 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
 - **Body:**
   ```json
   {
-    "name": "Syntetic Grass",
+    "name": "Rubber Futsal Court",
+    "description": "A high-density rubber surface that offers maximum grip and joint protection for high-intensity training.",
     "sportId": "sport-futsal"
   }
   ```
@@ -339,14 +354,15 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
   {
     "success": true,
     "data": {
-      "id": "123123130",
-      "name": "Syntetic Grass",
+      "id": "court-type-rubber-futsal",
+      "name": "Rubber Futsal Court",
+      "description": "A high-density rubber surface that offers maximum grip and joint protection for high-intensity training.",
       "sportId": "sport-futsal",
       "sport": {
         "id": "sport-futsal",
         "name": "Futsal",
         "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
-        "colorHex": "#285A48"
+        "colorHex": "#008236"
       }
     }
   }
@@ -357,7 +373,8 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
 - **Body:**
   ```json
   {
-    "name": "Premium Synthetic Turf"
+    "name": "Premium Synthetic Grass Futsal",
+    "description": "A premium artificial turf with upgraded rubber infill for superior shock absorption."
   }
   ```
 - **Response (200 OK):**
@@ -365,14 +382,15 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
   {
     "success": true,
     "data": {
-      "id": "123123130",
-      "name": "Premium Synthetic Turf",
+      "id": "court-type-synthetic-grass-futsal",
+      "name": "Premium Synthetic Grass Futsal",
+      "description": "A premium artificial turf with upgraded rubber infill for superior shock absorption.",
       "sportId": "sport-futsal",
       "sport": {
         "id": "sport-futsal",
         "name": "Futsal",
         "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
-        "colorHex": "#285A48"
+        "colorHex": "#008236"
       }
     }
   }
@@ -400,10 +418,11 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
         "name": "Futsal Court A",
         "image": "/images/futsal1.jpg",
         "images": ["/images/futsal1.jpg", "/images/carousel2.jpg"],
-        "courtTypeId": "123123123",
+        "courtTypeId": "court-type-synthetic-grass-futsal",
         "courtType": {
-          "id": "123123123",
-          "name": "Interlock Vinyl",
+          "id": "court-type-synthetic-grass-futsal",
+          "name": "Synthetic Grass Futsal Court",
+          "description": "This court features high-quality artificial turf with rubber infill...",
           "sportId": "sport-futsal"
         },
         "sportId": "sport-futsal",
@@ -411,10 +430,10 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
           "id": "sport-futsal",
           "name": "Futsal",
           "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
-          "colorHex": "#285A48"
+          "colorHex": "#008236"
         },
         "price": 200000,
-        "description": "Professional futsal court with FIFA standard interlock vinyl flooring."
+        "description": "Professional futsal court with synthetic grass flooring."
       }
     ],
     "meta": {
@@ -438,10 +457,11 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
       "name": "Futsal Court A",
       "image": "/images/futsal1.jpg",
       "images": ["/images/futsal1.jpg", "/images/carousel2.jpg"],
-      "courtTypeId": "123123123",
+      "courtTypeId": "court-type-synthetic-grass-futsal",
       "courtType": {
-        "id": "123123123",
-        "name": "Interlock Vinyl",
+        "id": "court-type-synthetic-grass-futsal",
+        "name": "Synthetic Grass Futsal Court",
+        "description": "This court features high-quality artificial turf with rubber infill...",
         "sportId": "sport-futsal"
       },
       "sportId": "sport-futsal",
@@ -449,10 +469,48 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
         "id": "sport-futsal",
         "name": "Futsal",
         "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
-        "colorHex": "#285A48"
+        "colorHex": "#008236"
       },
       "price": 200000,
-      "description": "Professional futsal court with FIFA standard interlock vinyl flooring."
+      "description": "Professional futsal court with synthetic grass flooring."
+    }
+  }
+  ```
+
+### `GET /api/courts/{id}/availability?date={YYYY-MM-DD}&duration={minutes}`
+Mendapatkan slot waktu yang tersedia dan terisi pada tanggal tertentu untuk durasi tertentu. 
+
+- **Header:** None
+- **Query Parameters:**
+  - `date`: `YYYY-MM-DD` (Wajib)
+  - `duration`: `Integer` (Wajib, kelipatan 60 menit, misal `60`, `120`)
+- **Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "courtId": "futsal-court-a",
+      "date": "2026-01-24",
+      "duration": 60,
+      "occupiedSlots": [
+        { "startTime": "09:00", "endTime": "10:00", "duration": 60 }
+      ],
+      "availableSlots": [
+        { "startTime": "08:00", "endTime": "09:00" },
+        { "startTime": "10:00", "endTime": "11:00" },
+        { "startTime": "11:00", "endTime": "12:00" },
+        { "startTime": "12:00", "endTime": "13:00" },
+        { "startTime": "13:00", "endTime": "14:00" },
+        { "startTime": "14:00", "endTime": "15:00" },
+        { "startTime": "15:00", "endTime": "16:00" },
+        { "startTime": "16:00", "endTime": "17:00" },
+        { "startTime": "17:00", "endTime": "18:00" },
+        { "startTime": "18:00", "endTime": "19:00" },
+        { "startTime": "19:00", "endTime": "20:00" },
+        { "startTime": "20:00", "endTime": "21:00" },
+        { "startTime": "21:00", "endTime": "22:00" },
+        { "startTime": "22:00", "endTime": "23:00" }
+      ]
     }
   }
   ```
@@ -463,7 +521,7 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
   ```json
   {
     "name": "Futsal Court C",
-    "courtTypeId": "123123123",
+    "courtTypeId": "court-type-interlock-futsal",
     "sportId": "sport-futsal",
     "price": 220000,
     "description": "Brand new futsal court with LED lighting.",
@@ -480,10 +538,10 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
       "name": "Futsal Court C",
       "image": "/images/futsal2.jpg",
       "images": ["/images/futsal2.jpg"],
-      "courtTypeId": "123123123",
-      "courtType": { "id": "123123123", "name": "Interlock Vinyl", "sportId": "sport-futsal" },
+      "courtTypeId": "court-type-interlock-futsal",
+      "courtType": { "id": "court-type-interlock-futsal", "name": "Interlock Futsal Court", "sportId": "sport-futsal" },
       "sportId": "sport-futsal",
-      "sport": { "id": "sport-futsal", "name": "Futsal", "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>", "colorHex": "#285A48" },
+      "sport": { "id": "sport-futsal", "name": "Futsal", "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>", "colorHex": "#008236" },
       "price": 220000,
       "description": "Brand new futsal court with LED lighting."
     }
@@ -508,10 +566,10 @@ Mencabut (revoke) refresh token agar tidak dapat digunakan lagi.
       "name": "Futsal Court C",
       "image": "/images/futsal2.jpg",
       "images": ["/images/futsal2.jpg"],
-      "courtTypeId": "123123123",
-      "courtType": { "id": "123123123", "name": "Interlock Vinyl", "sportId": "sport-futsal" },
+      "courtTypeId": "court-type-interlock-futsal",
+      "courtType": { "id": "court-type-interlock-futsal", "name": "Interlock Futsal Court", "sportId": "sport-futsal" },
       "sportId": "sport-futsal",
-      "sport": { "id": "sport-futsal", "name": "Futsal", "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>", "colorHex": "#285A48" },
+      "sport": { "id": "sport-futsal", "name": "Futsal", "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>", "colorHex": "#008236" },
       "price": 230000,
       "description": "Updated description for Futsal Court C."
     }
@@ -879,6 +937,30 @@ Webhook endpoint yang dipanggil oleh Xendit server-to-server. **Tidak menggunaka
   {
     "success": true,
     "message": "Webhook processed successfully"
+  }
+  ```
+
+---
+
+## 9. Upload (`/api/upload`)
+
+### `POST /api/upload` — Admin / Authenticated
+Mengunggah file gambar (misal foto lapangan) ke Cloudinary atau storage provider.
+
+- **Header:** `Authorization: Bearer <token>`
+- **Content-Type:** `multipart/form-data`
+- **Body Form-Data:**
+  - `file`: File gambar (Format: `image/jpeg`, `image/png`, `image/webp`. Maksimal `5MB`).
+- **Response (201 Created):**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "url": "https://res.cloudinary.com/demo/image/upload/v1710000000/courts/futsal-court-a.jpg",
+      "publicId": "courts/futsal-court-a",
+      "format": "jpg",
+      "bytes": 245000
+    }
   }
   ```
 

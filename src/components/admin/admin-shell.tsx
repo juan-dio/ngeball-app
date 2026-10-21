@@ -98,7 +98,7 @@ function AdminSidebarContent() {
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const open = openMenu !== null;
   const pathname = usePathname();
   const currentSection = ADMIN_NAV_ITEMS.find((item) =>
@@ -110,8 +110,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
+        headerRef.current &&
+        !headerRef.current.contains(event.target as Node)
       ) {
         setOpenMenu(null);
       }
@@ -129,6 +129,15 @@ export function AdminShell({ children }: { children: ReactNode }) {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
+  }, [open]);
+
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => document.body.classList.remove("overflow-hidden");
   }, [open]);
 
   const toggleMenu = (menu: MenuId) => {
@@ -151,16 +160,16 @@ export function AdminShell({ children }: { children: ReactNode }) {
           } as React.CSSProperties
         }
       >
-        <div
-          ref={containerRef}
-          className="flex min-h-screen w-full bg-background"
-        >
+        <div className="flex min-h-screen w-full bg-background">
           <Sidebar className="w-[320px] bg-white">
             <AdminSidebarContent />
           </Sidebar>
 
           <div className="flex w-full lg:w-[calc(100%-320px)] min-h-screen flex-col">
-            <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-white px-6">
+            <header
+              ref={headerRef}
+              className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-white px-6"
+            >
               <div className="flex items-center gap-4">
                 <SidebarTrigger className="cursor-pointer text-primary hover:bg-light lg:hidden">
                   <Menu className="size-5" />

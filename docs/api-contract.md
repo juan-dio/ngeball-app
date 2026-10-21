@@ -997,6 +997,54 @@ Mengunggah file gambar (misal foto lapangan) ke Cloudinary atau storage provider
 
 ---
 
+## 10. Landing Page (`/api/landing`)
+
+### `GET /api/landing`
+Menyediakan data agregat untuk public landing page (daftar sports dan daftar court types yang dilengkapi atribut `image` yang diambil secara random dari salah satu lapangan yang memiliki relasi dengan court type tersebut).
+
+- **Header:** None
+- **Body:** None
+- **Response (200 OK):**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "sports": [
+        {
+          "id": "sport-futsal",
+          "name": "Futsal",
+          "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
+          "colorHex": "#008236"
+        },
+        {
+          "id": "sport-basketball",
+          "name": "Basketball",
+          "iconSvg": "<svg viewBox=\"0 0 24 24\">...</svg>",
+          "colorHex": "#CA3500"
+        }
+      ],
+      "courtTypes": [
+        {
+          "id": "court-type-synthetic-grass-futsal",
+          "name": "Synthetic Grass Futsal Court",
+          "description": "This court features high-quality artificial turf with rubber infill...",
+          "sportId": "sport-futsal",
+          "image": "/images/synthetic-grass1.png"
+        },
+        {
+          "id": "court-type-interlock-futsal",
+          "name": "Interlock Futsal Court",
+          "description": "Constructed from modular polypropylene tiles...",
+          "sportId": "sport-futsal",
+          "image": "/images/interlock1.jpg"
+        }
+      ]
+    }
+  }
+  ```
+
+---
+
 ## Error Codes Reference
 
 | HTTP Status | Error Code | Keterangan |

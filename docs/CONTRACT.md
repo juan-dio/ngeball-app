@@ -238,7 +238,8 @@ Kerjakan backend secara bertahap. Setiap fase harus selesai & stabil sebelum lan
 ### Phase 2 — Master Data CRUD
 - Sports: CRUD lengkap + pagination.
 - Court Types: CRUD lengkap + filter by `sportId` + pagination.
-- Courts: CRUD lengkap + filter (`sportId`, `courtTypeId`), search, pagination.
+- Courts: CRUD lengkap + filter (`sportId`, `courtTypeId`), search, availability slot check (`GET /api/courts/{id}/availability`), pagination.
+- Public Landing Page (`GET /api/landing`): Agregat sports dan court types (court types dilengkapi gambar acak dari relasi court).
 - Endpoint publik (read-only) dapat diakses tanpa auth.
 
 ### Phase 3 — Bookings Core

@@ -841,26 +841,50 @@ Mendapatkan seluruh daftar slot bermain pada tanggal dan durasi tertentu, lengka
   {
     "success": true,
     "data": {
-      "totalBookings": 120,
       "totalRevenue": 24000000,
+      "activeBookings": 18,
       "totalUsers": 85,
       "totalCourts": 8,
-      "recentBookings": [
-        {
-          "id": "123123123",
-          "userId": "USR-001",
-          "userName": "John Doe",
-          "courtName": "Futsal Court A",
-          "totalPrice": 200000,
-          "status": "PENDING",
-          "date": "2026-01-24",
-          "startTime": "19:00",
-          "duration": 60
-        }
+      "courtOccupancyRateToday": 75.5,
+      "peakBookingSchedule": {
+        "dayOfWeek": "Saturday",
+        "startTime": "19:00",
+        "totalBookings": 28
+      },
+      "topPerformingCourt": {
+        "courtId": "futsal-court-a",
+        "courtName": "Futsal Court A",
+        "totalBookings": 45,
+        "revenue": 9000000
+      },
+      "todaysBookings": 14,
+      "bookingTrends": [
+        { "month": "2025-04", "count": 10 },
+        { "month": "2025-05", "count": 14 },
+        { "month": "2025-06", "count": 18 },
+        { "month": "2025-07", "count": 22 },
+        { "month": "2025-08", "count": 25 },
+        { "month": "2025-09", "count": 30 },
+        { "month": "2025-10", "count": 28 },
+        { "month": "2025-11", "count": 35 },
+        { "month": "2025-12", "count": 42 },
+        { "month": "2026-01", "count": 40 },
+        { "month": "2026-02", "count": 48 },
+        { "month": "2026-03", "count": 52 }
       ]
     }
   }
   ```
+
+- **Keterangan Field Dashboard:**
+  - `totalRevenue`: Total nominal pembayaran dari booking berstatus `PAID` / `CONFIRMED`.
+  - `activeBookings`: Total booking berstatus aktif (`PENDING`, `PAID`, `CONFIRMED`).
+  - `totalUsers`: Total akun player yang terdaftar di sistem.
+  - `courtOccupancyRateToday`: Persentase okupansi lapangan untuk hari ini (dalam persen, misal `75.5`).
+  - `peakBookingSchedule`: Hari dan jam yang paling banyak dipesan sepanjang riwayat booking.
+  - `topPerformingCourt`: Lapangan dengan frekuensi booking terbanyak.
+  - `todaysBookings`: Jumlah total sesi booking yang dijadwalkan main pada hari ini (`date = TODAY`).
+  - `bookingTrends`: Rekap jumlah booking per bulan selama 12 bulan terakhir (termasuk bulan berjalan) untuk visualisasi diagram/grafik di dashboard.
 
 ---
 

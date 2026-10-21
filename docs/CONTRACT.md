@@ -250,7 +250,7 @@ Kerjakan backend secara bertahap. Setiap fase harus selesai & stabil sebelum lan
 
 ### Phase 4 — Users & Dashboard
 - `GET /api/users` (search + pagination), `GET /api/users/{id}`, `PATCH /api/users/{id}/verify`.
-- `GET /api/admin/dashboard` (agregat `totalBookings`, `totalRevenue`, `totalUsers`, `totalCourts`, `recentBookings`).
+- `GET /api/admin/dashboard` (agregat `totalRevenue`, `activeBookings`, `totalUsers`, `courtOccupancyRateToday`, `peakBookingSchedule`, `topPerformingCourt`, `todaysBookings`, `bookingTrends`).
 
 ### Phase 5 — Payment Gateway (Terakhir)
 - Integrasi Xendit: `POST /api/bookings/{id}/payments`, `GET /api/payments/{id}`, webhook `POST /api/webhooks/xendit`.

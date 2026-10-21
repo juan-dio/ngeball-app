@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import { AppNavbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { Input } from "@/components/ui/input";
+import { SearchInput } from "@/components/search-input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -85,20 +85,15 @@ export default function CourtsPage() {
 
       <div className="mx-auto flex w-full max-w-300 flex-col gap-8 px-6 pt-12 pb-22">
         <div className="flex flex-col items-stretch gap-2 md:flex-row md:items-center md:justify-center md:gap-2">
-          <div className="relative w-full md:w-[320px]">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">
-              <Search className="h-4 w-4" />
-            </div>
-            <Input
-              className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
-              placeholder="Search court"
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setCurrentPage(1);
-              }}
-            />
-          </div>
+          <SearchInput
+            value={search}
+            onChange={(val) => {
+              setSearch(val);
+              setCurrentPage(1);
+            }}
+            placeholder="Search court"
+            className="w-full md:w-[320px]"
+          />
           <div className="flex w-full items-stretch gap-2 md:w-auto md:max-w-103">
             <ToolbarDropdown
               value={selectedSport}

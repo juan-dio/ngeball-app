@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, Plus, ChevronDown } from "lucide-react";
+import { Plus, ChevronDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SportIconWithText } from "@/components/icons/sport-icon";
+import { SearchInput } from "@/components/search-input";
 import { TablePagination } from "@/components/table-pagination";
 import { formatPrice } from "@/lib/formatter";
 import {
@@ -57,20 +57,15 @@ export default function CourtsPage() {
         <CardContent className="p-0 flex flex-col gap-6">
           {/* Toolbar / Filters */}
           <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4">
-            <div className="relative w-full md:w-[320px]">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">
-                <Search className="h-4 w-4" />
-              </div>
-              <Input
-                className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
-                placeholder="Search court"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setCurrentPage(1);
-                }}
-              />
-            </div>
+            <SearchInput
+            value={search}
+            onChange={(val) => {
+              setSearch(val);
+              setCurrentPage(1);
+            }}
+            placeholder="Search court"
+            className="w-full md:w-[320px]"
+          />
 
             <div className="flex flex-col md:flex-row items-stretch gap-4">
               <DropdownMenu>

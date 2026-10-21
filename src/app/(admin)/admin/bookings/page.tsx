@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Search, CalendarDays, ChevronDown, MoreVertical } from "lucide-react";
+import { CalendarDays, ChevronDown, MoreVertical } from "lucide-react";
 import { format } from "date-fns";
 import type { DateRange } from "react-day-picker";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { BookingStatus } from "@/components/booking-status";
 import { TablePagination } from "@/components/table-pagination";
+import { SearchInput } from "@/components/search-input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -76,20 +76,15 @@ export default function BookingsPage() {
         <CardContent className="p-0 flex flex-col gap-6">
           {/* Toolbar / Filters */}
           <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4">
-            <div className="relative w-full md:w-[320px]">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">
-                <Search className="h-4 w-4" />
-              </div>
-              <Input
-                className="h-10 w-full rounded-[6px] border-border bg-white pl-10 text-body placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
-                placeholder="Search booking"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setCurrentPage(1);
-                }}
-              />
-            </div>
+            <SearchInput
+            value={search}
+            onChange={(val) => {
+              setSearch(val);
+              setCurrentPage(1);
+            }}
+            placeholder="Search booking"
+            className="w-full md:w-[320px]"
+          />
 
             <div className="flex flex-col md:flex-row items-stretch gap-4">
               {/* Date Range Selector */}

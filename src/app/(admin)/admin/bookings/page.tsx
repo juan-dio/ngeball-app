@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarDays, ChevronDown, MoreVertical } from "lucide-react";
+import { CalendarDays, MoreVertical } from "lucide-react";
 import { format } from "date-fns";
 import type { DateRange } from "react-day-picker";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookingStatus } from "@/components/booking-status";
 import { TablePagination } from "@/components/table-pagination";
 import { SearchInput } from "@/components/search-input";
+import { FilterDropdown } from "@/components/filter-dropdown";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -112,30 +113,15 @@ export default function BookingsPage() {
               </Popover>
 
               {/* Dropdown Filter */}
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex h-10 w-full md:w-36 cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
-                  <span className="text-small font-normal text-text-primary truncate">
-                    {selectedPayment}
-                  </span>
-                  <ChevronDown className="size-4 shrink-0 text-text-secondary" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
-                  {["All Payment", "Paid", "Pending", "Rejected"].map(
-                    (status) => (
-                      <DropdownMenuItem
-                        key={status}
-                        className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                        onClick={() => {
-                          setSelectedPayment(status);
-                          setCurrentPage(1);
-                        }}
-                      >
-                        {status}
-                      </DropdownMenuItem>
-                    ),
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <FilterDropdown
+                value={selectedPayment}
+                onChange={(val) => {
+                  setSelectedPayment(val);
+                  setCurrentPage(1);
+                }}
+                items={["All Payment", "Paid", "Pending", "Rejected"]}
+                className="w-full md:w-36"
+              />
             </div>
           </div>
 

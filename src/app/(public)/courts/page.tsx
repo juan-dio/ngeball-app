@@ -1,59 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
 
 import { AppNavbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { SearchInput } from "@/components/search-input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { FilterDropdown } from "@/components/filter-dropdown";
 import { TablePagination } from "@/components/table-pagination";
 import { CourtCard } from "@/components/court-card";
 import { COURTS } from "@/data/courts";
 import { usePagination } from "@/hooks/use-pagination";
 
 const ITEMS_PER_PAGE = 6;
-
-function ToolbarDropdown({
-  value,
-  onChange,
-  items,
-  widthClass,
-}: {
-  value: string;
-  onChange: (val: string) => void;
-  items: string[];
-  widthClass: string;
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        className={`flex h-10 max-w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left ${widthClass}`}
-      >
-        <span className="text-small font-normal text-text-primary truncate">
-          {value}
-        </span>
-        <ChevronDown className="size-5 shrink-0 text-text-secondary" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
-        {items.map((item) => (
-          <DropdownMenuItem
-            key={item}
-            className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-            onClick={() => onChange(item)}
-          >
-            {item}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
 
 export default function CourtsPage() {
   const [search, setSearch] = useState("");
@@ -95,16 +53,19 @@ export default function CourtsPage() {
             className="w-full md:w-[320px]"
           />
           <div className="flex w-full items-stretch gap-2 md:w-auto md:max-w-103">
-            <ToolbarDropdown
+            <FilterDropdown
               value={selectedSport}
               onChange={(val) => {
                 setSelectedSport(val);
                 setCurrentPage(1);
               }}
-              items={["All Sports", "Futsal", "Basketball", "Tennis", "Padel"]}
-              widthClass="w-2/5 md:w-[144px]"
+              items={[
+                "All Sports",
+                ...Array.from(new Set(COURTS.map((c) => c.sport.sport))),
+              ]}
+              className="w-2/5 md:w-36"
             />
-            <ToolbarDropdown
+            <FilterDropdown
               value={selectedType}
               onChange={(val) => {
                 setSelectedType(val);
@@ -112,12 +73,9 @@ export default function CourtsPage() {
               }}
               items={[
                 "All Types",
-                "Synthetic Grass",
-                "Interlock",
-                "Vynil",
-                "Indoor",
+                ...Array.from(new Set(COURTS.map((c) => c.courtType.name))),
               ]}
-              widthClass="w-3/5 md:w-[254px]"
+              className="w-3/5 md:w-60"
             />
           </div>
         </div>

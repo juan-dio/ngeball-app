@@ -2,19 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Plus, ChevronDown } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SportIconWithText } from "@/components/icons/sport-icon";
 import { SearchInput } from "@/components/search-input";
+import { FilterDropdown } from "@/components/filter-dropdown";
 import { TablePagination } from "@/components/table-pagination";
 import { formatPrice } from "@/lib/formatter";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -68,73 +63,31 @@ export default function CourtsPage() {
           />
 
             <div className="flex flex-col md:flex-row items-stretch gap-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex h-10 w-full md:w-36 cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
-                  <span className="text-small font-normal text-text-primary truncate">
-                    {selectedSport}
-                  </span>
-                  <ChevronDown className="size-4 shrink-0 text-text-secondary" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
-                  <DropdownMenuItem
-                    className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                    onClick={() => {
-                      setSelectedSport("All Sports");
-                      setCurrentPage(1);
-                    }}
-                  >
-                    All Sports
-                  </DropdownMenuItem>
-                  {Array.from(new Set(COURTS.map((c) => c.sport.sport))).map(
-                    (sport) => (
-                      <DropdownMenuItem
-                        key={sport}
-                        className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                        onClick={() => {
-                          setSelectedSport(sport);
-                          setCurrentPage(1);
-                        }}
-                      >
-                        {sport}
-                      </DropdownMenuItem>
-                    ),
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <FilterDropdown
+                value={selectedSport}
+                onChange={(val) => {
+                  setSelectedSport(val);
+                  setCurrentPage(1);
+                }}
+                items={[
+                  "All Sports",
+                  ...Array.from(new Set(COURTS.map((c) => c.sport.sport))),
+                ]}
+                className="w-full md:w-36"
+              />
 
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex h-10 w-full md:w-56 cursor-pointer items-center justify-between gap-2 rounded-[6px] border border-border bg-white px-3 text-left">
-                  <span className="text-small font-normal text-text-primary truncate">
-                    {selectedType}
-                  </span>
-                  <ChevronDown className="size-4 shrink-0 text-text-secondary" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="rounded-[6px] border border-border bg-white p-1 text-text-primary shadow">
-                  <DropdownMenuItem
-                    className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                    onClick={() => {
-                      setSelectedType("All Types");
-                      setCurrentPage(1);
-                    }}
-                  >
-                    All Types
-                  </DropdownMenuItem>
-                  {Array.from(new Set(COURTS.map((c) => c.courtType.name))).map(
-                    (type) => (
-                      <DropdownMenuItem
-                        key={type}
-                        className="cursor-pointer text-body text-text-primary focus:bg-light focus:text-primary"
-                        onClick={() => {
-                          setSelectedType(type);
-                          setCurrentPage(1);
-                        }}
-                      >
-                        {type}
-                      </DropdownMenuItem>
-                    ),
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <FilterDropdown
+                value={selectedType}
+                onChange={(val) => {
+                  setSelectedType(val);
+                  setCurrentPage(1);
+                }}
+                items={[
+                  "All Types",
+                  ...Array.from(new Set(COURTS.map((c) => c.courtType.name))),
+                ]}
+                className="w-full md:w-60"
+              />
             </div>
 
             <Button
